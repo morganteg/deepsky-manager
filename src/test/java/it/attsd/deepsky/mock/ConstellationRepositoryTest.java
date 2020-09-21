@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import it.attsd.deepsky.entity.Constellation;
+import it.attsd.deepsky.exception.RepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,7 +60,7 @@ public class ConstellationRepositoryTest {
 	}
 	
 	@Test
-	public void testFindById() {
+	public void testFindById() throws RepositoryException {
 		Constellation orion = new Constellation(1, "orion");
 		when(constellationRepository.findById(1)).thenReturn(orion);
 		

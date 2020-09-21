@@ -2,6 +2,7 @@ package it.attsd.deepsky.model;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
@@ -16,18 +17,41 @@ public class ConstellationRepository extends BaseRepository implements IConstell
 
 	public List<Constellation> findAll() {
 		Query query = entityManager.createQuery(String.format("SELECT c FROM %s c", Constellation.TABLE_NAME));
-		
-		return (List<Constellation>)query.getResultList();
+
+		return (List<Constellation>) query.getResultList();
 	}
 
-	public Constellation findById(long id) {
-		Query query = entityManager.createQuery(String.format("SELECT c FROM %s c WHERE c.id=:id", Constellation.TABLE_NAME));
-		query.setParameter("id", id);
-		Constellation result = (Constellation)query.getSingleResult();
-		
+	public Constellation findById(long id) throws RepositoryException {
+		Constellation result = null;
+		try {
+			Query query = entityManager
+					.createQuery(String.format("SELECT c FROM %s c WHERE c.id=:id", Constellation.TABLE_NAME));
+			query.setParameter("id", id);
+			result = (Constellation) query.getSingleResult();
+		} catch (NoResultException e) {
+
+		} catch (Exception e) {
+			throw new RepositoryException(e);
+		}
+
 		return result;
 	}
-	
+
+	public Constellation findByName(String name) throws RepositoryException {
+		Constellation result = null;
+		try {
+			Query query = entityManager
+					.createQuery(String.format("SELECT c FROM %s c WHERE c.name=:name", Constellation.TABLE_NAME));
+			query.setParameter("name", name.toLowerCase());
+			result = (Constellation) query.getSingleResult();
+		} catch (NoResultException e) {
+
+		} catch (Exception e) {
+			throw new RepositoryException(e);
+		}
+		return result;
+	}
+
 	public Constellation save(Constellation constellation) throws RepositoryException {
 		try {
 			entityManager.persist(constellation);
@@ -35,8 +59,19 @@ public class ConstellationRepository extends BaseRepository implements IConstell
 		} catch (Exception e) {
 			throw new RepositoryException(e);
 		}
-		
+
 		return constellation;
+	}
+
+	public void remove(long constellationId) throws RepositoryException {
+		try {
+			Constellation constellation = findById(constellationId);
+
+			entityManager.remove(constellation);
+			entityManager.flush();
+		} catch (Exception e) {
+			throw new RepositoryException(e);
+		}
 	}
 
 }

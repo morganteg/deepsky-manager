@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.Constellation;
+import it.attsd.deepsky.exception.RepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 
 @Service
@@ -22,7 +23,15 @@ public class ConstellationService {
 	}
 	
 	public Constellation getById(long id) {
-		return constellationRepository.findById(id);
+		Constellation constellation = null;
+		try {
+			constellation = constellationRepository.findById(id);
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return constellation;
 	}
 
 }
