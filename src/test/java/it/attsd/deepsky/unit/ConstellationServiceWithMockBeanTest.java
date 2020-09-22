@@ -1,4 +1,4 @@
-package it.attsd.deepsky.mock;
+package it.attsd.deepsky.unit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;

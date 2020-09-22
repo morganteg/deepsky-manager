@@ -24,10 +24,7 @@ public class ConstellationRepository extends BaseRepository implements IConstell
 	public Constellation findById(long id) throws RepositoryException {
 		Constellation result = null;
 		try {
-			Query query = entityManager
-					.createQuery(String.format("SELECT c FROM %s c WHERE c.id=:id", Constellation.TABLE_NAME));
-			query.setParameter("id", id);
-			result = (Constellation) query.getSingleResult();
+			result = (Constellation) entityManager.find(Constellation.class, id);
 		} catch (NoResultException e) {
 
 		} catch (Exception e) {
