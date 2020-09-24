@@ -13,6 +13,11 @@ public class ConstellationController {
 	@Autowired
 	private ConstellationRepository constellationRepository;
 	
+	@GetMapping("/")
+	public String getHome() {
+		return "Running!";
+	}
+	
 	@GetMapping("/constellations")
 	public String getAll() {
 //		Constellation orionToSave = new Constellation("orion");
