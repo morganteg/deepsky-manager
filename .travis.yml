@@ -5,4 +5,4 @@ jdk: openjdk11
 #install: true
 
 script:
-  mvn package -D skipTests
+  - mvn package -D skipTests
