@@ -6,9 +6,12 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.jupiter.api.Order;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
@@ -20,63 +23,80 @@ import org.springframework.test.context.junit4.SpringRunner;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.RepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
+import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConstellationRepositoryIT {
 	private Logger logger = LoggerFactory.getLogger(ConstellationRepositoryIT.class);
-
+	
 	@Autowired
 	private ConstellationRepository constellationRepository;
-
-	private long constellationId;
-
-	@Test
-	@Order(1)
-	public void testAAddConstellationWhenNotExists() throws RepositoryException {
-		constellationId = 1;
-		String constellationName = "orion";
-
-		Constellation existingConstellation = constellationRepository.findByName(constellationName);
-		assertNull(existingConstellation);
-
-		Constellation constellationToSave = new Constellation(constellationName);
-		Constellation constellationSaved = constellationRepository.save(constellationToSave);
-		
-		assertNotNull(constellationSaved);
-		assertThat(constellationSaved.getId() > 0);
-
-		constellationId = constellationSaved.getId();
-		
+	
+	String ORION = "orion";
+	String LIBRA = "libra";
+	
+	@Before
+	public void setup() {
+		constellationRepository.emptyTable();
 	}
 
 	@Test
-	@Order(2)
-	public void testBFindAll() {
+	public void testAAddConstellationWhenNotExists() throws RepositoryException {
+		Constellation orionExisting = constellationRepository.findByName(ORION);
+		assertNull(orionExisting);
+		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
+		assertNotNull(orionSaved);
+		
+		assertThat(orionSaved.getId() > 0);
+	}
+
+	@Test
+	public void testBFindAll() throws RepositoryException {
+		Constellation orionExisting = constellationRepository.findByName(ORION);
+		assertNull(orionExisting);
+		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
+		assertNotNull(orionSaved);
+		
+		Constellation libraExisting = constellationRepository.findByName(LIBRA);
+		assertNull(libraExisting);
+		Constellation libraSaved = constellationRepository.save(new Constellation(LIBRA));
+		assertNotNull(libraSaved);
+		
 		List<Constellation> constellations = constellationRepository.findAll();
 		logger.info("constellations: " + constellations);
 
-		assertThat(constellations.size()).isEqualTo(1);
+		assertThat(constellations.size()).isEqualTo(2);
 	}
 
 	@Test
-	@Order(3)
 	public void testCFindById() throws RepositoryException {
-		Constellation constellation = constellationRepository.findById(constellationId);
-		assertNotNull(constellation);
+		Constellation orionExisting = constellationRepository.findByName(ORION);
+		assertNull(orionExisting);
+		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
+		assertNotNull(orionSaved);
+		
+		Constellation constellationFound = constellationRepository.findById(orionSaved.getId());
+		assertNotNull(constellationFound);
 	}
 
 	@Test
-	@Order(4)
 	public void testDDeleteById() throws RepositoryException {
-		Constellation constellationBefore = constellationRepository.findById(constellationId);
-		assertNotNull(constellationBefore);
+		Constellation orionExisting = constellationRepository.findByName(ORION);
+		assertNull(orionExisting);
+		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
+		assertNotNull(orionSaved);
+		
+		long orionId = orionSaved.getId();
+		
+		Constellation constellationBeforeDelete = constellationRepository.findById(orionId);
+		assertNotNull(constellationBeforeDelete);
 
-		constellationRepository.remove(constellationId);
+		constellationRepository.delete(orionId);
 
-		Constellation constellationAfter = constellationRepository.findById(constellationId);
-		assertNull(constellationAfter);
+		Constellation constellationAfterDelete = constellationRepository.findById(orionId);
+		assertNull(constellationAfterDelete);
 	}
 
 }

@@ -35,7 +35,7 @@ public class ConstellationServiceWithMockBeanTest {
 		constellations.add(new Constellation(2, "scorpion"));
 		when(constellationRepository.findAll()).thenReturn(constellations);
 		
-		assertThat(constellationService.getAll()).isEqualTo(constellations);
+		assertThat(constellationService.findAll()).isEqualTo(constellations);
 	}
 	
 	@Test
@@ -43,6 +43,6 @@ public class ConstellationServiceWithMockBeanTest {
 		Constellation orion = new Constellation(1, "orion");
 		when(constellationRepository.findById(1)).thenReturn(orion);
 		
-		assertThat(constellationService.getById(1)).isEqualTo(orion);
+		assertThat(constellationService.findById(1)).isEqualTo(orion);
 	}
 }

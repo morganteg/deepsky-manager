@@ -14,7 +14,17 @@ import it.attsd.deepsky.exception.RepositoryException;
 @Transactional
 @Repository
 public class ConstellationRepository extends BaseRepository implements IConstellationRepository {
-
+	
+	@Transactional
+	public void dropCreateSchema() {
+		entityManager.createNativeQuery(String.format("DROP DATABASE IF EXISTS %s", "deepskymanager")).executeUpdate();
+		entityManager.createNativeQuery(String.format("CREATE SCHEMA %s", "deepskymanager")).executeUpdate();
+	}
+	
+	public void emptyTable() {
+		entityManager.createNativeQuery(String.format("DELETE FROM %s", Constellation.TABLE_NAME)).executeUpdate();
+	}
+	
 	public List<Constellation> findAll() {
 		Query query = entityManager.createQuery(String.format("SELECT c FROM %s c", Constellation.TABLE_NAME));
 
@@ -60,9 +70,9 @@ public class ConstellationRepository extends BaseRepository implements IConstell
 		return constellation;
 	}
 
-	public void remove(long constellationId) throws RepositoryException {
+	public void delete(long id) throws RepositoryException {
 		try {
-			Constellation constellation = findById(constellationId);
+			Constellation constellation = findById(id);
 
 			entityManager.remove(constellation);
 			entityManager.flush();

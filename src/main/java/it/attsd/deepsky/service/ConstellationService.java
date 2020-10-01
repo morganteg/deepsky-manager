@@ -17,12 +17,11 @@ public class ConstellationService {
 		this.constellationRepository = constellationRepository;
 	}
 	
-	
-	public List<Constellation> getAll() {
+	public List<Constellation> findAll() {
 		return constellationRepository.findAll();
 	}
 	
-	public Constellation getById(long id) {
+	public Constellation findById(long id) {
 		Constellation constellation = null;
 		try {
 			constellation = constellationRepository.findById(id);
@@ -32,6 +31,48 @@ public class ConstellationService {
 		}
 		
 		return constellation;
+	}
+	
+	public Constellation findByName(String name) {
+		Constellation constellation = null;
+		try {
+			constellation = constellationRepository.findByName(name);
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return constellation;
+	}
+
+
+	public Constellation save(Constellation constellation) {
+		Constellation constellationSaved = null;
+		try {
+			constellationSaved = constellationRepository.save(constellation);
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return constellationSaved;
+	}
+
+
+	public void update(Constellation constellation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void delete(long id) {
+		try {
+			constellationRepository.delete(id);
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
