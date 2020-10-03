@@ -11,22 +11,12 @@ import org.springframework.stereotype.Repository;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.RepositoryException;
 
-@Transactional
 @Repository
-public class ConstellationRepository extends BaseRepository implements IConstellationRepository {
-	
-	@Transactional
-	public void dropCreateSchema() {
-		entityManager.createNativeQuery(String.format("DROP DATABASE IF EXISTS %s", "deepskymanager")).executeUpdate();
-		entityManager.createNativeQuery(String.format("CREATE SCHEMA %s", "deepskymanager")).executeUpdate();
-	}
-	
-	public void emptyTable() {
-		entityManager.createNativeQuery(String.format("DELETE FROM %s", Constellation.TABLE_NAME)).executeUpdate();
-	}
-	
+public class ConstellationRepository extends BaseRepository {
+
+	@SuppressWarnings("unchecked")
 	public List<Constellation> findAll() {
-		Query query = entityManager.createQuery(String.format("SELECT c FROM %s c", Constellation.TABLE_NAME));
+		Query query = entityManager.createQuery(String.format("SELECT t FROM %s t", Constellation.class.getName()));
 
 		return (List<Constellation>) query.getResultList();
 	}
@@ -48,7 +38,7 @@ public class ConstellationRepository extends BaseRepository implements IConstell
 		Constellation result = null;
 		try {
 			Query query = entityManager
-					.createQuery(String.format("SELECT c FROM %s c WHERE c.name=:name", Constellation.TABLE_NAME));
+					.createQuery(String.format("SELECT t FROM %s t WHERE t.name=:name", Constellation.class.getName()));
 			query.setParameter("name", name.toLowerCase());
 			result = (Constellation) query.getSingleResult();
 		} catch (NoResultException e) {
@@ -59,6 +49,7 @@ public class ConstellationRepository extends BaseRepository implements IConstell
 		return result;
 	}
 
+	@Transactional
 	public Constellation save(Constellation constellation) throws RepositoryException {
 		try {
 			entityManager.persist(constellation);
@@ -70,6 +61,7 @@ public class ConstellationRepository extends BaseRepository implements IConstell
 		return constellation;
 	}
 
+	@Transactional
 	public void delete(long id) throws RepositoryException {
 		try {
 			Constellation constellation = findById(id);

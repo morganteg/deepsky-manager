@@ -14,8 +14,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "constellation")
 public class Constellation {
-	public static final String TABLE_NAME = "Constellation";
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

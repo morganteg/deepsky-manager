@@ -41,7 +41,7 @@ public class ConstellationRepositoryTest {
 
 	@Test
 	public void testGetAllConstellationsWhenDBIsEmpty() {
-		String queryString = String.format("SELECT c FROM %s c", Constellation.TABLE_NAME);
+		String queryString = String.format("SELECT c FROM %s c", Constellation.class.getName());
 		List<Constellation> constellations = new ArrayList<Constellation>();
 
 		when(entityManager.createQuery(queryString)).thenReturn(query);
@@ -63,7 +63,7 @@ public class ConstellationRepositoryTest {
 		constellations.add(orion);
 		constellations.add(scorpion);
 
-		String queryString = String.format("SELECT c FROM %s c", Constellation.TABLE_NAME);
+		String queryString = String.format("SELECT c FROM %s c", Constellation.class.getName());
 
 		when(entityManager.createQuery(queryString)).thenReturn(query);
 		when(query.getResultList()).thenReturn(constellations);

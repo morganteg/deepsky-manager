@@ -39,7 +39,7 @@ public class ConstellationServiceIT {
 	
 	@Before
 	public void setup() {
-		constellationRepository.emptyTable();
+		constellationRepository.emptyTable("constellation");
 	}
 
 	@Test
