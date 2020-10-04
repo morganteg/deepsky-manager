@@ -16,10 +16,5 @@ public abstract class BaseRepository {
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
-	
-	@Transactional
-	public void emptyTable(String tableName) {
-		entityManager.createNativeQuery(String.format("DELETE FROM %s", tableName)).executeUpdate();
-	}
 
 }

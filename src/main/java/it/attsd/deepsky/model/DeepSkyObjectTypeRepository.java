@@ -8,22 +8,17 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.RepositoryException;
 
 @Repository
 public class DeepSkyObjectTypeRepository extends BaseRepository {
-	
+
 	@Transactional
-	public void emptyTable(String tableClassName) {
-		entityManager.createNativeQuery(String.format("DELETE FROM %s", DeepSkyObjectType.class.getName())).executeUpdate();
-	}
-	
 	public void emptyTable() {
-		entityManager.createNativeQuery(String.format("DELETE FROM %s", DeepSkyObjectType.class.getName())).executeUpdate();
+		entityManager.createQuery(String.format("DELETE FROM %s", DeepSkyObjectType.class.getName())).executeUpdate();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<DeepSkyObjectType> findAll() {
 		Query query = entityManager.createQuery(String.format("SELECT t FROM %s t", DeepSkyObjectType.class.getName()));
@@ -47,8 +42,8 @@ public class DeepSkyObjectTypeRepository extends BaseRepository {
 	public DeepSkyObjectType findByType(String type) throws RepositoryException {
 		DeepSkyObjectType result = null;
 		try {
-			Query query = entityManager
-					.createQuery(String.format("SELECT t FROM %s t WHERE t.type=:type", DeepSkyObjectType.class.getName()));
+			Query query = entityManager.createQuery(
+					String.format("SELECT t FROM %s t WHERE t.type=:type", DeepSkyObjectType.class.getName()));
 			query.setParameter("type", type.toLowerCase());
 			result = (DeepSkyObjectType) query.getSingleResult();
 		} catch (NoResultException e) {
@@ -59,6 +54,7 @@ public class DeepSkyObjectTypeRepository extends BaseRepository {
 		return result;
 	}
 
+	@Transactional
 	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObjectType) throws RepositoryException {
 		try {
 			entityManager.persist(deepSkyObjectType);
@@ -70,6 +66,7 @@ public class DeepSkyObjectTypeRepository extends BaseRepository {
 		return deepSkyObjectType;
 	}
 
+	@Transactional
 	public void delete(long id) throws RepositoryException {
 		try {
 			DeepSkyObjectType deepSkyObjectType = findById(id);

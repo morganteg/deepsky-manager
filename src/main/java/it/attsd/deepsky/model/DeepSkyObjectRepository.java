@@ -6,6 +6,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import it.attsd.deepsky.entity.DeepSkyObject;
@@ -13,6 +15,12 @@ import it.attsd.deepsky.exception.RepositoryException;
 
 @Repository
 public class DeepSkyObjectRepository extends BaseRepository {
+	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectRepository.class);
+	
+	@Transactional
+	public void emptyTable() {
+		entityManager.createQuery(String.format("DELETE FROM %s", DeepSkyObject.class.getName())).executeUpdate();
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<DeepSkyObject> findAll() {
@@ -26,8 +34,9 @@ public class DeepSkyObjectRepository extends BaseRepository {
 		try {
 			result = (DeepSkyObject) entityManager.find(DeepSkyObject.class, id);
 		} catch (NoResultException e) {
-
+			logger.info(String.format("No DeepSkyObject found with id %d", id));
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new RepositoryException(e);
 		}
 
@@ -42,8 +51,9 @@ public class DeepSkyObjectRepository extends BaseRepository {
 			query.setParameter("name", name.toLowerCase());
 			result = (DeepSkyObject) query.getSingleResult();
 		} catch (NoResultException e) {
-
+			logger.info(String.format("No DeepSkyObject found with name %s", name));
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new RepositoryException(e);
 		}
 		return result;
@@ -55,6 +65,7 @@ public class DeepSkyObjectRepository extends BaseRepository {
 			entityManager.persist(deepSkyObject);
 			entityManager.flush();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new RepositoryException(e);
 		}
 
@@ -69,6 +80,7 @@ public class DeepSkyObjectRepository extends BaseRepository {
 			entityManager.remove(deepSkyObject);
 			entityManager.flush();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new RepositoryException(e);
 		}
 	}

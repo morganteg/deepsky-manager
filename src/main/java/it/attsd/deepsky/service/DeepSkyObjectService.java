@@ -91,7 +91,7 @@ public class DeepSkyObjectService {
 		
 	}
 	
-	@Transactional
+	@Transactional(rollbackOn = Exception.class)
 	public DeepSkyObject saveConstellationAndDeepSkyObject(String constellationName, String deepSkyObjectName, String deepSkyObjectType) throws ConstellationAlreadyExistsException, RepositoryException, DeepSkyObjectAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException {
 		// 1 - Create Constellation
 		Constellation existingConstellation = constellationRepository.findByName(constellationName);

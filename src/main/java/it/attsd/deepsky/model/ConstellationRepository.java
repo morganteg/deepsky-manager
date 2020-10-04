@@ -6,6 +6,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import it.attsd.deepsky.entity.Constellation;
@@ -13,7 +15,13 @@ import it.attsd.deepsky.exception.RepositoryException;
 
 @Repository
 public class ConstellationRepository extends BaseRepository {
-
+	private Logger logger = LoggerFactory.getLogger(ConstellationRepository.class);
+	
+	@Transactional
+	public void emptyTable() {
+		entityManager.createQuery(String.format("DELETE FROM %s", Constellation.class.getName())).executeUpdate();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Constellation> findAll() {
 		Query query = entityManager.createQuery(String.format("SELECT t FROM %s t", Constellation.class.getName()));
@@ -26,8 +34,9 @@ public class ConstellationRepository extends BaseRepository {
 		try {
 			result = (Constellation) entityManager.find(Constellation.class, id);
 		} catch (NoResultException e) {
-
+			logger.info(String.format("No Constellation found with id %d", id));
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new RepositoryException(e);
 		}
 
@@ -42,8 +51,9 @@ public class ConstellationRepository extends BaseRepository {
 			query.setParameter("name", name.toLowerCase());
 			result = (Constellation) query.getSingleResult();
 		} catch (NoResultException e) {
-
+			logger.info(String.format("No Constellation found with name %s", name));
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new RepositoryException(e);
 		}
 		return result;
@@ -55,6 +65,7 @@ public class ConstellationRepository extends BaseRepository {
 			entityManager.persist(constellation);
 			entityManager.flush();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new RepositoryException(e);
 		}
 
@@ -69,6 +80,7 @@ public class ConstellationRepository extends BaseRepository {
 			entityManager.remove(constellation);
 			entityManager.flush();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new RepositoryException(e);
 		}
 	}
