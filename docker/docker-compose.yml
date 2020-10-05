@@ -1,4 +1,4 @@
-version: '2'
+#version: '2'
 services:
   sonarqube:
     image: sonarqube:8.2-community
@@ -13,10 +13,10 @@ services:
       SONAR_JDBC_USERNAME: sonar
       SONAR_JDBC_PASSWORD: sonar
     volumes:
-    - sonarqube_data:/opt/sonarqube/data
-    - sonarqube_extensions:/opt/sonarqube/extensions
-    - sonarqube_logs:/opt/sonarqube/logs
-    - sonarqube_temp:/opt/sonarqube/temp
+    - sonarqube_data:sonarqube/data
+    - sonarqube_extensions:sonarqube/extensions
+    - sonarqube_logs:sonarqube/logs
+    - sonarqube_temp:sonarqube/temp
   db:
     image: postgres
     networks:
@@ -25,8 +25,8 @@ services:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: sonar
     volumes:
-    - postgresql:/var/lib/postgresql
-    - postgresql_data:/var/lib/postgresql/data
+    - postgresql:postgresql
+    - postgresql_data:postgresql/data
 networks:
   sonarnet:
     driver: bridge
