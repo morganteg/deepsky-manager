@@ -68,6 +68,9 @@ public class DeepSkyObjectServiceIT {
 		constellationRepository.emptyTable();
 	}
 
+	/**
+	 * Transactional test with success
+	 */
 	@Test
 	public void testAAddConstellationAndDeepSkyObjectWithSuccess() {
 		try {
@@ -93,6 +96,9 @@ public class DeepSkyObjectServiceIT {
 		assertNotNull(existingDeepSkyObject);
 	}
 
+	/**
+	 * Transactional test with rollback
+	 */
 	@Test
 	public void testBAddConstellationAndDeepSkyObjectWithRollback() {
 		try {

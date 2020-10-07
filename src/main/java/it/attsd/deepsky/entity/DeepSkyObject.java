@@ -24,27 +24,6 @@ public class DeepSkyObject {
 	@OneToOne(optional = false)
 	private DeepSkyObjectType type;
 
-//	@Column(nullable = false)
-//	private int raHours;
-//	
-//	@Column(nullable = false)
-//	private int raMinutes;
-//	
-//	@Column(nullable = false)
-//	private float raSeconds;
-//
-//	@Column(nullable = false)
-//	private boolean decPositive;
-//	
-//	@Column(nullable = false)
-//	private int decDegree;
-//	
-//	@Column(nullable = false)
-//	private int decMinutes;
-//	
-//	@Column(nullable = false)
-//	private float decSeconds;
-
 	public DeepSkyObject() {
 
 	}
