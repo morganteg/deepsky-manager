@@ -79,7 +79,7 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 		assertThat(clusterSavedFromService.getId()).isGreaterThan(0);
 	}
 
-	@Test
+	@Test(expected = RepositoryException.class)
 	public void testSaveDeepSkyObjectWhenAlreadyExists() throws RepositoryException {
 		DeepSkyObjectType cluster = new DeepSkyObjectType("cluster");
 
@@ -103,16 +103,12 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 		assertNull(clusterDeleted);
 	}
 
-	@Test
+	@Test(expected = RepositoryException.class)
 	public void testDeleteDeepSkyObjectWhenNotExists() throws RepositoryException {
 		doThrow(new RepositoryException("DeepSkyObjectType not found")).when(deepSkyObjectTypeRepository).delete(1L);
 
-//		when(deepSkyObjectTypeRepository.findById(1L)).thenReturn(null);
-
 		deepSkyObjectTypeService.delete(1L);
-//		DeepSkyObjectType clusterDeleted = deepSkyObjectTypeService.findById(1L);
 
 		verify(deepSkyObjectTypeRepository, times(1)).delete(1L);
-//		assertNull(clusterDeleted);
 	}
 }

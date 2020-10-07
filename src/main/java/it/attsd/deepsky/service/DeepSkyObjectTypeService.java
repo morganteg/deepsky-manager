@@ -44,16 +44,13 @@ public class DeepSkyObjectTypeService {
 	}
 
 	@Transactional
-	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObjectType) {
+	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObjectType) throws RepositoryException {
 		DeepSkyObjectType deepSkyObjectTypeSaved = null;
 		try {
 			deepSkyObjectTypeSaved = deepSkyObjectTypeRepository.save(deepSkyObjectType);
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			logger.error(e.getMessage());
+			throw new RepositoryException(e);
 		}
 
 		return deepSkyObjectTypeSaved;
@@ -66,12 +63,11 @@ public class DeepSkyObjectTypeService {
 	}
 
 	@Transactional
-	public void delete(long id) {
+	public void delete(long id) throws RepositoryException {
 		try {
 			deepSkyObjectTypeRepository.delete(id);
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RepositoryException(e);
 		}
 
 	}
