@@ -13,10 +13,6 @@ public class ConstellationService {
 	
 	private ConstellationRepository constellationRepository;
 	
-	public ConstellationService(ConstellationRepository constellationRepository) {
-		this.constellationRepository = constellationRepository;
-	}
-	
 	public List<Constellation> findAll() {
 		return constellationRepository.findAll();
 	}

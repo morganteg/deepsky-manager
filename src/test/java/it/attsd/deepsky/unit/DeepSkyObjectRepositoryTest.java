@@ -66,9 +66,6 @@ public class DeepSkyObjectRepositoryTest {
 
 	@Test
 	public void test2GetAllDeepSkyObjectsWhenContainsTwo() {
-//		DeepSkyObject m42 = new DeepSkyObject(1, "m42", orion, nebula);
-//		DeepSkyObject m43 = new DeepSkyObject(2, "m43", orion, nebula);
-
 		List<DeepSkyObject> deepSkyObjects = new ArrayList<DeepSkyObject>();
 		deepSkyObjects.add(m42);
 		deepSkyObjects.add(m43);
@@ -87,8 +84,6 @@ public class DeepSkyObjectRepositoryTest {
 
 	@Test
 	public void test3GetDeepSkyObjectByIdWhenIdIsPresent() throws RepositoryException {
-//		DeepSkyObject m42 = new DeepSkyObject(1L, "m42", orion, nebula);
-
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(m42);
 
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectRepository.findById(1L);

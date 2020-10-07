@@ -2,6 +2,8 @@ package it.attsd.deepsky.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
@@ -12,10 +14,6 @@ import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 public class DeepSkyObjectTypeService {
 
 	private DeepSkyObjectTypeRepository deepSkyObjectTypeRepository;
-
-	public DeepSkyObjectTypeService(DeepSkyObjectTypeRepository deepSkyObjectTypeRepository) {
-		this.deepSkyObjectTypeRepository = deepSkyObjectTypeRepository;
-	}
 
 	public List<DeepSkyObjectType> findAll() {
 		return deepSkyObjectTypeRepository.findAll();
@@ -45,23 +43,29 @@ public class DeepSkyObjectTypeService {
 		return deepSkyObjectType;
 	}
 
-	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObject) {
-		DeepSkyObjectType deepSkyObjectSaved = null;
+	@Transactional
+	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObjectType) {
+		DeepSkyObjectType deepSkyObjectTypeSaved = null;
 		try {
-			deepSkyObjectSaved = deepSkyObjectTypeRepository.save(deepSkyObject);
+			deepSkyObjectTypeSaved = deepSkyObjectTypeRepository.save(deepSkyObjectType);
 		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return deepSkyObjectSaved;
+		return deepSkyObjectTypeSaved;
 	}
 
+	@Transactional
 	public void update(DeepSkyObjectType deepSkyObjectType) {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Transactional
 	public void delete(long id) {
 		try {
 			deepSkyObjectTypeRepository.delete(id);
