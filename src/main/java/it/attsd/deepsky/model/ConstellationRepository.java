@@ -71,6 +71,17 @@ public class ConstellationRepository extends BaseRepository {
 
 		return constellation;
 	}
+	
+	@Transactional
+	public void update(Constellation constellation) throws RepositoryException {
+		try {
+			entityManager.merge(constellation);
+			entityManager.flush();
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new RepositoryException(e);
+		}
+	}
 
 	@Transactional
 	public void delete(long id) throws RepositoryException {

@@ -2,6 +2,7 @@ package it.attsd.deepsky.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.Constellation;
@@ -11,6 +12,7 @@ import it.attsd.deepsky.model.ConstellationRepository;
 @Service
 public class ConstellationService {
 	
+	@Autowired
 	private ConstellationRepository constellationRepository;
 	
 	public List<Constellation> findAll() {
@@ -22,7 +24,6 @@ public class ConstellationService {
 		try {
 			constellation = constellationRepository.findById(id);
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -34,7 +35,6 @@ public class ConstellationService {
 		try {
 			constellation = constellationRepository.findByName(name);
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -47,7 +47,6 @@ public class ConstellationService {
 		try {
 			constellationSaved = constellationRepository.save(constellation);
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -56,7 +55,11 @@ public class ConstellationService {
 
 
 	public void update(Constellation constellation) {
-		// TODO Auto-generated method stub
+		try {
+			constellationRepository.update(constellation);
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
