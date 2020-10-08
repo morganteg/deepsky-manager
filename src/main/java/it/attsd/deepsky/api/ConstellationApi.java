@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.attsd.deepsky.dto.ConstellationInput;
+import it.attsd.deepsky.dto.ConstellationRequest;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -59,7 +59,7 @@ public class ConstellationApi {
 	}
 
 	@PostMapping(value = "", produces = "application/json", consumes = "application/json")
-	public @ResponseBody Constellation save(@RequestBody ConstellationInput constellationInput) {
+	public @ResponseBody Constellation save(@RequestBody ConstellationRequest constellationInput) {
 		logger.debug("{}", constellationInput);
 
 		Constellation constellationSaved = null;

@@ -29,7 +29,6 @@ import it.attsd.deepsky.exception.RepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 
 @RunWith(MockitoJUnitRunner.class)
-//@ContextConfiguration(classes = ConstellationService.class)
 @DataJpaTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConstellationRepositoryTest {

@@ -6,9 +6,6 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -23,7 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.RepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
-import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

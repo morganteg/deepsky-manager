@@ -1,9 +1,9 @@
 package it.attsd.deepsky.dto;
 
-public class ConstellationInput {
+public class ConstellationRequest {
 	private String name;
 
-	public ConstellationInput() {
+	public ConstellationRequest() {
 
 	}
 
