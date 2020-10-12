@@ -28,13 +28,13 @@ public class ConstellationApiTest {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
-	
+
 	private String baseUrl = "http://localhost:8080/api/constellation";
-	
+
 	@Test
 	public void test1GetAllConstellations() throws Exception {
 		List<Constellation> constellations = restTemplate.getForObject(baseUrl, List.class);
-		
+
 		assertNotNull(constellations);
 		assertThat(constellations.size()).isGreaterThan(0);
 	}
