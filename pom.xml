@@ -25,9 +25,11 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<!-- 
 			<build>
 				<directory>target-dev</directory>
 			</build>
+			 -->
 			<properties>
 				<database.username>root</database.username>
 				<database.password>root</database.password>
@@ -86,22 +88,28 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<!-- 
 			<exclusions>
 				<exclusion>
 					<groupId>org.junit.vintage</groupId>
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
+			 -->
 		</dependency>
 
-		<!-- This is important, in this way, in order to "mvn verify" without org.junit 
-			compilation errors -->
+		<!-- This is important, in this way, in order to "mvn verify" without org.junit compilation errors -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -133,13 +141,14 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.5</version>
 				<executions>
 					<execution>
+						<!-- <phase>test</phase>  -->
 						<goals>
 							<!-- binds by default to the phase "initialize" -->
 							<goal>prepare-agent</goal>
@@ -150,14 +159,13 @@
 				</executions>
 			</plugin>
 
+			<!-- 
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
 				<version>4.3.0</version>
-				<configuration>
-					<repoToken>b9bOGu6h4i1RL5ZqlluJhoSFc5J8zj1PO</repoToken>
-				</configuration>
 			</plugin>
+			 -->
 
 		</plugins>
 	</build>

@@ -15,12 +15,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -41,6 +43,11 @@ public class ConstellationRepositoryTest {
 
 	@InjectMocks
 	private ConstellationRepository constellationRepository;
+	
+	@Before
+	public void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
+	}
 
 	@Test
 	public void test1GetAllConstellationsWhenDBIsEmpty() {
@@ -103,50 +110,72 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void test5AddConstellationWhenIsNotPresent() throws RepositoryException {
-		Constellation orion = new Constellation(1L, "orion");
+	public void test5GetConstellationByNameWhenIsPresent() throws RepositoryException {
+		String name = "orion";
+		Constellation orion = new Constellation(1L, name);
 		
+		String queryString = String.format("SELECT t FROM %s t WHERE t.name=:name", Constellation.class.getName());
+		
+		when(entityManager
+				.createQuery(queryString))
+						.thenReturn(query);
+		when(query.setParameter("name", name)).thenReturn(query);
+		when(query.getSingleResult()).thenReturn(orion);
+
+		Constellation constellationFound = constellationRepository.findByName(name);
+
+		verify(entityManager).createQuery(queryString);
+		verify(query).setParameter("name", name);
+		verify(query).getSingleResult();
+
+		assertNotNull(constellationFound);
+	}
+
+	@Test
+	public void test6AddConstellationWhenIsNotPresent() throws RepositoryException {
+		Constellation orion = new Constellation(1L, "orion");
+
 		constellationRepository.save(orion);
 		verify(entityManager, times(1)).persist(orion);
 	}
 
 	@Test(expected = RepositoryException.class)
-	public void test6AddConstellationWhenIsAlreadyPresent() throws RepositoryException {
+	public void test7AddConstellationWhenIsAlreadyPresent() throws RepositoryException {
 		Constellation orion = new Constellation(1L, "orion");
-		
+
 		IllegalStateException exc = new IllegalStateException();
 		doThrow(exc).when(entityManager).persist(orion);
-		
+
 		constellationRepository.save(orion);
 //		verify(entityManager, times(1)).persist(orion);
 	}
 
 	@Test(expected = RepositoryException.class)
-	public void test7RemoveConstellationWhenIsNotPresent() throws RepositoryException {
+	public void test8RemoveConstellationWhenIsNotPresent() throws RepositoryException {
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(null);
-		
+
 		IllegalStateException exc = new IllegalStateException();
 		doThrow(exc).when(entityManager).remove(null);
-		
+
 		constellationRepository.delete(1L);
 	}
-	
+
 	@Test
-	public void test8RemoveConstellationWhenIsPresent() throws RepositoryException {
+	public void test9RemoveConstellationWhenIsPresent() throws RepositoryException {
 		Constellation orion = new Constellation(1L, "orion");
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(orion);
-		
+
 		constellationRepository.delete(1L);
-		
+
 		verify(entityManager, times(1)).find(Constellation.class, 1L);
 		verify(entityManager, times(1)).remove(orion);
 	}
 
 	@Test(expected = RepositoryException.class)
-	public void test9RemoveConstellationWhenIsNull() throws RepositoryException {
+	public void test10RemoveConstellationWhenIsNull() throws RepositoryException {
 		IllegalStateException exc = new IllegalStateException();
 		doThrow(exc).when(entityManager).remove(null);
-		
+
 		constellationRepository.delete(0);
 	}
 
