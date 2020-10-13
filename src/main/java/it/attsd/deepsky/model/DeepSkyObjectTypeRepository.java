@@ -26,17 +26,8 @@ public class DeepSkyObjectTypeRepository extends BaseRepository {
 		return (List<DeepSkyObjectType>) query.getResultList();
 	}
 
-	public DeepSkyObjectType findById(long id) throws RepositoryException {
-		DeepSkyObjectType result = null;
-		try {
-			result = (DeepSkyObjectType) entityManager.find(DeepSkyObjectType.class, id);
-		} catch (NoResultException e) {
-
-		} catch (Exception e) {
-			throw new RepositoryException(e);
-		}
-
-		return result;
+	public DeepSkyObjectType findById(long id) {
+		return entityManager.find(DeepSkyObjectType.class, id);
 	}
 
 	public DeepSkyObjectType findByType(String type) throws RepositoryException {
@@ -64,6 +55,17 @@ public class DeepSkyObjectTypeRepository extends BaseRepository {
 		}
 
 		return deepSkyObjectType;
+	}
+	
+	@Transactional
+	public void update(DeepSkyObjectType deepSkyObjectType) throws RepositoryException {
+		try {
+			entityManager.merge(deepSkyObjectType);
+			entityManager.flush();
+		} catch (Exception e) {
+//			logger.error(e.getMessage());
+			throw new RepositoryException(e);
+		}
 	}
 
 	@Transactional

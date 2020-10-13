@@ -13,13 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -32,7 +31,7 @@ import it.attsd.deepsky.model.ConstellationRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 @DataJpaTest
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConstellationRepositoryTest {
 
 	@Mock
@@ -101,6 +100,9 @@ public class ConstellationRepositoryTest {
 	@Test
 	public void test4GetConstellationByIdWhenIdIsNotPresent() throws RepositoryException {
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(null);
+		
+//		NoResultException noResultException = new NoResultException();
+//		doThrow(noResultException).when(entityManager).find(Constellation.class, 1L);
 
 		Constellation constellationFound = constellationRepository.findById(1L);
 
@@ -110,7 +112,7 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void test5GetConstellationByNameWhenIsPresent() throws RepositoryException {
+	public void testGetConstellationByNameWhenIsPresent() throws RepositoryException {
 		String name = "orion";
 		Constellation orion = new Constellation(1L, name);
 		
@@ -129,6 +131,26 @@ public class ConstellationRepositoryTest {
 		verify(query).getSingleResult();
 
 		assertNotNull(constellationFound);
+	}
+	
+	@Test
+	public void testGetConstellationByNameWhenIsNotPresent() throws RepositoryException {
+		String name = "orion";
+		String queryString = String.format("SELECT t FROM %s t WHERE t.name=:name", Constellation.class.getName());
+		
+		when(entityManager
+				.createQuery(queryString))
+						.thenReturn(query);
+		when(query.setParameter("name", name)).thenReturn(query);
+		when(query.getSingleResult()).thenReturn(null);
+
+		Constellation constellationFound = constellationRepository.findByName(name);
+
+		verify(entityManager).createQuery(queryString);
+		verify(query).setParameter("name", name);
+		verify(query).getSingleResult();
+
+		assertNull(constellationFound);
 	}
 
 	@Test

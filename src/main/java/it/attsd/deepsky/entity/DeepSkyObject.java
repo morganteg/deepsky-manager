@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,10 +18,10 @@ public class DeepSkyObject {
 	@Column(unique = true, nullable = false)
 	private String name;
 
-	@OneToOne(optional = false)
+	@ManyToOne
 	private Constellation constellation;
 	
-	@OneToOne(optional = false)
+	@ManyToOne
 	private DeepSkyObjectType type;
 
 	public DeepSkyObject() {

@@ -22,15 +22,7 @@ public class DeepSkyObjectTypeService {
 	}
 
 	public DeepSkyObjectType findById(long id) {
-		DeepSkyObjectType deepSkyObjectType = null;
-		try {
-			deepSkyObjectType = deepSkyObjectTypeRepository.findById(id);
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return deepSkyObjectType;
+		return deepSkyObjectTypeRepository.findById(id);
 	}
 
 	public DeepSkyObjectType findByType(String type) {

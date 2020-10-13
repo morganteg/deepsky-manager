@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import it.attsd.deepsky.entity.DeepSkyObject;
+import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.RepositoryException;
 
 @Repository
@@ -29,18 +30,8 @@ public class DeepSkyObjectRepository extends BaseRepository {
 		return (List<DeepSkyObject>) query.getResultList();
 	}
 
-	public DeepSkyObject findById(long id) throws RepositoryException {
-		DeepSkyObject result = null;
-		try {
-			result = (DeepSkyObject) entityManager.find(DeepSkyObject.class, id);
-		} catch (NoResultException e) {
-			logger.info(String.format("No DeepSkyObject found with id %d", id));
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			throw new RepositoryException(e);
-		}
-
-		return result;
+	public DeepSkyObject findById(long id) {
+		return entityManager.find(DeepSkyObject.class, id);
 	}
 
 	public DeepSkyObject findByName(String name) throws RepositoryException {
@@ -70,6 +61,17 @@ public class DeepSkyObjectRepository extends BaseRepository {
 		}
 
 		return deepSkyObject;
+	}
+	
+	@Transactional
+	public void update(DeepSkyObject deepSkyObject) throws RepositoryException {
+		try {
+			entityManager.merge(deepSkyObject);
+			entityManager.flush();
+		} catch (Exception e) {
+//			logger.error(e.getMessage());
+			throw new RepositoryException(e);
+		}
 	}
 
 	@Transactional

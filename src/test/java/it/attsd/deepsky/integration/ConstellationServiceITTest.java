@@ -23,8 +23,8 @@ import it.attsd.deepsky.service.ConstellationService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ConstellationServiceIT {
-	private Logger logger = LoggerFactory.getLogger(ConstellationServiceIT.class);
+public class ConstellationServiceITTest {
+	private Logger logger = LoggerFactory.getLogger(ConstellationServiceITTest.class);
 	
 	@Autowired
 	private ConstellationRepository constellationRepository;

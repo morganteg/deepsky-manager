@@ -40,15 +40,7 @@ public class DeepSkyObjectService {
 	}
 
 	public DeepSkyObject findById(long id) {
-		DeepSkyObject constellation = null;
-		try {
-			constellation = deepSkyObjectRepository.findById(id);
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return constellation;
+		return deepSkyObjectRepository.findById(id);
 	}
 
 	public DeepSkyObject findByName(String name) {

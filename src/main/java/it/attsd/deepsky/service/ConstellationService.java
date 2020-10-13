@@ -20,14 +20,7 @@ public class ConstellationService {
 	}
 	
 	public Constellation findById(long id) {
-		Constellation constellation = null;
-		try {
-			constellation = constellationRepository.findById(id);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-		
-		return constellation;
+		return constellationRepository.findById(id);
 	}
 	
 	public Constellation findByName(String name) {

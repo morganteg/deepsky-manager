@@ -29,18 +29,8 @@ public class ConstellationRepository extends BaseRepository {
 		return (List<Constellation>) query.getResultList();
 	}
 
-	public Constellation findById(long id) throws RepositoryException {
-		Constellation result = null;
-		try {
-			result = (Constellation) entityManager.find(Constellation.class, id);
-		} catch (NoResultException e) {
-			logger.info(String.format("No Constellation found with id %d", id));
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			throw new RepositoryException(e);
-		}
-
-		return result;
+	public Constellation findById(long id) {
+		return entityManager.find(Constellation.class, id);
 	}
 
 	public Constellation findByName(String name) throws RepositoryException {

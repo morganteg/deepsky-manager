@@ -25,11 +25,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<!-- 
-			<build>
-				<directory>target-dev</directory>
-			</build>
-			 -->
 			<properties>
 				<database.username>root</database.username>
 				<database.password>root</database.password>
