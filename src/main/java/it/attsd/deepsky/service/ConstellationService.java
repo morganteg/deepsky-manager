@@ -35,12 +35,12 @@ public class ConstellationService {
 	}
 
 
-	public Constellation save(Constellation constellation) {
+	public Constellation save(Constellation constellation) throws RepositoryException {
 		Constellation constellationSaved = null;
 		try {
 			constellationSaved = constellationRepository.save(constellation);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new RepositoryException(e);
 		}
 		
 		return constellationSaved;
@@ -55,7 +55,6 @@ public class ConstellationService {
 		}
 		
 	}
-
 
 	public void delete(long id) {
 		try {

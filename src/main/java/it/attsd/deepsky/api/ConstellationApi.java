@@ -69,7 +69,7 @@ public class ConstellationApi {
 			constellationSaved = constellationService.save(constellation);
 		} catch (Exception e) {
 			logger.error("{}", e);
-			throw e;
+//			throw e;
 		}
 
 		return constellationSaved;

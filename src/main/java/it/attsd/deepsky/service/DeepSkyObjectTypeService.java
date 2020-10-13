@@ -2,8 +2,6 @@ package it.attsd.deepsky.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +35,6 @@ public class DeepSkyObjectTypeService {
 		return deepSkyObjectType;
 	}
 
-	@Transactional
 	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObjectType) throws RepositoryException {
 		DeepSkyObjectType deepSkyObjectTypeSaved = null;
 		try {
@@ -50,13 +47,15 @@ public class DeepSkyObjectTypeService {
 		return deepSkyObjectTypeSaved;
 	}
 
-	@Transactional
-	public void update(DeepSkyObjectType deepSkyObjectType) {
-		// TODO Auto-generated method stub
+	public void update(DeepSkyObjectType deepSkyObjectType) throws RepositoryException {
+		try {
+			deepSkyObjectTypeRepository.update(deepSkyObjectType);
+		} catch (Exception e) {
+			throw new RepositoryException(e);
+		}
 
 	}
 
-	@Transactional
 	public void delete(long id) throws RepositoryException {
 		try {
 			deepSkyObjectTypeRepository.delete(id);

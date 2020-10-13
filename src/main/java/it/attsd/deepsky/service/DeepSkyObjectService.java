@@ -55,21 +55,16 @@ public class DeepSkyObjectService {
 		return constellation;
 	}
 
-	public DeepSkyObject save(DeepSkyObject deepSkyObject) {
+	@Transactional
+	public DeepSkyObject save(DeepSkyObject deepSkyObject) throws RepositoryException {
 		DeepSkyObject deepSkyObjectSaved = null;
 		try {
 			deepSkyObjectSaved = deepSkyObjectRepository.save(deepSkyObject);
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new RepositoryException(e);
 		}
 
 		return deepSkyObjectSaved;
-	}
-
-	public void update(DeepSkyObject constellation) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Transactional(rollbackOn = Exception.class)
@@ -138,12 +133,21 @@ public class DeepSkyObjectService {
 		return deepSkyObjectSaved;
 	}
 	
-	public void delete(long id) {
+	@Transactional
+	public void update(DeepSkyObject deepSkyObject) throws RepositoryException {
+		try {
+			deepSkyObjectRepository.update(deepSkyObject);
+		} catch (Exception e) {
+			throw new RepositoryException(e);
+		}
+
+	}
+	
+	public void delete(long id) throws RepositoryException {
 		try {
 			deepSkyObjectRepository.delete(id);
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new RepositoryException(e);
 		}
 	}
 
