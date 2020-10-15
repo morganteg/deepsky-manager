@@ -21,7 +21,7 @@ import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RestController()
-@RequestMapping("/constellation")
+@RequestMapping("/api/constellation")
 public class ConstellationApi {
 	private Logger logger = LoggerFactory.getLogger(ConstellationApi.class);
 

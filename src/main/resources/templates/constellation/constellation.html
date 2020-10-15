@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head"></div>
+
+<body class="container">
+	<div th:replace="fragments/header :: header">...</div>
+
+	<h1>Constellations</h1>
+
+	<form action="" th:action="@{/constellation}" th:object="${constellation}" method="post">
+        <p>Name: <input type="text" th:field="*{name}" /></p>
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+
+	<table>
+		<tr th:each="constellation: ${constellations}">
+			<td th:text="${constellation.id}" />
+			<td th:text="${constellation.name}" />
+		</tr>
+	</table>
+</body>
+</html>

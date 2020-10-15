@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head"></div>
+
+<body>
+	<div th:replace="fragments/header :: header">...</div>
+
+	<h1>DeepSky Object Types</h1>
+
+	<form action="#" th:action="@{/deepskyobjecttype}" th:object="${deepSkyObjectType}" method="post">
+        <p>Type: <input type="text" th:field="*{type}" /></p>
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+
+	<table>
+		<tr th:each="deepSkyObjectType: ${deepSkyObjectTypes}">
+			<td th:text="${deepSkyObjectType.id}" />
+			<td th:text="${deepSkyObjectType.type}" />
+		</tr>
+	</table>
+</body>
+</html>

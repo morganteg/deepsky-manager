@@ -21,7 +21,7 @@ import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RestController()
-@RequestMapping("/deepskyobjecttype")
+@RequestMapping("/api/deepskyobjecttype")
 public class DeepSkyObjectTypeApi {
 	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeApi.class);
 
