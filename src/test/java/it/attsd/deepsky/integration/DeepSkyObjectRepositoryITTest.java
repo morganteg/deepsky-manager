@@ -21,7 +21,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
-import it.attsd.deepsky.exception.RepositoryException;
+import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
+import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
@@ -57,7 +60,7 @@ public class DeepSkyObjectRepositoryITTest {
 	}
 
 	@Test
-	public void testFindAll() throws RepositoryException {
+	public void testFindAll() throws GenericRepositoryException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		DeepSkyObjectType type = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(NEBULA));
 		assertNotNull(type);
 		
@@ -81,7 +84,7 @@ public class DeepSkyObjectRepositoryITTest {
 	}
 
 	@Test
-	public void testFindByIdWhenIsPresent() throws RepositoryException {
+	public void testFindByIdWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		DeepSkyObjectType type = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(NEBULA));
 		assertNotNull(type);
 		
@@ -96,13 +99,13 @@ public class DeepSkyObjectRepositoryITTest {
 	}
 	
 	@Test
-	public void testFindByIdWhenIsNotPresent() throws RepositoryException {
+	public void testFindByIdWhenIsNotPresent() throws GenericRepositoryException {
 		DeepSkyObject objectFound = deepSkyObjectRepository.findById(1L);
 		assertNull(objectFound);
 	}
 	
 	@Test
-	public void testFindByTypeWhenIsPresent() throws RepositoryException {
+	public void testFindByTypeWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		DeepSkyObjectType type = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(NEBULA));
 		assertNotNull(type);
 		
@@ -117,13 +120,13 @@ public class DeepSkyObjectRepositoryITTest {
 	}
 	
 	@Test
-	public void testFindByTypeWhenIsNotPresent() throws RepositoryException {
+	public void testFindByTypeWhenIsNotPresent() throws GenericRepositoryException {
 		DeepSkyObject m42Found = deepSkyObjectRepository.findByName(M42);
 		assertNull(m42Found);
 	}
 	
 	@Test
-	public void testAAddDeepSkyObjectTypeWhenNotExists() throws RepositoryException {
+	public void testAAddDeepSkyObjectTypeWhenNotExists() throws GenericRepositoryException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		DeepSkyObjectType type = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(NEBULA));
 		assertNotNull(type);
 		
@@ -135,11 +138,11 @@ public class DeepSkyObjectRepositoryITTest {
 		DeepSkyObject m42Saved = deepSkyObjectRepository.save(new DeepSkyObject(M42, orion, type));
 		assertNotNull(m42Saved);
 		
-		assertThat(m42Saved.getId() > 0);
+		assertThat(m42Saved.getId()).isPositive();
 	}
 	
 	@Test
-	public void testUpdateDeepSkyObjectType() throws RepositoryException {
+	public void testUpdateDeepSkyObjectType() throws GenericRepositoryException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		DeepSkyObjectType type = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(NEBULA));
 		assertNotNull(type);
 		
@@ -157,11 +160,11 @@ public class DeepSkyObjectRepositoryITTest {
 		
 		DeepSkyObject m42Updated = deepSkyObjectRepository.findById(m42Saved.getId());
 		assertNotNull(m42Updated);
-		assertThat(m42Updated.getName().equalsIgnoreCase(nameStringUpdated));
+		assertThat(m42Updated.getName()).isEqualToIgnoringCase(nameStringUpdated);
 	}
 	
 	@Test
-	public void testDDeleteById() throws RepositoryException {
+	public void testDDeleteById() throws GenericRepositoryException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		DeepSkyObjectType type = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(NEBULA));
 		assertNotNull(type);
 		

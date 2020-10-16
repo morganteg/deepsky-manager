@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
-import it.attsd.deepsky.exception.RepositoryException;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
+import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 
 @Service
@@ -23,46 +24,30 @@ public class DeepSkyObjectTypeService {
 		return deepSkyObjectTypeRepository.findById(id);
 	}
 
-	public DeepSkyObjectType findByType(String type) {
-		DeepSkyObjectType deepSkyObjectType = null;
-		try {
-			deepSkyObjectType = deepSkyObjectTypeRepository.findByType(type);
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return deepSkyObjectType;
+	public DeepSkyObjectType findByType(String type) throws GenericRepositoryException {
+		return deepSkyObjectTypeRepository.findByType(type);
 	}
 
-	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObjectType) throws RepositoryException {
+	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObjectType) throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType deepSkyObjectTypeSaved = null;
 		try {
 			deepSkyObjectTypeSaved = deepSkyObjectTypeRepository.save(deepSkyObjectType);
+		} catch (DeepSkyObjectTypeAlreadyExistsException e) {
+			throw e;
 		} catch (Exception e) {
-//			logger.error(e.getMessage());
-			throw new RepositoryException(e);
+			throw new GenericRepositoryException(e);
 		}
 
 		return deepSkyObjectTypeSaved;
 	}
 
-	public void update(DeepSkyObjectType deepSkyObjectType) throws RepositoryException {
-		try {
-			deepSkyObjectTypeRepository.update(deepSkyObjectType);
-		} catch (Exception e) {
-			throw new RepositoryException(e);
-		}
+	public DeepSkyObjectType update(DeepSkyObjectType deepSkyObjectType) {
+		return deepSkyObjectTypeRepository.update(deepSkyObjectType);
 
 	}
 
-	public void delete(long id) throws RepositoryException {
-		try {
-			deepSkyObjectTypeRepository.delete(id);
-		} catch (RepositoryException e) {
-			throw new RepositoryException(e);
-		}
-
+	public void delete(long id) throws GenericRepositoryException {
+		deepSkyObjectTypeRepository.delete(id);
 	}
 
 }

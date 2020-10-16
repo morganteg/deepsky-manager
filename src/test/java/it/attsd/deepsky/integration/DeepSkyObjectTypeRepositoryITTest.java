@@ -19,7 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
-import it.attsd.deepsky.exception.RepositoryException;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
+import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 
@@ -46,7 +47,7 @@ public class DeepSkyObjectTypeRepositoryITTest {
 	}
 
 	@Test
-	public void testFindAll() throws RepositoryException {
+	public void testFindAll() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType galaxyExisting = deepSkyObjectTypeRepository.findByType(GALAXY);
 		assertNull(galaxyExisting);
 		DeepSkyObjectType galaxySaved = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(GALAXY));
@@ -64,7 +65,7 @@ public class DeepSkyObjectTypeRepositoryITTest {
 	}
 
 	@Test
-	public void testFindByIdWhenIsPresent() throws RepositoryException {
+	public void testFindByIdWhenIsPresent() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType galaxySaved = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(galaxySaved);
 		
@@ -73,13 +74,13 @@ public class DeepSkyObjectTypeRepositoryITTest {
 	}
 	
 	@Test
-	public void testFindByIdWhenIsNotPresent() throws RepositoryException {
+	public void testFindByIdWhenIsNotPresent() throws GenericRepositoryException {
 		DeepSkyObjectType typeFound = deepSkyObjectTypeRepository.findById(1L);
 		assertNull(typeFound);
 	}
 	
 	@Test
-	public void testFindByTypeWhenIsPresent() throws RepositoryException {
+	public void testFindByTypeWhenIsPresent() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType galaxySaved = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(galaxySaved);
 		
@@ -88,23 +89,23 @@ public class DeepSkyObjectTypeRepositoryITTest {
 	}
 	
 	@Test
-	public void testFindByTypeWhenIsNotPresent() throws RepositoryException {
+	public void testFindByTypeWhenIsNotPresent() throws GenericRepositoryException {
 		DeepSkyObjectType typeFound = deepSkyObjectTypeRepository.findByType(GALAXY);
 		assertNull(typeFound);
 	}
 	
 	@Test
-	public void testAAddDeepSkyObjectTypeWhenNotExists() throws RepositoryException {
+	public void testAAddDeepSkyObjectTypeWhenNotExists() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType galaxyExisting = deepSkyObjectTypeRepository.findByType(GALAXY);
 		assertNull(galaxyExisting);
 		DeepSkyObjectType galaxySaved = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(galaxySaved);
 
-		assertThat(galaxySaved.getId() > 0);
+		assertThat(galaxySaved.getId()).isPositive();
 	}
 	
 	@Test
-	public void testUpdateDeepSkyObjectType() throws RepositoryException {
+	public void testUpdateDeepSkyObjectType() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType typeExisting = deepSkyObjectTypeRepository.findById(1L);
 		assertNull(typeExisting);
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(GALAXY));
@@ -116,11 +117,11 @@ public class DeepSkyObjectTypeRepositoryITTest {
 		
 		DeepSkyObjectType typeUpdated = deepSkyObjectTypeRepository.findById(typeSaved.getId());
 		assertNotNull(typeUpdated);
-		assertThat(typeUpdated.getType().equalsIgnoreCase(typeStringUpdated));
+		assertThat(typeUpdated.getType()).isEqualToIgnoringCase(typeStringUpdated);
 	}
 	
 	@Test
-	public void testDDeleteById() throws RepositoryException {
+	public void testDDeleteById() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType typeExisting = deepSkyObjectTypeRepository.findByType(GALAXY);
 		assertNull(typeExisting);
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(GALAXY));

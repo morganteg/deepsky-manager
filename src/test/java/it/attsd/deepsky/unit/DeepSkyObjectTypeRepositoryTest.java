@@ -24,7 +24,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
-import it.attsd.deepsky.exception.RepositoryException;
+import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -78,7 +78,7 @@ public class DeepSkyObjectTypeRepositoryTest {
 	}
 
 	@Test
-	public void test3DeepSkyObjectTypeByIdWhenIdIsPresent() throws RepositoryException {
+	public void test3DeepSkyObjectTypeByIdWhenIdIsPresent() throws GenericRepositoryException {
 		DeepSkyObjectType orion = new DeepSkyObjectType(1L, "star");
 
 		when(entityManager.find(DeepSkyObjectType.class, 1L)).thenReturn(orion);
@@ -91,7 +91,7 @@ public class DeepSkyObjectTypeRepositoryTest {
 	}
 
 	@Test
-	public void test4DeepSkyObjectTypeByIdWhenIdIsNotPresent() throws RepositoryException {
+	public void test4DeepSkyObjectTypeByIdWhenIdIsNotPresent() throws GenericRepositoryException {
 		when(entityManager.find(DeepSkyObjectType.class, 1L)).thenReturn(null);
 
 		DeepSkyObjectType deepSkyObjectTypeFound = deepSkyObjectTypeRepository.findById(1L);
@@ -101,29 +101,29 @@ public class DeepSkyObjectTypeRepositoryTest {
 		assertNull(deepSkyObjectTypeFound);
 	}
 
-	@Test
-	public void test5AddDeepSkyObjectTypeWhenIsNotPresent() {
-
-	}
-
-	@Test
-	public void test6AddDeepSkyObjectTypeWhenIsAlreadyPresent() {
-
-	}
-
-	@Test
-	public void test7RemoveDeepSkyObjectTypeWhenIsPresent() {
-
-	}
-
-	@Test
-	public void test8RemoveDeepSkyObjectTypeWhenIsNotPresent() {
-
-	}
-
-	@Test
-	public void test9RemoveDeepSkyObjectTypeWhenIsNull() {
-
-	}
+//	@Test
+//	public void test5AddDeepSkyObjectTypeWhenIsNotPresent() {
+//
+//	}
+//
+//	@Test
+//	public void test6AddDeepSkyObjectTypeWhenIsAlreadyPresent() {
+//
+//	}
+//
+//	@Test
+//	public void test7RemoveDeepSkyObjectTypeWhenIsPresent() {
+//
+//	}
+//
+//	@Test
+//	public void test8RemoveDeepSkyObjectTypeWhenIsNotPresent() {
+//
+//	}
+//
+//	@Test
+//	public void test9RemoveDeepSkyObjectTypeWhenIsNull() {
+//
+//	}
 
 }

@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.Constellation;
-import it.attsd.deepsky.exception.RepositoryException;
+import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 
 @Service
@@ -24,45 +25,30 @@ public class ConstellationService {
 	}
 	
 	public Constellation findByName(String name) {
-		Constellation constellation = null;
-		try {
-			constellation = constellationRepository.findByName(name);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-		
-		return constellation;
+		return constellationRepository.findByName(name);
 	}
 
 
-	public Constellation save(Constellation constellation) throws RepositoryException {
+	public Constellation save(Constellation constellation) throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation constellationSaved = null;
 		try {
 			constellationSaved = constellationRepository.save(constellation);
+		} catch (ConstellationAlreadyExistsException e) {
+			throw e;
 		} catch (Exception e) {
-			throw new RepositoryException(e);
+			throw new GenericRepositoryException(e);
 		}
 		
 		return constellationSaved;
 	}
 
 
-	public void update(Constellation constellation) {
-		try {
-			constellationRepository.update(constellation);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-		
+	public Constellation update(Constellation constellation) {
+		return constellationRepository.update(constellation);
 	}
 
 	public void delete(long id) {
-		try {
 			constellationRepository.delete(id);
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 

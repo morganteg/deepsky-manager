@@ -27,7 +27,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
-import it.attsd.deepsky.exception.RepositoryException;
+import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
+import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -83,7 +84,7 @@ public class DeepSkyObjectRepositoryTest {
 	}
 
 	@Test
-	public void test3GetDeepSkyObjectByIdWhenIdIsPresent() throws RepositoryException {
+	public void test3GetDeepSkyObjectByIdWhenIdIsPresent() throws GenericRepositoryException {
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(m42);
 
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectRepository.findById(1L);
@@ -94,7 +95,7 @@ public class DeepSkyObjectRepositoryTest {
 	}
 
 	@Test
-	public void test4GetDeepSkyObjectByIdWhenIdIsNotPresent() throws RepositoryException {
+	public void test4GetDeepSkyObjectByIdWhenIdIsNotPresent() throws GenericRepositoryException {
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(null);
 
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectRepository.findById(1L);
@@ -105,31 +106,31 @@ public class DeepSkyObjectRepositoryTest {
 	}
 
 	@Test
-	public void test5AddDeepSkyObjectWhenIsNotPresent() throws RepositoryException {
+	public void test5AddDeepSkyObjectWhenIsNotPresent() throws GenericRepositoryException, DeepSkyObjectAlreadyExistsException {
 		deepSkyObjectRepository.save(m42);
 		verify(entityManager, times(1)).persist(m42);
 	}
 
-	@Test(expected = RepositoryException.class)
-	public void test6AddDeepSkyObjectWhenIsAlreadyPresent() throws RepositoryException {
+	@Test(expected = GenericRepositoryException.class)
+	public void test6AddDeepSkyObjectWhenIsAlreadyPresent() throws GenericRepositoryException, DeepSkyObjectAlreadyExistsException {
 		IllegalStateException exc = new IllegalStateException();
 		doThrow(exc).when(entityManager).persist(m42);
 		
 		deepSkyObjectRepository.save(m42);
 	}
 
-	@Test(expected = RepositoryException.class)
-	public void test7RemoveDeepSkyObjectWhenIsNotPresent() throws RepositoryException {
+	@Test
+	public void testDeleteDeepSkyObjectWhenIsNotPresent() throws GenericRepositoryException {
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(null);
 		
-		IllegalStateException exc = new IllegalStateException();
-		doThrow(exc).when(entityManager).remove(null);
-		
 		deepSkyObjectRepository.delete(1L);
+		
+		verify(entityManager, times(1)).find(DeepSkyObject.class, 1L);
+		verify(entityManager, times(0)).remove(m42);
 	}
 	
 	@Test
-	public void test8RemoveDeepSkyObjectWhenIsPresent() throws RepositoryException {
+	public void testDeleteDeepSkyObject() throws GenericRepositoryException {
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(m42);
 		
 		deepSkyObjectRepository.delete(1L);
@@ -138,12 +139,14 @@ public class DeepSkyObjectRepositoryTest {
 		verify(entityManager, times(1)).remove(m42);
 	}
 
-	@Test(expected = RepositoryException.class)
-	public void test9RemoveDeepSkyObjectWhenIsNull() throws RepositoryException {
-		IllegalStateException exc = new IllegalStateException();
-		doThrow(exc).when(entityManager).remove(null);
+	@Test
+	public void testDeleteDeepSkyObjectWhenIsNull() throws GenericRepositoryException {
+		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(null);
 		
-		deepSkyObjectRepository.delete(0);
+		deepSkyObjectRepository.delete(1L);
+		
+		verify(entityManager, times(1)).find(DeepSkyObject.class, 1L);
+		verify(entityManager, times(0)).remove(m42);
 	}
 
 }

@@ -3,6 +3,7 @@ package it.attsd.deepsky.integration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -19,7 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.Constellation;
-import it.attsd.deepsky.exception.RepositoryException;
+import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -29,29 +31,29 @@ import it.attsd.deepsky.service.ConstellationService;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConstellationServiceITTest {
 	private Logger logger = LoggerFactory.getLogger(ConstellationServiceITTest.class);
-	
+
 	@Autowired
 	private ConstellationRepository constellationRepository;
-	
+
 	@Autowired
 	private ConstellationService constellationService;
 
 	String ORION = "orion";
 	String LIBRA = "libra";
-	
+
 	@Before
 	public void setup() {
 		constellationRepository.emptyTable();
 	}
-	
+
 	@Test
-	public void testFindAll() throws RepositoryException {
+	public void testFindAll() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
-		
+
 		Constellation libraSaved = constellationService.save(new Constellation(LIBRA));
 		assertNotNull(libraSaved);
-		
+
 		List<Constellation> constellations = constellationService.findAll();
 		logger.info("constellations: " + constellations);
 
@@ -59,51 +61,54 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testAAddConstellationWhenNotExists() throws RepositoryException {
+	public void testAddConstellationWhenNotExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation existingConstellation = constellationService.findByName(ORION);
 		assertNull(existingConstellation);
 
 		Constellation constellationSaved = constellationService.save(new Constellation(ORION));
-		
 		assertNotNull(constellationSaved);
-		assertThat(constellationSaved.getId() == 1);
+		assertThat(constellationSaved.getId()).isEqualTo(1L);
 	}
-	
-	@Test(expected = RepositoryException.class)
-	public void testAddConstellationWhenExists() throws RepositoryException {
-		Constellation existingConstellation = constellationService.findByName(ORION);
-		assertNull(existingConstellation);
 
-		Constellation constellationSaved = constellationService.save(new Constellation(ORION));
-		constellationService.save(new Constellation(ORION));
-		
-		assertNotNull(constellationSaved);
-		assertThat(constellationSaved.getId() == 1);
-	}
-	
 	@Test
-	public void testUpdateConstellationWhenIsPresent() throws RepositoryException {
+	public void testAddConstellationWhenExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+		Constellation existingConstellation = constellationService.findByName(ORION);
+		assertNull(existingConstellation);
+
+		// Save first Constellation entity
+		Constellation constellationSaved = constellationService.save(new Constellation(ORION));
+		assertNotNull(constellationSaved);
+		assertThat(constellationSaved.getId()).isPositive();
+		// Save second Constellation entity
+		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(new Constellation(ORION)));
+
+//		assertNotNull(constellationSaved);
+//		assertThat(constellationSaved.getId() == 1);
+	}
+
+	@Test
+	public void testUpdateConstellationWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
-		
+
 		String nameUpdated = ORION + " changed";
 		orionSaved.setName(nameUpdated);
-		
+
 		constellationService.update(orionSaved);
-		
+
 		Constellation orionFound = constellationService.findById(orionSaved.getId());
 		assertNotNull(orionFound);
-		
-		assertThat(orionFound.getName().equalsIgnoreCase(nameUpdated));
+
+		assertThat(orionFound.getName()).isEqualToIgnoringCase(nameUpdated);
 	}
-	
+
 	@Test
-	public void testDeleteConstellationWhenIsPresent() throws RepositoryException {
+	public void testDeleteConstellationWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
-		
+
 		constellationService.delete(orionSaved.getId());
-		
+
 		Constellation orionFound = constellationService.findById(orionSaved.getId());
 		assertNull(orionFound);
 	}

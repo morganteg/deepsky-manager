@@ -19,7 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.Constellation;
-import it.attsd.deepsky.exception.RepositoryException;
+import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 
 @RunWith(SpringRunner.class)
@@ -41,7 +42,7 @@ public class ConstellationRepositoryITTest {
 	}
 
 	@Test
-	public void testBFindAll() throws RepositoryException {
+	public void testBFindAll() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 //		Constellation orionExisting = constellationRepository.findByName(ORION);
 //		assertNull(orionExisting);
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
@@ -59,7 +60,7 @@ public class ConstellationRepositoryITTest {
 	}
 
 	@Test
-	public void testCFindByIdWhenIsPresent() throws RepositoryException {
+	public void testCFindByIdWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 		
@@ -68,13 +69,13 @@ public class ConstellationRepositoryITTest {
 	}
 	
 	@Test
-	public void testFindByIdWhenIsNotPresent() throws RepositoryException {
+	public void testFindByIdWhenIsNotPresent() throws GenericRepositoryException {
 		Constellation constellationFound = constellationRepository.findById(1L);
 		assertNull(constellationFound);
 	}
 	
 	@Test
-	public void testFindByNameWhenIsPresent() throws RepositoryException {
+	public void testFindByNameWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 		
@@ -83,13 +84,13 @@ public class ConstellationRepositoryITTest {
 	}
 	
 	@Test
-	public void testFindByNameWhenIsNotPresent() throws RepositoryException {
+	public void testFindByNameWhenIsNotPresent() throws GenericRepositoryException {
 		Constellation constellationFound = constellationRepository.findByName(ORION);
 		assertNull(constellationFound);
 	}
 	
 	@Test
-	public void testAAddConstellationWhenNotExists() throws RepositoryException {
+	public void testAddConstellationWhenNotExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation orionExisting = constellationRepository.findByName(ORION);
 		assertNull(orionExisting);
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
@@ -99,7 +100,7 @@ public class ConstellationRepositoryITTest {
 	}
 	
 	@Test
-	public void testUpdateConstellation() throws RepositoryException {
+	public void testUpdateConstellation() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation constellationExisting = constellationRepository.findById(1L);
 		assertNull(constellationExisting);
 		Constellation constellationSaved = constellationRepository.save(new Constellation(ORION));
@@ -115,7 +116,7 @@ public class ConstellationRepositoryITTest {
 	}
 	
 	@Test
-	public void testDDeleteById() throws RepositoryException {
+	public void testDDeleteById() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation orionExisting = constellationRepository.findByName(ORION);
 		assertNull(orionExisting);
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));

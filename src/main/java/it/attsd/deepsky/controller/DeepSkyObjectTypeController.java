@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.attsd.deepsky.controller.form.DeepSkyObjectTypeForm;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
-import it.attsd.deepsky.exception.RepositoryException;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
+import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @Controller
@@ -33,7 +34,10 @@ public class DeepSkyObjectTypeController {
 	public String constellations(@ModelAttribute DeepSkyObjectTypeForm deepSkyObjectTypeForm, Model model) {
 		try {
 			deepSkyObjectTypeService.save(new DeepSkyObjectType(deepSkyObjectTypeForm.getType().toLowerCase()));
-		} catch (RepositoryException e) {
+		} catch (GenericRepositoryException e) {
+			e.printStackTrace();
+		} catch (DeepSkyObjectTypeAlreadyExistsException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
