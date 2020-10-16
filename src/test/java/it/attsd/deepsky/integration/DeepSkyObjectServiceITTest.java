@@ -125,7 +125,7 @@ public class DeepSkyObjectServiceITTest {
 		
 		DeepSkyObject m42Saved = deepSkyObjectService.save(orionSaved.getId(), nebulaSaved.getId(), m42Name);
 		assertNotNull(m42Saved);
-		assertThat(m42Saved.getId()).isEqualTo(1L);
+		assertThat(m42Saved.getId()).isGreaterThan(0);
 	}
 	
 	@Test
@@ -172,7 +172,7 @@ public class DeepSkyObjectServiceITTest {
 	
 	@Test
 	public void testUpdateDeepSkyObjectIfPresent() throws RepositoryException, ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException {
-		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findById(1L);
+		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(orionName);
 		assertNull(deepSkyObjectFound);
 		
 		Constellation orionSaved = constellationService.save(new Constellation(orionName));
@@ -183,7 +183,7 @@ public class DeepSkyObjectServiceITTest {
 		
 		DeepSkyObject m42Saved = deepSkyObjectService.save(orionSaved.getId(), nebulaSaved.getId(), m42Name);
 		assertNotNull(m42Saved);
-		assertThat(m42Saved.getId()).isEqualTo(1L);
+		assertThat(m42Saved.getId()).isGreaterThan(0);
 		
 		String m42NameChanged = m42Name + " changed";
 		m42Saved.setName(m42NameChanged);
@@ -191,7 +191,7 @@ public class DeepSkyObjectServiceITTest {
 		
 		DeepSkyObject m42Changed = deepSkyObjectService.findById(m42Saved.getId());
 		assertNotNull(m42Changed);
-		assertThat(m42Changed.getId()).isEqualTo(1L);
+		assertThat(m42Saved.getId()).isEqualTo(m42Changed.getId());
 		assertThat(m42Changed.getName()).isEqualTo(m42NameChanged);
 	}
 
