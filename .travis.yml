@@ -6,7 +6,7 @@ cache:
   - $HOME/.m2
 matrix:
   include:
-    - jdk: openjdk8
+    - jdk: openjdk9
       env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report"
 script:
   #- mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B -V
