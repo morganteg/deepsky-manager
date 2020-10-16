@@ -130,7 +130,7 @@ public class DeepSkyObjectServiceITTest {
 	
 	@Test
 	public void testAddDeepSkyObjectIfNotPresentAndConstellationNotExists() throws RepositoryException, ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException {
-		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findById(1L);
+		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(m42Name);
 		assertNull(deepSkyObjectFound);
 		
 		Constellation orionSaved = constellationService.save(new Constellation(orionName));
@@ -150,8 +150,19 @@ public class DeepSkyObjectServiceITTest {
 	}
 	
 	@Test
+	public void testAddDeepSkyObjectIfNotPresentAndConstellationNotExists1() throws RepositoryException {
+		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(m42Name);
+		assertNull(deepSkyObjectFound);
+		
+		Constellation orionSaved = constellationService.save(new Constellation(orionName));
+		assertNotNull(orionSaved);
+		
+		assertThrows(ConstellationAlreadyExistsException.class, () -> deepSkyObjectService.saveConstellationAndDeepSkyObject(orionName, m42Name, nebulaType));
+	}
+	
+	@Test
 	public void testAddDeepSkyObjectIfNotPresentAndDeepSkyObjectTypeNotExists() throws RepositoryException, ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException {
-		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findById(1L);
+		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(m42Name);
 		assertNull(deepSkyObjectFound);
 		
 		Constellation orionSaved = constellationService.save(new Constellation(orionName));
@@ -168,6 +179,17 @@ public class DeepSkyObjectServiceITTest {
 		assertNull(nebulaFound);
 		
 		assertThrows(DeepSkyObjectTypeNotFoundException.class, () -> deepSkyObjectService.save(orionSaved.getId(), nebulaId, m42Name));
+	}
+	
+	@Test
+	public void testAddDeepSkyObjectIfNotPresentAndDeepSkyObjectTypeNotExists1() throws RepositoryException {
+		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(m42Name);
+		assertNull(deepSkyObjectFound);
+		
+		DeepSkyObjectType nebulaSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(nebulaType));
+		assertNotNull(nebulaSaved);
+		
+		assertThrows(DeepSkyObjectTypeAlreadyExistsException.class, () -> deepSkyObjectService.saveConstellationAndDeepSkyObject(orionName, m42Name, nebulaType));
 	}
 	
 	@Test

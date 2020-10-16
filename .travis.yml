@@ -1,13 +1,16 @@
 language: java
-jdk: openjdk11
+#jdk: openjdk8
 install: true
+addons:
+  sonarcloud:
+    organization: morganteg
 cache:
   directories:
   - $HOME/.m2
+  - $HOME/.sonar/cache
 matrix:
   include:
-    - jdk: openjdk8
-      env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report"
+  - jdk: openjdk8
+    env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
 script:
-  #- mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B -V
   - mvn clean verify $ADDITIONAL_MAVEN_ARGS
