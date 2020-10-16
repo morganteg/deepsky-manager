@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -56,6 +58,7 @@ public class DeepSkyObjectServiceITTest {
 	String orionName = "orion";
 	String nebulaType = "nebula";
 	String m42Name = "m42";
+	String m43Name = "m43";
 	
 	String scorpiusName = "scorpius";
 	String antaresName = "antares";
@@ -67,12 +70,50 @@ public class DeepSkyObjectServiceITTest {
 		deepSkyObjectTypeRepository.emptyTable();
 		constellationRepository.emptyTable();
 	}
+	
+	@Test
+	public void testFindAll() throws RepositoryException {
+		Constellation orionSaved = constellationService.save(new Constellation(orionName));
+		assertNotNull(orionSaved);
+		
+		DeepSkyObjectType nebulaSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(nebulaType));
+		assertNotNull(nebulaSaved);
+		
+		DeepSkyObject m42 = new DeepSkyObject(m42Name, orionSaved, nebulaSaved);
+		DeepSkyObject m42Saved = deepSkyObjectService.save(m42);
+		assertNotNull(m42Saved);
+		
+		DeepSkyObject m43 = new DeepSkyObject(m43Name, orionSaved, nebulaSaved);
+		DeepSkyObject m43Saved = deepSkyObjectService.save(m43);
+		assertNotNull(m43Saved);
+		
+		List<DeepSkyObject> deepSkyObjects = deepSkyObjectService.findAll();
+
+		assertThat(deepSkyObjects.size()).isEqualTo(2);
+	}
+	
+	@Test
+	public void testFindById() throws RepositoryException {
+		Constellation orionSaved = constellationService.save(new Constellation(orionName));
+		assertNotNull(orionSaved);
+		
+		DeepSkyObjectType nebulaSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(nebulaType));
+		assertNotNull(nebulaSaved);
+		
+		DeepSkyObject m42 = new DeepSkyObject(m42Name, orionSaved, nebulaSaved);
+		DeepSkyObject m42Saved = deepSkyObjectService.save(m42);
+		assertNotNull(m42Saved);
+		
+		DeepSkyObject m42Found = deepSkyObjectService.findById(m42Saved.getId());
+
+		assertNotNull(m42Found);
+	}
 
 	/**
 	 * Transactional test with success
 	 */
 	@Test
-	public void testAAddConstellationAndDeepSkyObjectWithSuccess() {
+	public void testAddConstellationAndDeepSkyObjectWithSuccess() {
 		try {
 			DeepSkyObject deepSkyObjectSaved = deepSkyObjectService.saveConstellationAndDeepSkyObject(
 					orionName, m42Name, nebulaType);
@@ -100,7 +141,7 @@ public class DeepSkyObjectServiceITTest {
 	 * Transactional test with rollback
 	 */
 	@Test
-	public void testBAddConstellationAndDeepSkyObjectWithRollback() {
+	public void testAddConstellationAndDeepSkyObjectWithRollback() {
 		try {
 //			1 - Create constellation
 			DeepSkyObjectType star = new DeepSkyObjectType(starName);
