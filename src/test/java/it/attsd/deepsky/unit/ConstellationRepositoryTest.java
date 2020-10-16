@@ -172,14 +172,17 @@ public class ConstellationRepositoryTest {
 //		verify(entityManager, times(1)).persist(orion);
 	}
 
-	@Test(expected = GenericRepositoryException.class)
-	public void test8RemoveConstellationWhenIsNotPresent() throws GenericRepositoryException {
+	@Test
+	public void testDeleteConstellationWhenIsNotPresent() throws GenericRepositoryException {
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(null);
 
-		IllegalStateException exc = new IllegalStateException();
-		doThrow(exc).when(entityManager).remove(null);
+//		IllegalStateException exc = new IllegalStateException();
+//		doThrow(exc).when(entityManager).remove(null);
 
 		constellationRepository.delete(1L);
+		
+		verify(entityManager, times(1)).find(Constellation.class, 1L);
+		verify(entityManager, times(0)).remove(1L);
 	}
 
 	@Test
@@ -193,12 +196,12 @@ public class ConstellationRepositoryTest {
 		verify(entityManager, times(1)).remove(orion);
 	}
 
-	@Test(expected = GenericRepositoryException.class)
-	public void test10RemoveConstellationWhenIsNull() throws GenericRepositoryException {
-		IllegalStateException exc = new IllegalStateException();
-		doThrow(exc).when(entityManager).remove(null);
-
-		constellationRepository.delete(0);
-	}
+//	@Test(expected = GenericRepositoryException.class)
+//	public void testDeleteConstellationWhenIsNull() throws GenericRepositoryException {
+//		IllegalStateException exc = new IllegalStateException();
+//		doThrow(exc).when(entityManager).remove(null);
+//
+//		constellationRepository.delete(0);
+//	}
 
 }
