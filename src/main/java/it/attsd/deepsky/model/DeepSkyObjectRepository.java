@@ -24,6 +24,7 @@ public class DeepSkyObjectRepository extends BaseRepository {
 	@Transactional
 	public void emptyTable() {
 		entityManager.createQuery(String.format("DELETE FROM %s", DeepSkyObject.class.getName())).executeUpdate();
+		entityManager.flush();
 	}
 
 	@SuppressWarnings("unchecked")

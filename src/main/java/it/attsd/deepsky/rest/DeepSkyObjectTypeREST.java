@@ -1,4 +1,4 @@
-package it.attsd.deepsky.api;
+package it.attsd.deepsky.rest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RestController()
 @RequestMapping("/api/deepskyobjecttype")
-public class DeepSkyObjectTypeApi {
-	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeApi.class);
+public class DeepSkyObjectTypeREST {
+	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeREST.class);
 
 	@Autowired
 	private DeepSkyObjectTypeService deepSkyObjectTypeService;

@@ -24,6 +24,7 @@ public class ConstellationRepository extends BaseRepository {
 	@Transactional
 	public void emptyTable() {
 		entityManager.createQuery(String.format("DELETE FROM %s", Constellation.class.getName())).executeUpdate();
+		entityManager.flush();
 	}
 
 	@SuppressWarnings("unchecked")
