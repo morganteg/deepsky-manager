@@ -17,6 +17,9 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import it.attsd.deepsky.entity.Constellation;
@@ -51,9 +54,17 @@ public class ConstellationRestITTest {
 //		Response response = given().accept("application/json; charset=UTF-8").when().get("/api/constellation");
 //		response.then().assertThat().statusCode(200);
 		
-		List<Constellation> tmp = response.getBody().as(List.class);
-		System.out.println(tmp);
+//		List<Constellation> tmp = response.getBody().as(List.class);
+//		System.out.println(tmp);
 //		        body("size()", is(2));
+	}
+	
+	@Test
+	public void test1() {
+		JsonArray jsonArray = given()
+				.baseUri("https://dgaonline.regione.lazio.it/dgaonline/wp-json/")
+				.basePath("api/tipologiegioco/").get().as(JsonArray.class);
+		System.out.println(jsonArray.toString());
 	}
 
 }
