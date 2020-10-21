@@ -1,0 +1,15 @@
+version: '2'
+services:
+  app:
+    image: deepsky-manager-app
+    networks:
+    - my-network
+    depends_on:
+    - mysql
+  mysql:
+    image: mysql/mysql-server:8.0
+    networks:
+    - my-network
+networks:
+  my-network:
+    driver: bridge

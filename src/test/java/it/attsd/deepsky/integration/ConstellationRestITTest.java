@@ -2,6 +2,7 @@ package it.attsd.deepsky.integration;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.model.ConstellationRepository;
@@ -46,25 +49,49 @@ public class ConstellationRestITTest {
 		List<Constellation> constellations = new ArrayList<Constellation>();
 		constellations.add(new Constellation("orion"));
 		constellations.add(new Constellation("scorpius"));
-		
+
 		Response response = get("/api/constellation");
 //		response.then().body("size()", is(2));
 
-		
 //		Response response = given().accept("application/json; charset=UTF-8").when().get("/api/constellation");
 //		response.then().assertThat().statusCode(200);
-		
+
 //		List<Constellation> tmp = response.getBody().as(List.class);
 //		System.out.println(tmp);
 //		        body("size()", is(2));
 	}
-	
+
 	@Test
 	public void test1() {
-		JsonArray jsonArray = given()
-				.baseUri("https://dgaonline.regione.lazio.it/dgaonline/wp-json/")
-				.basePath("api/tipologiegioco/").get().as(JsonArray.class);
-		System.out.println(jsonArray.toString());
+//		when().get("https://dgaonline.regione.lazio.it/dgaonline/wp-json/api/tipologiegioco/").then()
+//				.statusCode(200);
+
+//		Response response = get("https://dgaonline.regione.lazio.it/dgaonline/wp-json/api/tipologiegioco/");
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+		Response response = get("/api/constellation");
+		
+//		RestAssured.requestSpecification = new RequestSpecBuilder().
+//		        setBaseUri("https://dgaonline.regione.lazio.it/").
+//		        setContentType(ContentType.JSON).
+//		        build().
+//		        log().all();
+		
+//		JsonArray jsonArray = given()
+//				.baseUri("https://dgaonline.regione.lazio.it/")
+//				.basePath("dgaonline/wp-json/api/tipologiegioco/")
+//				.get()
+//				.as(JsonArray.class);
+//		System.out.println(jsonArray.toString());
+	}
+	
+	@Test
+	public void testRestAssured() {
+		JsonObject jsonObject = given()
+				.baseUri("http://dummy.restapiexample.com/")
+				.basePath("api/v1/employees")
+				.get()
+				.as(JsonObject.class);
+		System.out.println(jsonObject.toString());
 	}
 
 }
