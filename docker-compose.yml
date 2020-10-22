@@ -1,16 +1,16 @@
 version: '2'
 services:
-  database:
+  mysql-service:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
-    ports:
-    - 3316:3306
+    #ports:
+    #- 3316:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: deepskymanager
     networks:
     - dsm-network
-  app:
+  app-server:
     image: tomcat:latest
     restart: always
     ports:
@@ -21,7 +21,7 @@ services:
     networks:
     - dsm-network
     depends_on:
-    - database
+    - mysql-service
 networks:
   dsm-network:
     driver: bridge

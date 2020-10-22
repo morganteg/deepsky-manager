@@ -17,6 +17,9 @@
 
 	<properties>
 		<java.version>8</java.version>
+		<database.host>localhost</database.host>
+		<database.username>root</database.username>
+		<database.password>root</database.password>
 		<sonar.projectKey>morganteg_deepsky-manager</sonar.projectKey>
 		<sonar.organization>morganteg</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -28,10 +31,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<properties>
-				<database.username>root</database.username>
-				<database.password>root</database.password>
-			</properties>
 		</profile>
 
 		<profile>
@@ -49,6 +48,11 @@
 
 		<profile>
 			<id>docker</id>
+			<properties>
+				<database.host>mysql-service</database.host>
+				<database.username>root</database.username>
+				<database.password>root</database.password>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -58,21 +62,6 @@
 						<configuration>
 							<showLogs>true</showLogs>
 							<images>
-							<!-- 
-								<image>
-									<name>deepsky-manager-app</name>
-									<build>
-										<dockerFileDir>${project.basedir}</dockerFileDir>
-									</build>
-									<run>
-										<wait>
-											<log>DeepSky Manager App is running!</log>
-											<exit>0</exit>
-											<time>100000</time>
-										</wait>
-									</run>
-								</image>
-								 -->
 								<image>
 									<alias>full-app</alias>
 									<external>
@@ -80,11 +69,6 @@
 										<basedir>${project.basedir}</basedir>
 									</external>
 									<run>
-										<!-- <wait>
-											<log>DeepSky Manager App is running!</log>
-											<time>100000</time>
-										</wait>
-										 -->
 										<wait>
 											<time>1000000</time>
 										</wait>
@@ -221,6 +205,17 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+ 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<delimiters>
+						<delimiter>@</delimiter>
+					</delimiters>
+					<useDefaultDelimiters>false</useDefaultDelimiters>
+				</configuration>
 			</plugin>
 
 			<plugin>
