@@ -1,15 +1,27 @@
 version: '2'
 services:
+  database:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+    - 3316:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: deepskymanager
+    networks:
+    - dsm-network
   app:
-    image: deepsky-manager-app
+    image: tomcat:latest
+    restart: always
+    ports:
+    - 8888:8080
+    volumes:
+    - ./target/deepsky-manager-0.0.1-SNAPSHOT.jar:/app/app.jar
+    command: java -jar /app/app.jar
     networks:
-    - my-network
+    - dsm-network
     depends_on:
-    - mysql
-  mysql:
-    image: mysql/mysql-server:8.0
-    networks:
-    - my-network
+    - database
 networks:
-  my-network:
+  dsm-network:
     driver: bridge

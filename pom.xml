@@ -58,6 +58,7 @@
 						<configuration>
 							<showLogs>true</showLogs>
 							<images>
+							<!-- 
 								<image>
 									<name>deepsky-manager-app</name>
 									<build>
@@ -65,22 +66,27 @@
 									</build>
 									<run>
 										<wait>
-											<log>DeepSky Manager Application Server is running!</log>
+											<log>DeepSky Manager App is running!</log>
 											<exit>0</exit>
-											<time>10000</time>
+											<time>100000</time>
 										</wait>
 									</run>
 								</image>
+								 -->
 								<image>
-									<alias>app</alias>
+									<alias>full-app</alias>
 									<external>
 										<type>compose</type>
 										<basedir>${project.basedir}</basedir>
 									</external>
 									<run>
-										<wait>
+										<!-- <wait>
 											<log>DeepSky Manager App is running!</log>
-											<time>10000</time>
+											<time>100000</time>
+										</wait>
+										 -->
+										<wait>
+											<time>1000000</time>
 										</wait>
 									</run>
 								</image>
