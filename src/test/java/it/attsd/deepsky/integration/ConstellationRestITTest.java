@@ -1,6 +1,8 @@
 package it.attsd.deepsky.integration;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.when;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.*;
 
@@ -24,7 +26,9 @@ import com.google.gson.JsonObject;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.model.ConstellationRepository;
@@ -38,12 +42,13 @@ public class ConstellationRestITTest {
 
 	@Autowired
 	private ConstellationRepository constellationRepository;
-	
+
 	@BeforeClass
 	public static void init() {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+		RestAssured.defaultParser = Parser.JSON;
 	}
-	
+
 	@Before
 	public void setup() {
 		RestAssured.port = port;
@@ -55,18 +60,26 @@ public class ConstellationRestITTest {
 		List<Constellation> constellations = new ArrayList<Constellation>();
 		constellations.add(new Constellation("orion"));
 		constellations.add(new Constellation("scorpius"));
+		
+		when(constellationRepository.findAll()).thenReturn(constellations);
 
 //		Response response = get("/api/constellation");
 //		response.then().body("size()", is(2));
 
-//		Response response = given().accept("application/json; charset=UTF-8").when().get("/api/constellation");
+//		Response response = given().log().all().accept(ContentType.JSON).when().get("/api/constellation");
 //		response.then().assertThat().statusCode(200);
-
+//		
+//		System.out.println(response.getBody().toString());
+//
 //		List<Constellation> tmp = response.getBody().as(List.class);
 //		System.out.println(tmp);
 //		        body("size()", is(2));
-		
-		given().when().get("/api/constellation").then().statusCode(200);
+
+		given().accept(ContentType.JSON).when().get("/api/constellation").then().statusCode(200).body("size()", is(2));
+
+//		Response response = given().headers("Content-Type", ContentType.JSON, "Accept", ContentType.JSON).when()
+//				.get("/api/constellation").then().contentType(ContentType.JSON).extract().response();
+//		System.out.println(response.getBody().toString());
 	}
 
 	@Test
