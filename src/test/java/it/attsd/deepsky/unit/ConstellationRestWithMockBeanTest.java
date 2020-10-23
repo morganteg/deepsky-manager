@@ -1,4 +1,4 @@
-package it.attsd.deepsky.integration;
+package it.attsd.deepsky.unit;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -37,7 +37,7 @@ import it.attsd.deepsky.service.ConstellationService;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-public class ConstellationRestITTest {
+public class ConstellationRestWithMockBeanTest {
 	@LocalServerPort
 	private int port;
 
@@ -63,7 +63,7 @@ public class ConstellationRestITTest {
 	}
 
 	@Test
-	public void testGetAllConstellations() throws Exception {
+	public void testGetAllConstellations() throws Exception { // TODO
 //		List<Constellation> constellations = new ArrayList<Constellation>();
 //		constellations.add(new Constellation("orion"));
 //		constellations.add(new Constellation("scorpius"));
@@ -90,41 +90,6 @@ public class ConstellationRestITTest {
 //		Response response = given().headers("Content-Type", ContentType.JSON, "Accept", ContentType.JSON).when()
 //				.get("/api/constellation").then().contentType(ContentType.JSON).extract().response();
 //		System.out.println(response.getBody().toString());
-	}
-
-	@Test
-	public void test1() {
-//		when().get("https://dgaonline.regione.lazio.it/dgaonline/wp-json/api/tipologiegioco/").then()
-//				.statusCode(200);
-
-//		Response response = get("https://dgaonline.regione.lazio.it/dgaonline/wp-json/api/tipologiegioco/");
-		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-		Response response = get("/api/constellation");
-
-//		RestAssured.requestSpecification = new RequestSpecBuilder().
-//		        setBaseUri("https://dgaonline.regione.lazio.it/").
-//		        setContentType(ContentType.JSON).
-//		        build().
-//		        log().all();
-
-//		JsonArray jsonArray = given()
-//				.baseUri("https://dgaonline.regione.lazio.it/")
-//				.basePath("dgaonline/wp-json/api/tipologiegioco/")
-//				.get()
-//				.as(JsonArray.class);
-//		System.out.println(jsonArray.toString());
-	}
-
-	@Test
-	public void testRestAssured() {
-		JsonObject jsonObject = given().baseUri("http://dummy.restapiexample.com/").basePath("api/v1/employees").get()
-				.as(JsonObject.class);
-		System.out.println(jsonObject.toString());
-	}
-
-	@Test
-	public void testRestAssured2() {
-		given().log().all().when().get("http://www.google.com").then().statusCode(200);
 	}
 
 }
