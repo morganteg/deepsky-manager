@@ -28,7 +28,6 @@ import it.attsd.deepsky.service.ConstellationService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureTestDatabase
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConstellationServiceITTest {
 	private Logger logger = LoggerFactory.getLogger(ConstellationServiceITTest.class);
 
@@ -67,20 +66,17 @@ public class ConstellationServiceITTest {
 
 		Constellation constellationSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(constellationSaved);
-		assertThat(constellationSaved.getId()).isEqualTo(1L);
+		assertThat(constellationSaved.getName()).isEqualToIgnoringCase(ORION);
 	}
 
 	@Test
 	public void testAddConstellationWhenExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
-		Constellation existingConstellation = constellationService.findByName(ORION);
-		assertNull(existingConstellation);
-
 		// Save first Constellation entity
 		Constellation constellationSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(constellationSaved);
-		assertThat(constellationSaved.getId()).isPositive();
+
 		// Save second Constellation entity
-		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(new Constellation(ORION)));
+		assertThrows(GenericRepositoryException.class, () -> constellationService.save(new Constellation(ORION)));
 
 		
 //		assertNotNull(constellationSaved);

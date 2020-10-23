@@ -1,6 +1,5 @@
 package it.attsd.deepsky.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.attsd.deepsky.dto.ConstellationRequest;
+import it.attsd.deepsky.dto.ConstellationSaveRequest;
+import it.attsd.deepsky.dto.ConstellationUpdateRequest;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -28,74 +28,51 @@ public class ConstellationREST {
 
 	@Autowired
 	private ConstellationService constellationService;
-	
+
 	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Constellation> getAll() {
-		List<Constellation> constellations = new ArrayList<Constellation>();
-
-		try {
-			constellations = constellationService.findAll();
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			throw e;
-		}
-
-		return constellations;
+		return constellationService.findAll();
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Constellation getById(@PathVariable long id) {
 		logger.debug("{}", id);
 
-		Constellation constellation = new Constellation();
-
-		try {
-			constellation = constellationService.findById(id);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			throw e;
-		}
-
-		return constellation;
+		return constellationService.findById(id);
 	}
 
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Constellation save(@RequestBody ConstellationRequest constellationInput) {
-		logger.debug("{}", constellationInput);
+	public @ResponseBody Constellation save(@RequestBody ConstellationSaveRequest constellationSaveRequest) {
+		logger.debug("{}", constellationSaveRequest);
 
 		Constellation constellationSaved = null;
-		Constellation constellation = new Constellation(constellationInput.getName());
+		Constellation constellation = new Constellation(constellationSaveRequest.getName());
 
 		try {
 			constellationSaved = constellationService.save(constellation);
 		} catch (Exception e) {
-			logger.error("{}", e);
-//			throw e;
+			logger.error(e.getMessage());
 		}
 
 		return constellationSaved;
 	}
-	
-	@PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void update(@RequestBody Constellation constellation) {
-		logger.debug("{}", constellation);
 
-		try {
-			constellationService.update(constellation);
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
+	@PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Constellation update(@RequestBody ConstellationUpdateRequest constellationUpdateRequest) {
+		logger.debug("{}", constellationUpdateRequest);
+
+		Constellation constellation = new Constellation(constellationUpdateRequest.getId(),
+				constellationUpdateRequest.getName());
+		Constellation updatedConstellation = constellationService.update(constellation);
+		
+		return updatedConstellation;
 	}
-	
+
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void delete(@PathVariable long id) {
 		logger.debug("{}", id);
 
-		try {
-			constellationService.delete(id);
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
+		constellationService.delete(id);
 	}
 
 }

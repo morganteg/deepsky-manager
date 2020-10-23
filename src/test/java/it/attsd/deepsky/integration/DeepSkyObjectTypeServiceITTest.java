@@ -66,7 +66,7 @@ public class DeepSkyObjectTypeServiceITTest {
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 
 		assertNotNull(typeSaved);
-		assertThat(typeSaved.getId()).isEqualTo(1L);
+		assertThat(typeSaved.getType()).isEqualToIgnoringCase(GALAXY);
 	}
 
 	@Test

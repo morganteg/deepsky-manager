@@ -1,9 +1,9 @@
 package it.attsd.deepsky.dto;
 
-public class ConstellationRequest {
+public class ConstellationSaveRequest {
 	private String name;
 
-	public ConstellationRequest() {
+	public ConstellationSaveRequest() {
 
 	}
 

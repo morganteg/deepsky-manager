@@ -28,7 +28,6 @@ public class ConstellationService {
 		return constellationRepository.findByName(name);
 	}
 
-
 	public Constellation save(Constellation constellation) throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		Constellation constellationSaved = null;
 		try {
@@ -41,7 +40,6 @@ public class ConstellationService {
 		
 		return constellationSaved;
 	}
-
 
 	public Constellation update(Constellation constellation) {
 		return constellationRepository.update(constellation);
