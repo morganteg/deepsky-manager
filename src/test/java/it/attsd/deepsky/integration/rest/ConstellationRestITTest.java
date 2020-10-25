@@ -25,6 +25,7 @@ import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.model.ConstellationRepository;
+import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.pojo.constellation.ConstellationSaveRequest;
 import it.attsd.deepsky.pojo.constellation.ConstellationUpdateRequest;
 import it.attsd.deepsky.service.ConstellationService;
@@ -38,6 +39,9 @@ public class ConstellationRestITTest {
 
 	@Autowired
 	private ConstellationRepository constellationRepository;
+	
+	@Autowired
+	private DeepSkyObjectRepository deepSkyObjectRepository;
 
 	@Autowired
 	private ConstellationService constellationService;
@@ -56,6 +60,7 @@ public class ConstellationRestITTest {
 	@Before
 	public void setup() {
 		RestAssured.port = port;
+		deepSkyObjectRepository.emptyTable();
 		constellationRepository.emptyTable();
 	}
 

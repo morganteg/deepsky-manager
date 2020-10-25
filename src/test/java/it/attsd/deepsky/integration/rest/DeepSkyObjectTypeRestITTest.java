@@ -24,6 +24,7 @@ import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
+import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeSaveRequest;
 import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeUpdateRequest;
@@ -38,6 +39,9 @@ public class DeepSkyObjectTypeRestITTest {
 
 	@Autowired
 	private DeepSkyObjectTypeRepository deepSkyObjectTypeRepository;
+	
+	@Autowired
+	private DeepSkyObjectRepository deepSkyObjectRepository;
 
 	@Autowired
 	private DeepSkyObjectTypeService deepSkyObjectTypeService;
@@ -56,6 +60,7 @@ public class DeepSkyObjectTypeRestITTest {
 	@Before
 	public void setup() {
 		RestAssured.port = port;
+		deepSkyObjectRepository.emptyTable();
 		deepSkyObjectTypeRepository.emptyTable();
 	}
 
