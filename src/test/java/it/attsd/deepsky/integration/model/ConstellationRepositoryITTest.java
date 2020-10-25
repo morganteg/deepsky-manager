@@ -1,4 +1,4 @@
-package it.attsd.deepsky.integration;
+package it.attsd.deepsky.integration.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -26,7 +26,6 @@ import it.attsd.deepsky.model.ConstellationRepository;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureTestDatabase
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConstellationRepositoryITTest {
 	private Logger logger = LoggerFactory.getLogger(ConstellationRepositoryITTest.class);
 	
