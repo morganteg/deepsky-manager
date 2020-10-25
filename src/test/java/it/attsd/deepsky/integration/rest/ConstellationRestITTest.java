@@ -108,16 +108,8 @@ public class ConstellationRestITTest {
 
 		String payload = new Gson().toJson(constellationSaveRequest);
 
-		Response response = given().contentType(ContentType.JSON).body(payload).post(BASE_URL).then()
-				.statusCode(200).extract().response();
-		assertNotNull(response.getBody());
-		
-		long addedConstellationId = response.jsonPath().getLong("id");
-		String addedConstellationName = response.jsonPath().getString("name");
-		assertEquals(addedConstellationName, ORION);
-
-		Constellation orionFound = constellationService.findById(addedConstellationId);
-		assertNotNull(orionFound);
+		given().contentType(ContentType.JSON).body(payload).post(BASE_URL).then()
+				.statusCode(500).extract().response();
 	}
 	
 	@Test

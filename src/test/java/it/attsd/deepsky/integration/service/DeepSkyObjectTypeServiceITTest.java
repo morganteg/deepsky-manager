@@ -60,9 +60,6 @@ public class DeepSkyObjectTypeServiceITTest {
 
 	@Test
 	public void testAddDeepSkyObjectTypeWhenNotExists() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
-		DeepSkyObjectType existingType = deepSkyObjectTypeService.findByType(GALAXY);
-		assertNull(existingType);
-
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 
 		assertNotNull(typeSaved);
@@ -70,11 +67,11 @@ public class DeepSkyObjectTypeServiceITTest {
 	}
 
 	@Test
-	public void testAddDeepSkyObjectTypeWhenExists() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testAddDeepSkyObjectTypeWhenAlreadyExists() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(typeSaved);
 
-		assertThrows(GenericRepositoryException.class,
+		assertThrows(DeepSkyObjectTypeAlreadyExistsException.class,
 				() -> deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY)));
 	}
 

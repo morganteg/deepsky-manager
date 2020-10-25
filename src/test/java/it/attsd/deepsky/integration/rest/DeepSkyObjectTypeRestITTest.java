@@ -80,7 +80,7 @@ public class DeepSkyObjectTypeRestITTest {
 	}
 
 	@Test
-	public void testSaveDeepSkyObjectType() throws Exception {
+	public void testSaveDeepSkyObjectTypeWhenNotExists() throws Exception {
 		DeepSkyObjectTypeSaveRequest deepSkyObjectTypeSaveRequest = new DeepSkyObjectTypeSaveRequest();
 		deepSkyObjectTypeSaveRequest.setType(GALAXY);
 
@@ -96,6 +96,20 @@ public class DeepSkyObjectTypeRestITTest {
 
 		DeepSkyObjectType deepSkyObjectTypeFound = deepSkyObjectTypeService.findById(addedDeepSkyObjectTypeId);
 		assertNotNull(deepSkyObjectTypeFound);
+	}
+	
+	@Test
+	public void testSaveDeepSkyObjectTypeWhenAlreadyExists() throws Exception {
+		DeepSkyObjectType galaxy = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
+		assertNotNull(galaxy);
+		
+		DeepSkyObjectTypeSaveRequest deepSkyObjectTypeSaveRequest = new DeepSkyObjectTypeSaveRequest();
+		deepSkyObjectTypeSaveRequest.setType(GALAXY);
+
+		String payload = new Gson().toJson(deepSkyObjectTypeSaveRequest);
+
+		given().contentType(ContentType.JSON).body(payload).post(BASE_URL).then()
+				.statusCode(500).extract().response();
 	}
 	
 	@Test

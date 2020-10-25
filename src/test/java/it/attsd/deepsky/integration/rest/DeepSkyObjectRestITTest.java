@@ -126,7 +126,7 @@ public class DeepSkyObjectRestITTest {
 	}
 
 	@Test
-	public void testSaveDeepSkyObject() throws Exception {
+	public void testSaveDeepSkyObjectWhenNotExists() throws Exception {
 		Constellation orion = constellationService.save(new Constellation(ORION));
 		assertNotNull(orion);
 
@@ -150,6 +150,29 @@ public class DeepSkyObjectRestITTest {
 
 		DeepSkyObject m42Found = deepSkyObjectService.findById(addedDeepSkyObjectId);
 		assertNotNull(m42Found);
+	}
+	
+	@Test
+	public void testSaveDeepSkyObjectWhenAlreadyExists() throws Exception {
+		Constellation orion = constellationService.save(new Constellation(ORION));
+		assertNotNull(orion);
+
+		DeepSkyObjectType nebula = deepSkyObjectTypeService.save(new DeepSkyObjectType(NEBULA));
+		assertNotNull(nebula);
+
+		DeepSkyObject m42 = deepSkyObjectService.save(new DeepSkyObject(M42, orion, nebula));
+		assertNotNull(m42);
+		
+		DeepSkyObjectSaveRequest deepSkyObjectSaveRequest = new DeepSkyObjectSaveRequest();
+		deepSkyObjectSaveRequest.setName(M42);
+		deepSkyObjectSaveRequest.setConstellationId(orion.getId());
+		deepSkyObjectSaveRequest.setDeepSkyObjectTypeId(nebula.getId());
+
+		String payload = new Gson().toJson(deepSkyObjectSaveRequest);
+
+		Response response = given().contentType(ContentType.JSON).body(payload).post(BASE_URL).then().statusCode(500)
+				.extract().response();
+		assertNotNull(response.getBody());
 	}
 
 	@Test

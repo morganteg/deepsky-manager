@@ -68,17 +68,13 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testAddConstellationWhenExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testAddConstellationWhenAlreadyExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
 		// Save first Constellation entity
 		Constellation constellationSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(constellationSaved);
 
 		// Save second Constellation entity
-		assertThrows(GenericRepositoryException.class, () -> constellationService.save(new Constellation(ORION)));
-
-		
-//		assertNotNull(constellationSaved);
-//		assertThat(constellationSaved.getId() == 1);
+		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(new Constellation(ORION)));
 	}
 
 	@Test
