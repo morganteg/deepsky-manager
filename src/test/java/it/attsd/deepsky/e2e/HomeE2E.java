@@ -13,7 +13,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class HomeE2ETest {
+public class HomeE2E {
 	private static int port = 8080;
 	private static String baseUrl = "http://localhost:" + port;
 	private WebDriver driver;
