@@ -158,7 +158,7 @@ public class DeepSkyObjectRepositoryITTest {
 		assertNotNull(m42Saved);
 
 		assertThrows(DeepSkyObjectAlreadyExistsException.class,
-				() -> deepSkyObjectRepository.save(deepSkyObjectRepository.save(new DeepSkyObject(M42, orion, type))));
+				() -> deepSkyObjectRepository.save(new DeepSkyObject(M42, orion, type)));
 	}
 
 	@Test
