@@ -1,6 +1,5 @@
 package it.attsd.deepsky.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.attsd.deepsky.dto.DeepSkyObjectTypeRequest;
+import it.attsd.deepsky.dto.DeepSkyObjectTypeSaveRequest;
+import it.attsd.deepsky.dto.DeepSkyObjectTypeUpdateRequest;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
@@ -27,69 +27,34 @@ public class DeepSkyObjectTypeREST {
 
 	@Autowired
 	private DeepSkyObjectTypeService deepSkyObjectTypeService;
-	
+
 	@GetMapping(value = "", produces = "application/json")
 	public @ResponseBody List<DeepSkyObjectType> getAll() {
-		List<DeepSkyObjectType> deepSkyObjectTypes = new ArrayList<DeepSkyObjectType>();
-
-		try {
-			deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			throw e;
-		}
-
-		return deepSkyObjectTypes;
+		return deepSkyObjectTypeService.findAll();
 	}
 
 	@GetMapping(value = "/{id}", produces = "application/json")
 	public @ResponseBody DeepSkyObjectType getById(@PathVariable long id) {
-		logger.debug("{}", id);
-
-		DeepSkyObjectType deepSkyObjectType = new DeepSkyObjectType();
-
-		try {
-			deepSkyObjectType = deepSkyObjectTypeService.findById(id);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			throw e;
-		}
-
-		return deepSkyObjectType;
+		return deepSkyObjectTypeService.findById(id);
 	}
 
 	@PostMapping(value = "", produces = "application/json", consumes = "application/json")
-	public @ResponseBody DeepSkyObjectType save(@RequestBody DeepSkyObjectTypeRequest deepSkyObjectTypeRequest) throws Exception {
-		logger.debug("{}", deepSkyObjectTypeRequest);
+	public @ResponseBody DeepSkyObjectType save(@RequestBody DeepSkyObjectTypeSaveRequest deepSkyObjectTypeSaveRequest)
+			throws Exception {
+		DeepSkyObjectType deepSkyObjectType = new DeepSkyObjectType(deepSkyObjectTypeSaveRequest.getType());
 
-		DeepSkyObjectType deepSkyObjectTypeSaved = null;
-		DeepSkyObjectType deepSkyObjectType = new DeepSkyObjectType(deepSkyObjectTypeRequest.getType());
-
-		try {
-			deepSkyObjectTypeSaved = deepSkyObjectTypeService.save(deepSkyObjectType);
-		} catch (Exception e) {
-			logger.error("{}", e);
-			throw e;
-		}
-
-		return deepSkyObjectTypeSaved;
+		return deepSkyObjectTypeService.save(deepSkyObjectType);
 	}
-	
+
 	@PutMapping(value = "", produces = "application/json", consumes = "application/json")
-	public void update(@RequestBody DeepSkyObjectType deepSkyObjectType) {
-		logger.debug("{}", deepSkyObjectType);
-
-		try {
-			deepSkyObjectTypeService.update(deepSkyObjectType);
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
+	public @ResponseBody DeepSkyObjectType update(@RequestBody DeepSkyObjectTypeUpdateRequest deepSkyObjectTypeUpdateRequest) {
+		DeepSkyObjectType deepSkyObjectType = new DeepSkyObjectType(deepSkyObjectTypeUpdateRequest.getId(),
+				deepSkyObjectTypeUpdateRequest.getType());
+		return deepSkyObjectTypeService.update(deepSkyObjectType);
 	}
-	
+
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	public void delete(@PathVariable long id) {
-		logger.debug("{}", id);
-
 		try {
 			deepSkyObjectTypeService.delete(id);
 		} catch (Exception e) {

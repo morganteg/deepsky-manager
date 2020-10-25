@@ -37,7 +37,7 @@ public class HomeE2E {
 	@Test
 	public void testHomePage() {
 		driver.get(baseUrl);
-		WebElement element = driver.findElement(By.cssSelector("h1[id*='title"));
+		WebElement element = driver.findElement(By.id("title"));
 		
 		assertThat(element.getText().equalsIgnoreCase("home"));
 	}
