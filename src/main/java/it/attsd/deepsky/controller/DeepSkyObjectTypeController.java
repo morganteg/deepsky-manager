@@ -2,6 +2,8 @@ package it.attsd.deepsky.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import it.attsd.deepsky.controller.form.DeepSkyObjectTypeForm;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @Controller
 public class DeepSkyObjectTypeController {
+	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeController.class);
+	
 	@Autowired
 	DeepSkyObjectTypeService deepSkyObjectTypeService;
 
@@ -34,11 +37,8 @@ public class DeepSkyObjectTypeController {
 	public String constellations(@ModelAttribute DeepSkyObjectTypeForm deepSkyObjectTypeForm, Model model) {
 		try {
 			deepSkyObjectTypeService.save(new DeepSkyObjectType(deepSkyObjectTypeForm.getType().toLowerCase()));
-		} catch (GenericRepositoryException e) {
-			e.printStackTrace();
 		} catch (DeepSkyObjectTypeAlreadyExistsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();

@@ -28,17 +28,8 @@ public class DeepSkyObjectTypeService {
 		return deepSkyObjectTypeRepository.findByType(type);
 	}
 
-	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObjectType) throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
-		DeepSkyObjectType deepSkyObjectTypeSaved = null;
-		try {
-			deepSkyObjectTypeSaved = deepSkyObjectTypeRepository.save(deepSkyObjectType);
-		} catch (DeepSkyObjectTypeAlreadyExistsException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new GenericRepositoryException(e);
-		}
-
-		return deepSkyObjectTypeSaved;
+	public DeepSkyObjectType save(DeepSkyObjectType deepSkyObjectType) throws DeepSkyObjectTypeAlreadyExistsException {
+		return deepSkyObjectTypeRepository.save(deepSkyObjectType);
 	}
 
 	public DeepSkyObjectType update(DeepSkyObjectType deepSkyObjectType) {

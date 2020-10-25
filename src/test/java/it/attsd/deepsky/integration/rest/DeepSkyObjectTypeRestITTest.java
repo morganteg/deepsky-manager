@@ -42,10 +42,10 @@ public class DeepSkyObjectTypeRestITTest {
 	@Autowired
 	private DeepSkyObjectTypeService deepSkyObjectTypeService;
 	
-	String baseUrl = "/api/deepskyobjecttype";
+	private final String BASE_URL = "/api/deepskyobjecttype";
 
-	String GALAXY = "galaxy";
-	String NEBULA = "nebula";
+	private final String GALAXY = "galaxy";
+	private final String NEBULA = "nebula";
 
 	@BeforeClass
 	public static void init() {
@@ -67,7 +67,7 @@ public class DeepSkyObjectTypeRestITTest {
 		DeepSkyObjectType nebula = deepSkyObjectTypeService.save(new DeepSkyObjectType(NEBULA));
 		assertNotNull(nebula);
 
-		given().accept(ContentType.JSON).when().get(baseUrl).then().statusCode(200).body("size()", is(2));
+		given().accept(ContentType.JSON).when().get(BASE_URL).then().statusCode(200).body("size()", is(2));
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class DeepSkyObjectTypeRestITTest {
 		DeepSkyObjectType galaxy = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(galaxy);
 
-		given().accept(ContentType.JSON).when().get(baseUrl + "/" + galaxy.getId()).then().statusCode(200)
+		given().accept(ContentType.JSON).when().get(BASE_URL + "/" + galaxy.getId()).then().statusCode(200)
 				.body("id", is((int) galaxy.getId()));
 	}
 
@@ -86,7 +86,7 @@ public class DeepSkyObjectTypeRestITTest {
 
 		String payload = new Gson().toJson(deepSkyObjectTypeSaveRequest);
 
-		Response response = given().contentType(ContentType.JSON).body(payload).post(baseUrl).then()
+		Response response = given().contentType(ContentType.JSON).body(payload).post(BASE_URL).then()
 				.statusCode(200).extract().response();
 		assertNotNull(response.getBody());
 		
@@ -111,7 +111,7 @@ public class DeepSkyObjectTypeRestITTest {
 
 		String payload = new Gson().toJson(deepSkyObjectTypeUpdateRequest);
 
-		Response response = given().contentType(ContentType.JSON).body(payload).put(baseUrl).then()
+		Response response = given().contentType(ContentType.JSON).body(payload).put(BASE_URL).then()
 				.statusCode(200).extract().response();
 		assertNotNull(response.getBody());
 		
@@ -129,7 +129,7 @@ public class DeepSkyObjectTypeRestITTest {
 		DeepSkyObjectType galaxy = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(galaxy);
 		
-		given().contentType(ContentType.JSON).delete(baseUrl + "/" + galaxy.getId()).then()
+		given().contentType(ContentType.JSON).delete(BASE_URL + "/" + galaxy.getId()).then()
 				.statusCode(200);
 		
 		DeepSkyObjectType galaxyDeleted = deepSkyObjectTypeService.findById(galaxy.getId());

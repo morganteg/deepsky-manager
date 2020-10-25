@@ -48,17 +48,8 @@ public class DeepSkyObjectService {
 	}
 
 	@Transactional
-	public DeepSkyObject save(DeepSkyObject deepSkyObject) throws GenericRepositoryException, DeepSkyObjectAlreadyExistsException {
-		DeepSkyObject deepSkyObjectSaved = null;
-		try {
-			deepSkyObjectSaved = deepSkyObjectRepository.save(deepSkyObject);
-		} catch (DeepSkyObjectAlreadyExistsException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new GenericRepositoryException(e);
-		}
-
-		return deepSkyObjectSaved;
+	public DeepSkyObject save(DeepSkyObject deepSkyObject) throws DeepSkyObjectAlreadyExistsException {
+		return deepSkyObjectRepository.save(deepSkyObject);
 	}
 
 	@Transactional(rollbackOn = Exception.class)

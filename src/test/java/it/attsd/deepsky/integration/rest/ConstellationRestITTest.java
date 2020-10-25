@@ -80,7 +80,7 @@ public class ConstellationRestITTest {
 	}
 
 	@Test
-	public void testSaveConstellation() throws Exception {
+	public void testSaveConstellationWhenNotExists() throws Exception {
 		ConstellationSaveRequest constellationSaveRequest = new ConstellationSaveRequest();
 		constellationSaveRequest.setName(ORION);
 
@@ -96,6 +96,28 @@ public class ConstellationRestITTest {
 
 		Constellation orion = constellationService.findById(addedConstellationId);
 		assertNotNull(orion);
+	}
+	
+	@Test
+	public void testSaveConstellationWhenAlreadyExists() throws Exception {
+		Constellation orion = constellationService.save(new Constellation(ORION));
+		assertNotNull(orion);
+		
+		ConstellationSaveRequest constellationSaveRequest = new ConstellationSaveRequest();
+		constellationSaveRequest.setName(ORION);
+
+		String payload = new Gson().toJson(constellationSaveRequest);
+
+		Response response = given().contentType(ContentType.JSON).body(payload).post(BASE_URL).then()
+				.statusCode(200).extract().response();
+		assertNotNull(response.getBody());
+		
+		long addedConstellationId = response.jsonPath().getLong("id");
+		String addedConstellationName = response.jsonPath().getString("name");
+		assertEquals(addedConstellationName, ORION);
+
+		Constellation orionFound = constellationService.findById(addedConstellationId);
+		assertNotNull(orionFound);
 	}
 	
 	@Test
