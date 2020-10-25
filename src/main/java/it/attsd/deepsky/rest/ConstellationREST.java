@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.attsd.deepsky.dto.ConstellationSaveRequest;
-import it.attsd.deepsky.dto.ConstellationUpdateRequest;
 import it.attsd.deepsky.entity.Constellation;
+import it.attsd.deepsky.pojo.constellation.ConstellationSaveRequest;
+import it.attsd.deepsky.pojo.constellation.ConstellationUpdateRequest;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RestController()

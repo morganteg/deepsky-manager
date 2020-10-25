@@ -1,4 +1,4 @@
-package it.attsd.deepsky.dto;
+package it.attsd.deepsky.pojo.deepskyobjecttype;
 
 public class DeepSkyObjectTypeSaveRequest {
 	private String type;

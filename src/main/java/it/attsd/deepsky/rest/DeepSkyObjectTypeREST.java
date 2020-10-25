@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.attsd.deepsky.dto.DeepSkyObjectTypeSaveRequest;
-import it.attsd.deepsky.dto.DeepSkyObjectTypeUpdateRequest;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
+import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeSaveRequest;
+import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeUpdateRequest;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RestController()

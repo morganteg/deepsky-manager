@@ -23,10 +23,10 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
-import it.attsd.deepsky.dto.ConstellationSaveRequest;
-import it.attsd.deepsky.dto.ConstellationUpdateRequest;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.model.ConstellationRepository;
+import it.attsd.deepsky.pojo.constellation.ConstellationSaveRequest;
+import it.attsd.deepsky.pojo.constellation.ConstellationUpdateRequest;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)
@@ -41,9 +41,11 @@ public class ConstellationRestITTest {
 
 	@Autowired
 	private ConstellationService constellationService;
+	
+	private final String BASE_URL = "/api/constellation";
 
-	String ORION = "orion";
-	String SCORPIUS = "scorpius";
+	private final String ORION = "orion";
+	private final String SCORPIUS = "scorpius";
 
 	@BeforeClass
 	public static void init() {
@@ -65,7 +67,7 @@ public class ConstellationRestITTest {
 		Constellation scorpius = constellationService.save(new Constellation(SCORPIUS));
 		assertNotNull(scorpius);
 
-		given().accept(ContentType.JSON).when().get("/api/constellation").then().statusCode(200).body("size()", is(2));
+		given().accept(ContentType.JSON).when().get(BASE_URL).then().statusCode(200).body("size()", is(2));
 	}
 
 	@Test
@@ -73,7 +75,7 @@ public class ConstellationRestITTest {
 		Constellation orion = constellationService.save(new Constellation(ORION));
 		assertNotNull(orion);
 
-		given().accept(ContentType.JSON).when().get("/api/constellation/" + orion.getId()).then().statusCode(200)
+		given().accept(ContentType.JSON).when().get(BASE_URL + "/" + orion.getId()).then().statusCode(200)
 				.body("id", is((int) orion.getId()));
 	}
 
@@ -84,7 +86,7 @@ public class ConstellationRestITTest {
 
 		String payload = new Gson().toJson(constellationSaveRequest);
 
-		Response response = given().contentType(ContentType.JSON).body(payload).post("/api/constellation").then()
+		Response response = given().contentType(ContentType.JSON).body(payload).post(BASE_URL).then()
 				.statusCode(200).extract().response();
 		assertNotNull(response.getBody());
 		
@@ -109,7 +111,7 @@ public class ConstellationRestITTest {
 
 		String payload = new Gson().toJson(constellationUpdateRequest);
 
-		Response response = given().contentType(ContentType.JSON).body(payload).put("/api/constellation").then()
+		Response response = given().contentType(ContentType.JSON).body(payload).put(BASE_URL).then()
 				.statusCode(200).extract().response();
 		assertNotNull(response.getBody());
 		
@@ -127,23 +129,11 @@ public class ConstellationRestITTest {
 		Constellation orion = constellationService.save(new Constellation(ORION));
 		assertNotNull(orion);
 		
-		given().contentType(ContentType.JSON).delete("/api/constellation/" + orion.getId()).then()
+		given().contentType(ContentType.JSON).delete(BASE_URL + "/" + orion.getId()).then()
 				.statusCode(200);
 		
 		Constellation orionDeleted = constellationService.findById(orion.getId());
 		assertNull(orionDeleted);
 	}
-
-//	@Test
-//	public void testRestAssured() {
-//		JsonObject jsonObject = given().baseUri("http://dummy.restapiexample.com/").basePath("api/v1/employees").get()
-//				.as(JsonObject.class);
-//		System.out.println(jsonObject.toString());
-//	}
-//
-//	@Test
-//	public void testRestAssured2() {
-//		given().log().all().when().get("http://www.google.com").then().statusCode(200);
-//	}
 
 }

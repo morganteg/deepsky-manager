@@ -23,10 +23,10 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
-import it.attsd.deepsky.dto.DeepSkyObjectTypeSaveRequest;
-import it.attsd.deepsky.dto.DeepSkyObjectTypeUpdateRequest;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
+import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeSaveRequest;
+import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeUpdateRequest;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RunWith(SpringRunner.class)
