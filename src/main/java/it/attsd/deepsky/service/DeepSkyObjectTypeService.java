@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 
 @Service
@@ -24,7 +23,7 @@ public class DeepSkyObjectTypeService {
 		return deepSkyObjectTypeRepository.findById(id);
 	}
 
-	public DeepSkyObjectType findByType(String type) throws GenericRepositoryException {
+	public DeepSkyObjectType findByType(String type) {
 		return deepSkyObjectTypeRepository.findByType(type);
 	}
 
@@ -37,7 +36,7 @@ public class DeepSkyObjectTypeService {
 
 	}
 
-	public void delete(long id) throws GenericRepositoryException {
+	public void delete(long id) {
 		deepSkyObjectTypeRepository.delete(id);
 	}
 

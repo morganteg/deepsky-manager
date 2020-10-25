@@ -38,7 +38,8 @@ public class DeepSkyObjectREST {
 	}
 
 	@PostMapping(value = "", produces = "application/json", consumes = "application/json")
-	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObjectSaveRequest deepSkyObjectRequest) throws Exception {
+	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObjectSaveRequest deepSkyObjectRequest)
+			throws Exception {
 		return deepSkyObjectService.save(deepSkyObjectRequest.getConstellationId(),
 				deepSkyObjectRequest.getDeepSkyObjectTypeId(), deepSkyObjectRequest.getName());
 	}
@@ -50,11 +51,7 @@ public class DeepSkyObjectREST {
 
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	public void delete(@PathVariable long id) {
-		try {
-			deepSkyObjectService.delete(id);
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
+		deepSkyObjectService.delete(id);
 	}
 
 }

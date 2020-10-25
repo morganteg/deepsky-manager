@@ -55,11 +55,7 @@ public class DeepSkyObjectTypeREST {
 
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	public void delete(@PathVariable long id) {
-		try {
-			deepSkyObjectTypeService.delete(id);
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
+		deepSkyObjectTypeService.delete(id);
 	}
 
 }

@@ -115,12 +115,8 @@ public class DeepSkyObjectService {
 		return deepSkyObjectRepository.update(deepSkyObject);
 	}
 	
-	public void delete(long id) throws GenericRepositoryException {
-		try {
-			deepSkyObjectRepository.delete(id);
-		} catch (Exception e) {
-			throw new GenericRepositoryException(e);
-		}
+	public void delete(long id) {
+		deepSkyObjectRepository.delete(id);
 	}
 
 }
