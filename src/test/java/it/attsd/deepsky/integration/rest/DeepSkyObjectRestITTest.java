@@ -189,7 +189,7 @@ public class DeepSkyObjectRestITTest {
 		String m42NameChanged = m42.getName() + " changed";
 
 		DeepSkyObjectUpdateRequest deepSkyObjectUpdateRequest = new DeepSkyObjectUpdateRequest();
-		deepSkyObjectUpdateRequest.setId(orion.getId());
+		deepSkyObjectUpdateRequest.setId(m42.getId());
 		deepSkyObjectUpdateRequest.setName(m42NameChanged);
 		deepSkyObjectUpdateRequest.setConstellationId(orion.getId());
 		deepSkyObjectUpdateRequest.setDeepSkyObjectTypeId(nebula.getId());
