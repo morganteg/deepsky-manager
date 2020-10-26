@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 
 @Service
@@ -28,17 +27,8 @@ public class ConstellationService {
 		return constellationRepository.findByName(name);
 	}
 
-	public Constellation save(Constellation constellation) throws GenericRepositoryException, ConstellationAlreadyExistsException {
-		Constellation constellationSaved = null;
-		try {
-			constellationSaved = constellationRepository.save(constellation);
-		} catch (ConstellationAlreadyExistsException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new GenericRepositoryException(e);
-		}
-		
-		return constellationSaved;
+	public Constellation save(Constellation constellation) throws ConstellationAlreadyExistsException {
+		return constellationRepository.save(constellation);
 	}
 
 	public Constellation update(Constellation constellation) {

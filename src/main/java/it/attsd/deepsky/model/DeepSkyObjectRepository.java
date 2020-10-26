@@ -5,17 +5,15 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 
 @Repository
 public class DeepSkyObjectRepository extends BaseRepository {
@@ -51,19 +49,15 @@ public class DeepSkyObjectRepository extends BaseRepository {
 		return result;
 	}
 
-	@Transactional
-	public DeepSkyObject save(DeepSkyObject deepSkyObject) throws GenericRepositoryException, DeepSkyObjectAlreadyExistsException {
+	@Transactional(rollbackFor = { DeepSkyObjectAlreadyExistsException.class, Exception.class })
+	public DeepSkyObject save(DeepSkyObject deepSkyObject) throws DeepSkyObjectAlreadyExistsException {
 		try {
 			entityManager.persist(deepSkyObject);
 			entityManager.flush();
 		} catch (PersistenceException e) {
-			if (ExceptionUtils.indexOfType(e, ConstraintViolationException.class) != -1) {
+			if (e.getCause() instanceof ConstraintViolationException) {
 				throw new DeepSkyObjectAlreadyExistsException();
-			} else {
-				throw e;
 			}
-		} catch (Exception e) {
-			throw new GenericRepositoryException(e);
 		}
 
 		return deepSkyObject;

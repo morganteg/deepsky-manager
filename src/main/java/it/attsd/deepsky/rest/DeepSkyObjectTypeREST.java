@@ -2,8 +2,6 @@ package it.attsd.deepsky.rest;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.attsd.deepsky.dto.DeepSkyObjectTypeSaveRequest;
-import it.attsd.deepsky.dto.DeepSkyObjectTypeUpdateRequest;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
+import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeSaveRequest;
+import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeUpdateRequest;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RestController()
 @RequestMapping("/api/deepskyobjecttype")
 public class DeepSkyObjectTypeREST {
-	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeREST.class);
 
 	@Autowired
 	private DeepSkyObjectTypeService deepSkyObjectTypeService;
@@ -55,11 +52,7 @@ public class DeepSkyObjectTypeREST {
 
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	public void delete(@PathVariable long id) {
-		try {
-			deepSkyObjectTypeService.delete(id);
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
+		deepSkyObjectTypeService.delete(id);
 	}
 
 }

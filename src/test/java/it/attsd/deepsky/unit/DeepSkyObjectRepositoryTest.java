@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -111,12 +112,12 @@ public class DeepSkyObjectRepositoryTest {
 		verify(entityManager, times(1)).persist(m42);
 	}
 
-	@Test(expected = GenericRepositoryException.class)
-	public void test6AddDeepSkyObjectWhenIsAlreadyPresent() throws GenericRepositoryException, DeepSkyObjectAlreadyExistsException {
+	@Test
+	public void testAddDeepSkyObjectWhenIsAlreadyPresent() throws DeepSkyObjectAlreadyExistsException {
 		IllegalStateException exc = new IllegalStateException();
 		doThrow(exc).when(entityManager).persist(m42);
 		
-		deepSkyObjectRepository.save(m42);
+		assertThrows(IllegalStateException.class, () -> deepSkyObjectRepository.save(m42));
 	}
 
 	@Test
