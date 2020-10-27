@@ -25,7 +25,7 @@ public class ConstellationController {
 	ConstellationService constellationService;
 
 	@GetMapping(value = "/constellation")
-	public String constellations(Model model) {
+	public String getConstellations(Model model) {
 		List<Constellation> constellations = constellationService.findAll();
 
 		model.addAttribute("constellation", new ConstellationForm());
@@ -35,7 +35,7 @@ public class ConstellationController {
 	}
 
 	@PostMapping("/constellation")
-	public String constellations(@ModelAttribute ConstellationForm constellationForm, Model model) {
+	public String saveConstellations(@ModelAttribute ConstellationForm constellationForm, Model model) {
 		try {
 			if(constellationForm != null && StringUtils.isNotEmpty(constellationForm.getName())) {
 				constellationService.save(new Constellation(constellationForm.getName().toLowerCase()));

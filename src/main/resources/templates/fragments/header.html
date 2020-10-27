@@ -10,5 +10,9 @@
         <a class="py-2 d-none d-md-inline-block" href="#">DeepSky Object</a>
       </div>
     </nav>
+    
+	<div th:if= "${error != null && error != ''}" class="alert alert-danger" role="alert">
+	  <p id="errorMessage" th:text="${error}"></p>
+	</div>
   
 </div>

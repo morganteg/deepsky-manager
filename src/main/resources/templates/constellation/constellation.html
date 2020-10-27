@@ -9,15 +9,23 @@
 	<h1>Constellations</h1>
 
 	<form action="" th:action="@{/constellation}" th:object="${constellation}" method="post">
-        <p>Name: <input type="text" th:field="*{name}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+        <p>Name: <input type="text" id="name" th:field="*{name}" /></p>
+        <p><input type="submit" id="submitButton" class="btn btn-primary" value="Add" /> <input type="reset" class="btn btn-primary" value="Clear" /></p>
     </form>
 
-	<table>
-		<tr th:each="constellation: ${constellations}">
-			<td th:text="${constellation.id}" />
-			<td th:text="${constellation.name}" />
-		</tr>
+	<table id="constellations" class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="constellation: ${constellations}">
+				<td th:text="${constellation.id}" />
+				<td th:text="${constellation.name}" />
+			</tr>
+		</tbody>
 	</table>
 </body>
 </html>
