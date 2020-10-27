@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -44,7 +43,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testFindAll() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testFindAll() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
@@ -58,7 +57,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testAddConstellationWhenNotExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testAddConstellationWhenNotExists() throws ConstellationAlreadyExistsException {
 		Constellation existingConstellation = constellationService.findByName(ORION);
 		assertNull(existingConstellation);
 
@@ -68,7 +67,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testAddConstellationWhenAlreadyExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testAddConstellationWhenAlreadyExists() throws ConstellationAlreadyExistsException {
 		// Save first Constellation entity
 		Constellation constellationSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(constellationSaved);
@@ -78,7 +77,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testUpdateConstellationWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testUpdateConstellationWhenIsPresent() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
@@ -94,7 +93,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testDeleteConstellationWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testDeleteConstellationWhenIsPresent() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 

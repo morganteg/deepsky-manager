@@ -17,7 +17,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 
 @RunWith(SpringRunner.class)
@@ -31,8 +30,6 @@ public class ConstellationControllerIT {
 	private WebDriver driver;
 	private String baseUrl;
 	
-	private String ORION = "orion";
-
 	@Before
 	public void setup() {
 		baseUrl = "http://localhost:" + port;
@@ -47,7 +44,7 @@ public class ConstellationControllerIT {
 	}
 
 	@Test
-	public void testHomePage() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testHomePage() throws ConstellationAlreadyExistsException {
 //		Constellation testEmployee = constellationRepository.save(new Constellation(ORION));
 		driver.get(baseUrl);
 		

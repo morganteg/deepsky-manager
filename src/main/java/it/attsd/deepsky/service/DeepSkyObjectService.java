@@ -15,7 +15,6 @@ import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
@@ -54,7 +53,8 @@ public class DeepSkyObjectService {
 
 	@Transactional(rollbackOn = Exception.class)
 	public DeepSkyObject save(long constellationId, long deepSkyObjectTypeId, String deepSkyObjectName)
-			throws GenericRepositoryException, ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectAlreadyExistsException {
+			throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException,
+			DeepSkyObjectAlreadyExistsException {
 		// 1 - Create Constellation
 		Constellation constellation = constellationRepository.findById(constellationId);
 		if (constellation == null) {
@@ -76,7 +76,7 @@ public class DeepSkyObjectService {
 
 	@Transactional(rollbackOn = Exception.class)
 	public DeepSkyObject saveConstellationAndDeepSkyObject(String constellationName, String deepSkyObjectName,
-			String deepSkyObjectType) throws ConstellationAlreadyExistsException, GenericRepositoryException,
+			String deepSkyObjectType) throws ConstellationAlreadyExistsException,
 			DeepSkyObjectAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException {
 		// 1 - Create Constellation
 		Constellation existingConstellation = constellationRepository.findByName(constellationName);
@@ -85,9 +85,6 @@ public class DeepSkyObjectService {
 		}
 		Constellation constellationToSave = new Constellation(constellationName);
 		Constellation constellationSaved = constellationRepository.save(constellationToSave);
-		if (constellationSaved == null || constellationSaved.getId() == 0) {
-			throw new GenericRepositoryException("Error saving Constellation");
-		}
 
 		// 2 - Create DeepSkyObjectType
 		DeepSkyObjectType existingDeepSkyObjectType = deepSkyObjectTypeRepository.findByType(deepSkyObjectType);
@@ -96,9 +93,6 @@ public class DeepSkyObjectService {
 		}
 		DeepSkyObjectType deepSkyObjectTypeToSave = new DeepSkyObjectType(deepSkyObjectType);
 		DeepSkyObjectType deepSkyObjectTypeSaved = deepSkyObjectTypeRepository.save(deepSkyObjectTypeToSave);
-		if (deepSkyObjectTypeSaved == null || deepSkyObjectTypeSaved.getId() == 0) {
-			throw new GenericRepositoryException("Error saving Constellation");
-		}
 
 		// 3 - Create DeepSkyObject
 		DeepSkyObject existingDeepSkyObject = deepSkyObjectRepository.findByName(deepSkyObjectName);
@@ -110,11 +104,11 @@ public class DeepSkyObjectService {
 
 		return deepSkyObjectSaved;
 	}
-	
+
 	public DeepSkyObject update(DeepSkyObject deepSkyObject) {
 		return deepSkyObjectRepository.update(deepSkyObject);
 	}
-	
+
 	public void delete(long id) {
 		deepSkyObjectRepository.delete(id);
 	}

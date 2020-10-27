@@ -21,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
@@ -53,7 +52,7 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindDeepSkyObjectTypeByIdWhenIsPresent() throws GenericRepositoryException {
+	public void testFindDeepSkyObjectTypeByIdWhenIsPresent() {
 		when(deepSkyObjectTypeRepository.findById(1L)).thenReturn(nebula);
 
 		DeepSkyObjectType nebulaFound = deepSkyObjectTypeService.findById(1L);
@@ -62,7 +61,7 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindDeepSkyObjectTypeByTypeWhenIsPresent() throws GenericRepositoryException {
+	public void testFindDeepSkyObjectTypeByTypeWhenIsPresent() {
 		when(deepSkyObjectTypeRepository.findByType("nebula")).thenReturn(nebula);
 
 		DeepSkyObjectType nebulaFound = deepSkyObjectTypeService.findByType("nebula");
@@ -71,7 +70,7 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testSaveDeepSkyObjectTypeWhenNotExists() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testSaveDeepSkyObjectTypeWhenNotExists() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType cluster = new DeepSkyObjectType("cluster");
 		DeepSkyObjectType clusterSaved = new DeepSkyObjectType(1L, "cluster");
 
@@ -84,7 +83,7 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testSaveDeepSkyObjectTypeWhenAlreadyExists() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testSaveDeepSkyObjectTypeWhenAlreadyExists() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType galaxy = new DeepSkyObjectType(GALAXY);
 
 		doThrow(new DeepSkyObjectTypeAlreadyExistsException()).when(deepSkyObjectTypeRepository)
@@ -95,7 +94,7 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testDeleteDeepSkyObjectTypeWhenExists() throws GenericRepositoryException {
+	public void testDeleteDeepSkyObjectTypeWhenExists() {
 		when(deepSkyObjectTypeRepository.findById(1L)).thenReturn(null);
 
 		deepSkyObjectTypeService.delete(1L);
@@ -106,7 +105,7 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	}
 
 //	@Test(expected = GenericRepositoryException.class)
-//	public void testDeleteDeepSkyObjectTypeWhenNotExists() throws GenericRepositoryException {
+//	public void testDeleteDeepSkyObjectTypeWhenNotExists() {
 //		doThrow(new GenericRepositoryException("DeepSkyObjectType not found")).when(deepSkyObjectTypeRepository).delete(1L);
 //
 //		deepSkyObjectTypeService.delete(1L);

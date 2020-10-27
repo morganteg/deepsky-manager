@@ -27,7 +27,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,7 +42,7 @@ public class ConstellationRepositoryTest {
 
 	@InjectMocks
 	private ConstellationRepository constellationRepository;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
@@ -86,7 +85,7 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void test3GetConstellationByIdWhenIdIsPresent() throws GenericRepositoryException {
+	public void test3GetConstellationByIdWhenIdIsPresent() {
 		Constellation orion = new Constellation(1L, "orion");
 
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(orion);
@@ -99,9 +98,9 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void test4GetConstellationByIdWhenIdIsNotPresent() throws GenericRepositoryException {
+	public void test4GetConstellationByIdWhenIdIsNotPresent() {
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(null);
-		
+
 //		NoResultException noResultException = new NoResultException();
 //		doThrow(noResultException).when(entityManager).find(Constellation.class, 1L);
 
@@ -113,15 +112,13 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void testGetConstellationByNameWhenIsPresent() throws GenericRepositoryException {
+	public void testGetConstellationByNameWhenIsPresent() {
 		String name = "orion";
 		Constellation orion = new Constellation(1L, name);
-		
+
 		String queryString = String.format("SELECT t FROM %s t WHERE t.name=:name", Constellation.class.getName());
-		
-		when(entityManager
-				.createQuery(queryString))
-						.thenReturn(query);
+
+		when(entityManager.createQuery(queryString)).thenReturn(query);
 		when(query.setParameter("name", name)).thenReturn(query);
 		when(query.getSingleResult()).thenReturn(orion);
 
@@ -133,15 +130,13 @@ public class ConstellationRepositoryTest {
 
 		assertNotNull(constellationFound);
 	}
-	
+
 	@Test
-	public void testGetConstellationByNameWhenIsNotPresent() throws GenericRepositoryException {
+	public void testGetConstellationByNameWhenIsNotPresent() {
 		String name = "orion";
 		String queryString = String.format("SELECT t FROM %s t WHERE t.name=:name", Constellation.class.getName());
-		
-		when(entityManager
-				.createQuery(queryString))
-						.thenReturn(query);
+
+		when(entityManager.createQuery(queryString)).thenReturn(query);
 		when(query.setParameter("name", name)).thenReturn(query);
 		when(query.getSingleResult()).thenReturn(null);
 
@@ -155,7 +150,7 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void testAddConstellationWhenNotExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testAddConstellationWhenNotExists() throws ConstellationAlreadyExistsException {
 		Constellation orion = new Constellation(1L, "orion");
 
 		constellationRepository.save(orion);
@@ -165,7 +160,7 @@ public class ConstellationRepositoryTest {
 	@Test
 	public void testAddConstellationWhenAlreadyExists() throws ConstellationAlreadyExistsException {
 		Constellation orion = new Constellation("orion");
-		
+
 		IllegalStateException exc = new IllegalStateException();
 		doThrow(exc).when(entityManager).persist(orion);
 
@@ -173,17 +168,17 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void testDeleteConstellationWhenNotExists() throws GenericRepositoryException {
+	public void testDeleteConstellationWhenNotExists() {
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(null);
 
 		constellationRepository.delete(1L);
-		
+
 		verify(entityManager, times(1)).find(Constellation.class, 1L);
 		verify(entityManager, times(0)).remove(1L);
 	}
 
 	@Test
-	public void testDeleteConstellationWhenExists() throws GenericRepositoryException {
+	public void testDeleteConstellationWhenExists() {
 		Constellation orion = new Constellation(1L, "orion");
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(orion);
 

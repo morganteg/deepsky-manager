@@ -29,7 +29,6 @@ import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
@@ -86,7 +85,7 @@ public class DeepSkyObjectRestITTest {
 	}
 
 	private DeepSkyObject saveDeepSkyObject(String deepSkyObjectName)
-			throws GenericRepositoryException, DeepSkyObjectAlreadyExistsException, ConstellationAlreadyExistsException,
+			throws DeepSkyObjectAlreadyExistsException, ConstellationAlreadyExistsException,
 			DeepSkyObjectTypeAlreadyExistsException {
 		Constellation orion = constellationService.save(new Constellation(ORION));
 		assertNotNull(orion);

@@ -26,7 +26,6 @@ import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
@@ -75,7 +74,7 @@ public class DeepSkyObjectServiceITTest {
 	}
 
 	@Test
-	public void testFindAll() throws GenericRepositoryException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
+	public void testFindAll() throws ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(orionName));
 		assertNotNull(orionSaved);
 
@@ -96,7 +95,7 @@ public class DeepSkyObjectServiceITTest {
 	}
 
 	@Test
-	public void testFindById() throws GenericRepositoryException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
+	public void testFindById() throws ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(orionName));
 		assertNotNull(orionSaved);
 
@@ -113,7 +112,7 @@ public class DeepSkyObjectServiceITTest {
 	}
 
 	@Test
-	public void testAddDeepSkyObjectWhenNotExists() throws GenericRepositoryException, ConstellationNotFoundException,
+	public void testAddDeepSkyObjectWhenNotExists() throws ConstellationNotFoundException,
 			DeepSkyObjectTypeNotFoundException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(orionName));
 		assertNotNull(orionSaved);
@@ -127,7 +126,7 @@ public class DeepSkyObjectServiceITTest {
 	}
 	
 	@Test
-	public void testAddDeepSkyObjectWhenAlreadyExists() throws GenericRepositoryException, ConstellationNotFoundException,
+	public void testAddDeepSkyObjectWhenAlreadyExists() throws ConstellationNotFoundException,
 			DeepSkyObjectTypeNotFoundException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(orionName));
 		assertNotNull(orionSaved);
@@ -143,8 +142,7 @@ public class DeepSkyObjectServiceITTest {
 	}
 
 	@Test
-	public void testAddDeepSkyObjectIfNotPresentAndConstellationNotExists() throws GenericRepositoryException,
-			ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testAddDeepSkyObjectIfNotPresentAndConstellationNotExists() throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(m42Name);
 		assertNull(deepSkyObjectFound);
 
@@ -167,7 +165,7 @@ public class DeepSkyObjectServiceITTest {
 
 	@Test
 	public void testAddDeepSkyObjectIfNotPresentAndConstellationNotExists1()
-			throws GenericRepositoryException, ConstellationAlreadyExistsException {
+			throws ConstellationAlreadyExistsException {
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(m42Name);
 		assertNull(deepSkyObjectFound);
 
@@ -179,8 +177,7 @@ public class DeepSkyObjectServiceITTest {
 	}
 
 	@Test
-	public void testAddDeepSkyObjectIfNotPresentAndDeepSkyObjectTypeNotExists() throws GenericRepositoryException,
-			ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testAddDeepSkyObjectIfNotPresentAndDeepSkyObjectTypeNotExists() throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(m42Name);
 		assertNull(deepSkyObjectFound);
 
@@ -202,7 +199,7 @@ public class DeepSkyObjectServiceITTest {
 	}
 
 	@Test
-	public void testAddDeepSkyObjectIfNotPresentAndDeepSkyObjectTypeNotExists1() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testAddDeepSkyObjectIfNotPresentAndDeepSkyObjectTypeNotExists1() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(m42Name);
 		assertNull(deepSkyObjectFound);
 
@@ -214,7 +211,7 @@ public class DeepSkyObjectServiceITTest {
 	}
 
 	@Test
-	public void testUpdateDeepSkyObjectIfPresent() throws GenericRepositoryException, ConstellationNotFoundException,
+	public void testUpdateDeepSkyObjectIfPresent() throws ConstellationNotFoundException,
 			DeepSkyObjectTypeNotFoundException, ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException {
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectService.findByName(orionName);
 		assertNull(deepSkyObjectFound);
@@ -240,18 +237,14 @@ public class DeepSkyObjectServiceITTest {
 
 	/**
 	 * Transactional test with success
-	 * 
-	 * @throws GenericRepositoryException
 	 */
 	@Test
-	public void testAddConstellationAndDeepSkyObjectWithSuccess() throws GenericRepositoryException {
+	public void testAddConstellationAndDeepSkyObjectWithSuccess() {
 		try {
 			DeepSkyObject deepSkyObjectSaved = deepSkyObjectService.saveConstellationAndDeepSkyObject(orionName,
 					m42Name, nebulaType);
 			assertThat(deepSkyObjectSaved.getId()).isPositive();
 		} catch (ConstellationAlreadyExistsException e) {
-			logger.error(e.getMessage());
-		} catch (GenericRepositoryException e) {
 			logger.error(e.getMessage());
 		} catch (DeepSkyObjectAlreadyExistsException e) {
 			logger.error(e.getMessage());
@@ -270,11 +263,9 @@ public class DeepSkyObjectServiceITTest {
 
 	/**
 	 * Transactional test with rollback
-	 * 
-	 * @throws GenericRepositoryException
 	 */
 	@Test
-	public void testAddConstellationAndDeepSkyObjectWithRollback() throws GenericRepositoryException {
+	public void testAddConstellationAndDeepSkyObjectWithRollback() {
 		try {
 //			1 - Create constellation
 			DeepSkyObjectType star = new DeepSkyObjectType(starName);
@@ -287,8 +278,6 @@ public class DeepSkyObjectServiceITTest {
 					antaresName, starName);
 			assertThat(deepSkyObjectSaved.getId()).isEqualTo(1L);
 		} catch (ConstellationAlreadyExistsException e) {
-			logger.error(e.getMessage());
-		} catch (GenericRepositoryException e) {
 			logger.error(e.getMessage());
 		} catch (DeepSkyObjectAlreadyExistsException e) {
 			logger.error(e.getMessage());
