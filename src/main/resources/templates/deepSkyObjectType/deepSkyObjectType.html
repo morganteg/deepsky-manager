@@ -3,21 +3,37 @@
 
 <div th:replace="fragments/head :: head"></div>
 
-<body>
+<body class="container">
 	<div th:replace="fragments/header :: header">...</div>
 
 	<h1>DeepSky Object Types</h1>
 
-	<form action="#" th:action="@{/deepskyobjecttype}" th:object="${deepSkyObjectType}" method="post">
-        <p>Type: <input type="text" th:field="*{type}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-    </form>
+	<div style="margin-bottom: 1em;">
+		<form action="#" th:action="@{/deepskyobjecttype}" th:object="${deepSkyObjectTypeForm}" method="post">
+	        <input type="hidden" id="deepSkyObjectTypeId" th:field="*{id}" />
+	        <label>Type:</label>
+	        <input type="text" id="deepSkyObjectTypeName" th:field="*{type}" />
+	        <input type="submit" id="submitButton" class="btn btn-primary" value="Save" />
+	    </form>
+    </div>
 
-	<table>
-		<tr th:each="deepSkyObjectType: ${deepSkyObjectTypes}">
-			<td th:text="${deepSkyObjectType.id}" />
-			<td th:text="${deepSkyObjectType.type}" />
-		</tr>
+	<table id="deepSkyObjectTypes" class="table">
+		<thead>
+			<tr>
+				<th style="width: 2%;">&nbsp;</th>
+				<th style="width: 2%;">&nbsp;</th>
+				<th style="width: 2%;">ID</th>
+				<th>Type</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="deepSkyObjectType: ${deepSkyObjectTypes}">
+				<td><a th:href="@{'/deepskyobjecttype/delete/' + ${deepSkyObjectType.id}}"><i class="fas fa-trash-alt"></i></a></td>
+				<td><a th:href="@{'/deepskyobjecttype/modify/' + ${deepSkyObjectType.id}}"><i class="fas fa-edit"></i></a></td>
+				<td th:text="${deepSkyObjectType.id}" />
+				<td th:id="@{'deepskyobjecttype-type-' + ${deepSkyObjectType.id}}" th:text="${deepSkyObjectType.type}" />
+			</tr>
+		</tbody>
 	</table>
 </body>
 </html>
