@@ -16,7 +16,7 @@
 	        <input type="text" id="deepSkyObjectName" th:field="*{name}" />
 	        
 	        <label>Constellation:</label>
-	        <select name="constellationId">
+	        <select id="constellationId" name="constellationId">
 	        	<option value="0">Select...</option>
 	        	<option th:each="constellation: ${constellations}" 
 	        		th:value="${constellation.id}" th:text="${constellation.name}"
@@ -24,7 +24,7 @@
 	        </select>
 	        
 	        <label>Type:</label>
-	        <select name="deepSkyObjectTypeId">
+	        <select id="deepSkyObjectTypeId" name="deepSkyObjectTypeId">
 	        	<option value="0">Select...</option>
 	        	<option th:each="deepSkyObjectType: ${deepSkyObjectTypes}" 
 	        		th:value="${deepSkyObjectType.id}" th:text="${deepSkyObjectType.type}"
