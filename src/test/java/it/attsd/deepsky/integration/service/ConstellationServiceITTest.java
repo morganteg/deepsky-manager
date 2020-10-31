@@ -71,9 +71,12 @@ public class ConstellationServiceITTest {
 		// Save first Constellation entity
 		Constellation constellationSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(constellationSaved);
+		
+		Constellation constellation = new Constellation(ORION);
 
 		// Save second Constellation entity
-		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(new Constellation(ORION)));
+		assertThrows(ConstellationAlreadyExistsException.class,
+				() -> constellationService.save(constellation));
 	}
 
 	@Test

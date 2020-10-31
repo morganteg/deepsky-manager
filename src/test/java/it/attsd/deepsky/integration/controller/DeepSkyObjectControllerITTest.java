@@ -171,7 +171,7 @@ public class DeepSkyObjectControllerITTest {
 		int tdSize = driver.findElement(By.id("deepSkyObjects")).findElement(By.tagName("tbody"))
 				.findElements(By.tagName("tr")).size();
 
-		assertThat(tdSize).isEqualTo(0);
+		assertThat(tdSize).isZero();
 	}
 	
 	@Test
@@ -303,7 +303,9 @@ public class DeepSkyObjectControllerITTest {
 		assertNotNull(m42);
 
 		driver.get(baseUrl + "/deepskyobject/delete/" + m42.getId());
-
-		assertThrows(NoSuchElementException.class, () -> driver.findElement(By.id("deepskyobject-id-" + m42.getId())));
+		
+		By byId = By.id("deepskyobject-id-" + m42.getId());
+		
+		assertThrows(NoSuchElementException.class, () -> driver.findElement(byId));
 	}
 }

@@ -142,9 +142,12 @@ public class DeepSkyObjectServiceITTest {
 		DeepSkyObject m42Saved = deepSkyObjectService.save(orionSaved.getId(), nebulaSaved.getId(), M42);
 		assertNotNull(m42Saved);
 		assertThat(m42Saved.getId()).isPositive();
+		
+		long orionSavedId = orionSaved.getId();
+		long nebulaSavedId = nebulaSaved.getId();
 
 		assertThrows(DeepSkyObjectAlreadyExistsException.class,
-				() -> deepSkyObjectService.save(orionSaved.getId(), nebulaSaved.getId(), M42));
+				() -> deepSkyObjectService.save(orionSavedId, nebulaSavedId, M42));
 	}
 
 	@Test
@@ -166,9 +169,11 @@ public class DeepSkyObjectServiceITTest {
 
 		DeepSkyObjectType nebulaSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(NEBULA));
 		assertNotNull(nebulaSaved);
+		
+		long nebulaSavedId = nebulaSaved.getId();
 
 		assertThrows(ConstellationNotFoundException.class,
-				() -> deepSkyObjectService.save(orionId, nebulaSaved.getId(), M42));
+				() -> deepSkyObjectService.save(orionId, nebulaSavedId, M42));
 	}
 
 	@Test
@@ -203,9 +208,11 @@ public class DeepSkyObjectServiceITTest {
 
 		DeepSkyObjectType nebulaFound = deepSkyObjectTypeService.findById(nebulaId);
 		assertNull(nebulaFound);
+		
+		long orionSavedId = orionSaved.getId();
 
 		assertThrows(DeepSkyObjectTypeNotFoundException.class,
-				() -> deepSkyObjectService.save(orionSaved.getId(), nebulaId, M42));
+				() -> deepSkyObjectService.save(orionSavedId, nebulaId, M42));
 	}
 
 	@Test
@@ -329,9 +336,12 @@ public class DeepSkyObjectServiceITTest {
 		assertNotNull(nebula);
 
 		String m42NameChanged = M42 + " changed";
+		
+		long orionId = orion.getId();
+		long nebulaId = nebula.getId();
 
 		assertThrows(DeepSkyObjectNotFoundException.class,
-				() -> deepSkyObjectService.update(1L, m42NameChanged, orion.getId(), nebula.getId()));
+				() -> deepSkyObjectService.update(1L, m42NameChanged, orionId, nebulaId));
 	}
 
 	@Test
@@ -352,9 +362,11 @@ public class DeepSkyObjectServiceITTest {
 		m42.setName(m42NameChanged);
 
 		long notExistingConstellationId = 2L;
+		
+		long nebulaId = nebula.getId();
 
 		assertThrows(ConstellationNotFoundException.class, () -> deepSkyObjectService.update(m42.getId(),
-				m42NameChanged, notExistingConstellationId, nebula.getId()));
+				m42NameChanged, notExistingConstellationId, nebulaId));
 
 		DeepSkyObject m42Found = deepSkyObjectService.findById(m42.getId());
 		assertNotNull(m42Found);
@@ -379,9 +391,11 @@ public class DeepSkyObjectServiceITTest {
 		m42.setName(m42NameChanged);
 
 		long notExistingDeepSkyObjectTypeId = 2L;
+		
+		long orionId = orion.getId();
 
 		assertThrows(DeepSkyObjectTypeNotFoundException.class, () -> deepSkyObjectService.update(m42.getId(),
-				m42NameChanged, orion.getId(), notExistingDeepSkyObjectTypeId));
+				m42NameChanged, orionId, notExistingDeepSkyObjectTypeId));
 
 		DeepSkyObject m42Found = deepSkyObjectService.findById(m42.getId());
 		assertNotNull(m42Found);

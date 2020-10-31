@@ -160,6 +160,8 @@ public class DeepSkyObjectTypeControllerITTest {
 
 		driver.get(baseUrl + "/deepskyobjecttype/delete/" + nebula.getId());
 		
-		assertThrows(NoSuchElementException.class, () -> driver.findElement(By.id("deepskyobjecttype-type-" + nebula.getId())));
+		By byId = By.id("deepskyobjecttype-type-" + nebula.getId());
+		
+		assertThrows(NoSuchElementException.class, () -> driver.findElement(byId));
 	}
 }

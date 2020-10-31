@@ -83,8 +83,7 @@ public class ConstellationRepositoryITTest {
 	}
 
 	@Test
-	public void testAddConstellationWhenNotExists()
-			throws ConstellationAlreadyExistsException {
+	public void testAddConstellationWhenNotExists() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
@@ -96,8 +95,9 @@ public class ConstellationRepositoryITTest {
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
-		assertThrows(ConstellationAlreadyExistsException.class,
-				() -> constellationRepository.save(new Constellation(ORION)));
+		Constellation orion = new Constellation(ORION);
+
+		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationRepository.save(orion));
 	}
 
 	@Test
