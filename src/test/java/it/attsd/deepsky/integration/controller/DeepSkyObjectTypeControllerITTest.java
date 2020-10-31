@@ -98,6 +98,22 @@ public class DeepSkyObjectTypeControllerITTest {
 
 		assertThat(tdSize).isEqualTo(1);
 	}
+	
+	@Test
+	public void testSaveDeepSkyObjectTypeIfNotExistsWithoutType() throws DeepSkyObjectTypeAlreadyExistsException {
+		driver.get(baseUrl + "/deepskyobjecttype");
+
+		WebElement typeElement = getInputType();
+		typeElement.sendKeys("");
+
+		WebElement submitButtonElement = driver.findElement(By.id("submitButton"));
+		submitButtonElement.click();
+
+		int tdSize = driver.findElement(By.id("deepSkyObjectTypes")).findElement(By.tagName("tbody"))
+				.findElements(By.tagName("tr")).size();
+
+		assertThat(tdSize).isEqualTo(0);
+	}
 
 	@Test
 	public void testSaveDeepSkyObjectTypeIfAlreadyExists() throws DeepSkyObjectTypeAlreadyExistsException {

@@ -22,8 +22,8 @@ import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 public class DeepSkyObjectTypeController {
 	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeController.class);
 	
-	private final String ATTRIBUTE_FORM = "deepSkyObjectTypeForm";
-	private final String ATTRIBUTE_DEEPSKYOBJECTTYPES = "deepSkyObjectTypes";
+	private final String attributeForm = "deepSkyObjectTypeForm";
+	private final String attributeDeepSkyObjectTypes = "deepSkyObjectTypes";
 	
 	@Autowired
 	DeepSkyObjectTypeService deepSkyObjectTypeService;
@@ -32,8 +32,8 @@ public class DeepSkyObjectTypeController {
 	public String getDeepSkyObjectTypes(Model model) {
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
 
-		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectTypeForm());
-		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
+		model.addAttribute(attributeForm, new DeepSkyObjectTypeForm());
+		model.addAttribute(attributeDeepSkyObjectTypes, deepSkyObjectTypes);
 
 		return "deepSkyObjectType/deepSkyObjectType";
 	}
@@ -41,7 +41,7 @@ public class DeepSkyObjectTypeController {
 	@PostMapping("/deepskyobjecttype")
 	public String saveDeepSkyObjectType(@ModelAttribute DeepSkyObjectTypeForm deepSkyObjectTypeForm, Model model) {
 		try {
-			if(deepSkyObjectTypeForm != null && StringUtils.isNotEmpty(deepSkyObjectTypeForm.getType())) {
+			if(StringUtils.isNotEmpty(deepSkyObjectTypeForm.getType())) {
 				if(deepSkyObjectTypeForm.getId() == 0) {
 					// Save
 					deepSkyObjectTypeService.save(new DeepSkyObjectType(deepSkyObjectTypeForm.getType().toLowerCase()));
@@ -57,8 +57,8 @@ public class DeepSkyObjectTypeController {
 		
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
 		
-		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectTypeForm());
-		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
+		model.addAttribute(attributeForm, new DeepSkyObjectTypeForm());
+		model.addAttribute(attributeDeepSkyObjectTypes, deepSkyObjectTypes);
 		
 		return "deepSkyObjectType/deepSkyObjectType";
 	}
@@ -70,10 +70,10 @@ public class DeepSkyObjectTypeController {
 		DeepSkyObjectTypeForm deepSkyObjectTypeForm = new DeepSkyObjectTypeForm();
 		deepSkyObjectTypeForm.setId(deepSkyObjectType.getId());
 		deepSkyObjectTypeForm.setType(deepSkyObjectType.getType());
-		model.addAttribute(ATTRIBUTE_FORM, deepSkyObjectTypeForm);
+		model.addAttribute(attributeForm, deepSkyObjectTypeForm);
 		
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
-		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
+		model.addAttribute(attributeDeepSkyObjectTypes, deepSkyObjectTypes);
 
 		return "deepSkyObjectType/deepSkyObjectType";
 	}
