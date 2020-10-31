@@ -144,6 +144,87 @@ public class DeepSkyObjectControllerITTest {
 
 		assertThat(tdSize).isEqualTo(1);
 	}
+	
+	@Test
+	public void testSaveDeepSkyObjectWhenNotExistsWithoutName()
+			throws ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException {
+		Constellation orionSaved = constellationService.save(new Constellation(ORION));
+		assertNotNull(orionSaved);
+
+		DeepSkyObjectType nebulaSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(NEBULA));
+		assertNotNull(nebulaSaved);
+
+		driver.get(baseUrl + "/deepskyobject");
+
+		WebElement nameElement = getInputName();
+		nameElement.sendKeys("");
+
+		Select constellationSelect = new Select(getInputConstellationId());
+		constellationSelect.selectByVisibleText(ORION);
+
+		Select deepSkyObjectTypeSelect = new Select(getInputDeepSkyObjectTypeId());
+		deepSkyObjectTypeSelect.selectByVisibleText(NEBULA);
+
+		WebElement submitButtonElement = driver.findElement(By.id("submitButton"));
+		submitButtonElement.click();
+
+		int tdSize = driver.findElement(By.id("deepSkyObjects")).findElement(By.tagName("tbody"))
+				.findElements(By.tagName("tr")).size();
+
+		assertThat(tdSize).isEqualTo(0);
+	}
+	
+	@Test
+	public void testSaveDeepSkyObjectWhenNotExistsWithoutConstellation()
+			throws ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException {
+		Constellation orionSaved = constellationService.save(new Constellation(ORION));
+		assertNotNull(orionSaved);
+
+		DeepSkyObjectType nebulaSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(NEBULA));
+		assertNotNull(nebulaSaved);
+
+		driver.get(baseUrl + "/deepskyobject");
+
+		WebElement nameElement = getInputName();
+		nameElement.sendKeys(M42);
+
+		Select deepSkyObjectTypeSelect = new Select(getInputDeepSkyObjectTypeId());
+		deepSkyObjectTypeSelect.selectByVisibleText(NEBULA);
+
+		WebElement submitButtonElement = driver.findElement(By.id("submitButton"));
+		submitButtonElement.click();
+
+		int tdSize = driver.findElement(By.id("deepSkyObjects")).findElement(By.tagName("tbody"))
+				.findElements(By.tagName("tr")).size();
+
+		assertThat(tdSize).isEqualTo(0);
+	}
+	
+	@Test
+	public void testSaveDeepSkyObjectWhenNotExistsWithoutDeepSkyObjectType()
+			throws ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException {
+		Constellation orionSaved = constellationService.save(new Constellation(ORION));
+		assertNotNull(orionSaved);
+
+		DeepSkyObjectType nebulaSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(NEBULA));
+		assertNotNull(nebulaSaved);
+
+		driver.get(baseUrl + "/deepskyobject");
+
+		WebElement nameElement = getInputName();
+		nameElement.sendKeys(M42);
+
+		Select constellationSelect = new Select(getInputConstellationId());
+		constellationSelect.selectByVisibleText(ORION);
+
+		WebElement submitButtonElement = driver.findElement(By.id("submitButton"));
+		submitButtonElement.click();
+
+		int tdSize = driver.findElement(By.id("deepSkyObjects")).findElement(By.tagName("tbody"))
+				.findElements(By.tagName("tr")).size();
+
+		assertThat(tdSize).isEqualTo(0);
+	}
 
 	@Test
 	public void testSaveDeepSkyObjectWhenAlreadyExists() throws ConstellationAlreadyExistsException,

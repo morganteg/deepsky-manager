@@ -33,7 +33,7 @@ public class DeepSkyObjectController {
 	private final String ATTRIBUTE_DEEPSKYOBJECTS = "deepSkyObjects";
 	private final String ATTRIBUTE_CONSTELLATIONS = "constellations";
 	private final String ATTRIBUTE_DEEPSKYOBJECTTYPES = "deepSkyObjectTypes";
-	
+
 	@Autowired
 	ConstellationService constellationService;
 
@@ -60,8 +60,8 @@ public class DeepSkyObjectController {
 	@PostMapping("/deepskyobject")
 	public String saveDeepSkyObject(@ModelAttribute DeepSkyObjectForm deepSkyObjectForm, Model model) {
 		try {
-			if (deepSkyObjectForm != null && StringUtils.isNotEmpty(deepSkyObjectForm.getName())
-					&& deepSkyObjectForm.getConstellationId() > 0 && deepSkyObjectForm.getDeepSkyObjectTypeId() > 0) {
+			if (StringUtils.isNotEmpty(deepSkyObjectForm.getName()) && deepSkyObjectForm.getConstellationId() > 0
+					&& deepSkyObjectForm.getDeepSkyObjectTypeId() > 0) {
 				if (deepSkyObjectForm.getId() == 0) {
 					// Save
 					deepSkyObjectService.save(deepSkyObjectForm.getConstellationId(),
