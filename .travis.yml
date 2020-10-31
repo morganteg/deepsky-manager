@@ -1,5 +1,4 @@
 language: java
-#jdk: openjdk8
 install: true
 addons:
   sonarcloud:
@@ -10,7 +9,7 @@ cache:
   - $HOME/.sonar/cache
 matrix:
   include:
-  - jdk: openjdk8
+  - jdk: openjdk11
     env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
 script:
   - mvn clean verify $ADDITIONAL_MAVEN_ARGS
