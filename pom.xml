@@ -16,7 +16,7 @@
 	<description>Deep sky application</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 		<database.host>localhost</database.host>
 		<database.username>root</database.username>
 		<database.password>root</database.password>

@@ -9,7 +9,7 @@ cache:
   - $HOME/.sonar/cache
 matrix:
   include:
-  - jdk: openjdk11
+  - jdk: openjdk8
     env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
 script:
   - mvn clean verify $ADDITIONAL_MAVEN_ARGS
