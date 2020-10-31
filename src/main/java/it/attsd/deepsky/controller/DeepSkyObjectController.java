@@ -29,6 +29,11 @@ import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 public class DeepSkyObjectController {
 	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectController.class);
 
+	private final String ATTRIBUTE_FORM = "deepSkyObjectForm";
+	private final String ATTRIBUTE_DEEPSKYOBJECTS = "deepSkyObjects";
+	private final String ATTRIBUTE_CONSTELLATIONS = "constellations";
+	private final String ATTRIBUTE_DEEPSKYOBJECTTYPES = "deepSkyObjectTypes";
+	
 	@Autowired
 	ConstellationService constellationService;
 
@@ -41,13 +46,13 @@ public class DeepSkyObjectController {
 	@GetMapping(value = "/deepskyobject")
 	public String getDeepSkyObjects(Model model) {
 		List<DeepSkyObject> deepSkyObjects = deepSkyObjectService.findAll();
-		model.addAttribute("deepSkyObjectForm", new DeepSkyObjectForm());
-		model.addAttribute("deepSkyObjects", deepSkyObjects);
+		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectForm());
+		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTS, deepSkyObjects);
 
 		List<Constellation> constellations = constellationService.findAll();
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
-		model.addAttribute("constellations", constellations);
-		model.addAttribute("deepSkyObjectTypes", deepSkyObjectTypes);
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
+		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
 
 		return "deepSkyObject/deepSkyObject";
 	}
@@ -74,13 +79,13 @@ public class DeepSkyObjectController {
 		}
 
 		List<DeepSkyObject> deepSkyObjects = deepSkyObjectService.findAll();
-		model.addAttribute("deepSkyObjectForm", new DeepSkyObjectForm());
-		model.addAttribute("deepSkyObjects", deepSkyObjects);
+		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectForm());
+		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTS, deepSkyObjects);
 
 		List<Constellation> constellations = constellationService.findAll();
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
-		model.addAttribute("constellations", constellations);
-		model.addAttribute("deepSkyObjectTypes", deepSkyObjectTypes);
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
+		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
 
 		return "deepSkyObject/deepSkyObject";
 	}
@@ -94,15 +99,15 @@ public class DeepSkyObjectController {
 		deepSkyObjectForm.setName(deepSkyObject.getName());
 		deepSkyObjectForm.setConstellationId(deepSkyObject.getConstellation().getId());
 		deepSkyObjectForm.setDeepSkyObjectTypeId(deepSkyObject.getType().getId());
-		model.addAttribute("deepSkyObjectForm", deepSkyObjectForm);
+		model.addAttribute(ATTRIBUTE_FORM, deepSkyObjectForm);
 
 		List<DeepSkyObject> deepSkyObjects = deepSkyObjectService.findAll();
-		model.addAttribute("deepSkyObjects", deepSkyObjects);
+		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTS, deepSkyObjects);
 
 		List<Constellation> constellations = constellationService.findAll();
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
-		model.addAttribute("constellations", constellations);
-		model.addAttribute("deepSkyObjectTypes", deepSkyObjectTypes);
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
+		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
 
 		return "deepSkyObject/deepSkyObject";
 	}

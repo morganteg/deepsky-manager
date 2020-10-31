@@ -22,6 +22,9 @@ import it.attsd.deepsky.service.ConstellationService;
 public class ConstellationController {
 	private Logger logger = LoggerFactory.getLogger(ConstellationController.class);
 	
+	private final String ATTRIBUTE_FORM = "constellationForm";
+	private final String ATTRIBUTE_CONSTELLATIONS = "constellations";
+	
 	@Autowired
 	ConstellationService constellationService;
 
@@ -29,8 +32,8 @@ public class ConstellationController {
 	public String getConstellations(Model model) {
 		List<Constellation> constellations = constellationService.findAll();
 
-		model.addAttribute("constellationForm", new ConstellationForm());
-		model.addAttribute("constellations", constellations);
+		model.addAttribute(ATTRIBUTE_FORM, new ConstellationForm());
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
 		return "constellation/constellation";
 	}
@@ -54,8 +57,8 @@ public class ConstellationController {
 		
 		List<Constellation> constellations = constellationService.findAll();
 
-		model.addAttribute("constellationForm", new ConstellationForm());
-		model.addAttribute("constellations", constellations);
+		model.addAttribute(ATTRIBUTE_FORM, new ConstellationForm());
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
 		return "constellation/constellation";
 	}
@@ -67,10 +70,10 @@ public class ConstellationController {
 		ConstellationForm constellationForm = new ConstellationForm();
 		constellationForm.setId(constellation.getId());
 		constellationForm.setName(constellation.getName());
-		model.addAttribute("constellationForm", constellationForm);
+		model.addAttribute(ATTRIBUTE_FORM, constellationForm);
 		
 		List<Constellation> constellations = constellationService.findAll();
-		model.addAttribute("constellations", constellations);
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
 		return "constellation/constellation";
 	}

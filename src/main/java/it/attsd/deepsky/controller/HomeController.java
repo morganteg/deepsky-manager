@@ -8,18 +8,8 @@ public class HomeController {
 	
 	@GetMapping(value = "/")
     public String index(){
-        System.out.println("Home Page");
+        
         return "index";
     }
-	
-//	@GetMapping(value = "/home")
-//    public String home(Model model) {
-//        Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("project_name", "DeepSky Manager");
-//        
-//        model.addAttribute("name", "DeepSky Manager");
-//
-//        return "index";
-//    }
 
 }

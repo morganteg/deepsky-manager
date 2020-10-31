@@ -22,6 +22,9 @@ import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 public class DeepSkyObjectTypeController {
 	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeController.class);
 	
+	private final String ATTRIBUTE_FORM = "deepSkyObjectTypeForm";
+	private final String ATTRIBUTE_DEEPSKYOBJECTTYPES = "deepSkyObjectTypes";
+	
 	@Autowired
 	DeepSkyObjectTypeService deepSkyObjectTypeService;
 
@@ -29,8 +32,8 @@ public class DeepSkyObjectTypeController {
 	public String getDeepSkyObjectTypes(Model model) {
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
 
-		model.addAttribute("deepSkyObjectTypeForm", new DeepSkyObjectTypeForm());
-		model.addAttribute("deepSkyObjectTypes", deepSkyObjectTypes);
+		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectTypeForm());
+		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
 
 		return "deepSkyObjectType/deepSkyObjectType";
 	}
@@ -54,8 +57,8 @@ public class DeepSkyObjectTypeController {
 		
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
 		
-		model.addAttribute("deepSkyObjectTypeForm", new DeepSkyObjectTypeForm());
-		model.addAttribute("deepSkyObjectTypes", deepSkyObjectTypes);
+		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectTypeForm());
+		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
 		
 		return "deepSkyObjectType/deepSkyObjectType";
 	}
@@ -67,10 +70,10 @@ public class DeepSkyObjectTypeController {
 		DeepSkyObjectTypeForm deepSkyObjectTypeForm = new DeepSkyObjectTypeForm();
 		deepSkyObjectTypeForm.setId(deepSkyObjectType.getId());
 		deepSkyObjectTypeForm.setType(deepSkyObjectType.getType());
-		model.addAttribute("deepSkyObjectTypeForm", deepSkyObjectTypeForm);
+		model.addAttribute(ATTRIBUTE_FORM, deepSkyObjectTypeForm);
 		
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
-		model.addAttribute("deepSkyObjectTypes", deepSkyObjectTypes);
+		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
 
 		return "deepSkyObjectType/deepSkyObjectType";
 	}
