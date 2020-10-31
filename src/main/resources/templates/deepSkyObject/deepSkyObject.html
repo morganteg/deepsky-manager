@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head"></div>
+
+<body class="container">
+	<div th:replace="fragments/header :: header">...</div>
+
+	<h1>DeepSky Objects</h1>
+
+	<div style="margin-bottom: 1em;">
+		<form action="#" th:action="@{/deepskyobject}" th:object="${deepSkyObjectForm}" method="post">
+	        <input type="hidden" id="deepSkyObjectId" th:field="*{id}" />
+	        
+	        <label>Name:</label>
+	        <input type="text" id="deepSkyObjectName" th:field="*{name}" />
+	        
+	        <label>Constellation:</label>
+	        <select name="constellationId">
+	        	<option value="0">Select...</option>
+	        	<option th:each="constellation: ${constellations}" 
+	        		th:value="${constellation.id}" th:text="${constellation.name}"
+	        		th:selected="(${constellation.id} == *{constellationId})"></option>
+	        </select>
+	        
+	        <label>Type:</label>
+	        <select name="deepSkyObjectTypeId">
+	        	<option value="0">Select...</option>
+	        	<option th:each="deepSkyObjectType: ${deepSkyObjectTypes}" 
+	        		th:value="${deepSkyObjectType.id}" th:text="${deepSkyObjectType.type}"
+	        		th:selected="(${deepSkyObjectType.id} == *{deepSkyObjectTypeId})"></option>
+	        </select>
+	        
+	        <input type="submit" id="submitButton" class="btn btn-primary" value="Save" />
+	    </form>
+    </div>
+
+	<table id="deepSkyObjects" class="table">
+		<thead>
+			<tr>
+				<th style="width: 2%;">&nbsp;</th>
+				<th style="width: 2%;">&nbsp;</th>
+				<th style="width: 2%;">ID</th>
+				<th>Name</th>
+				<th>Constellation</th>
+				<th>Type</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="deepSkyObject: ${deepSkyObjects}">
+				<td><a th:href="@{'/deepskyobject/delete/' + ${deepSkyObject.id}}"><i class="fas fa-trash-alt"></i></a></td>
+				<td><a th:href="@{'/deepskyobject/modify/' + ${deepSkyObject.id}}"><i class="fas fa-edit"></i></a></td>
+				<td th:text="${deepSkyObject.id}" />
+				<td th:id="@{'deepskyobject-name-' + ${deepSkyObject.id}}" th:text="${deepSkyObject.name}" />
+				<td th:id="@{'deepskyobject-constellation-' + ${deepSkyObject.id}}" th:text="${deepSkyObject.constellation.name}" />
+				<td th:id="@{'deepskyobject-type-' + ${deepSkyObject.id}}" th:text="${deepSkyObject.type.type}" />
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
