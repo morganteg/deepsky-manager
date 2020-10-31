@@ -35,7 +35,7 @@ import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class DeepSkyObjectControllerIT {
+public class DeepSkyObjectControllerITTest {
 	@Autowired
 	private ConstellationRepository constellationRepository;
 
