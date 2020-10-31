@@ -29,10 +29,11 @@ import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 public class DeepSkyObjectController {
 	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectController.class);
 
-	private final String attributeForm = "deepSkyObjectForm";
-	private final String attributeDeepSkyObjects = "deepSkyObjects";
-	private final String attributeConstellations = "constellations";
-	private final String attributeDeepSkyObjectTypes = "deepSkyObjectTypes";
+	private static final String attributeForm = "deepSkyObjectForm";
+	private static final String attributeDeepSkyObjects = "deepSkyObjects";
+	private static final String attributeConstellations = "constellations";
+	private static final String attributeDeepSkyObjectTypes = "deepSkyObjectTypes";
+	private static final String targetDeepSkyObject = "deepSkyObject/deepSkyObject";
 
 	@Autowired
 	ConstellationService constellationService;
@@ -54,7 +55,7 @@ public class DeepSkyObjectController {
 		model.addAttribute(attributeConstellations, constellations);
 		model.addAttribute(attributeDeepSkyObjectTypes, deepSkyObjectTypes);
 
-		return "deepSkyObject/deepSkyObject";
+		return targetDeepSkyObject;
 	}
 
 	@PostMapping("/deepskyobject")
@@ -87,7 +88,7 @@ public class DeepSkyObjectController {
 		model.addAttribute(attributeConstellations, constellations);
 		model.addAttribute(attributeDeepSkyObjectTypes, deepSkyObjectTypes);
 
-		return "deepSkyObject/deepSkyObject";
+		return targetDeepSkyObject;
 	}
 
 	@GetMapping(value = "/deepskyobject/modify/{id}")
@@ -109,7 +110,7 @@ public class DeepSkyObjectController {
 		model.addAttribute(attributeConstellations, constellations);
 		model.addAttribute(attributeDeepSkyObjectTypes, deepSkyObjectTypes);
 
-		return "deepSkyObject/deepSkyObject";
+		return targetDeepSkyObject;
 	}
 
 	@GetMapping(value = "/deepskyobject/delete/{id}")

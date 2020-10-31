@@ -97,10 +97,6 @@ public class DeepSkyObjectService {
 		DeepSkyObjectType deepSkyObjectTypeSaved = deepSkyObjectTypeRepository.save(deepSkyObjectTypeToSave);
 
 		// 3 - Create DeepSkyObject
-//		DeepSkyObject existingDeepSkyObject = deepSkyObjectRepository.findByName(deepSkyObjectName);
-//		if (existingDeepSkyObject != null) {
-//			throw new DeepSkyObjectAlreadyExistsException();
-//		}
 		DeepSkyObject deepSkyObject = new DeepSkyObject(deepSkyObjectName, constellationSaved, deepSkyObjectTypeSaved);
 		DeepSkyObject deepSkyObjectSaved = deepSkyObjectRepository.save(deepSkyObject);
 

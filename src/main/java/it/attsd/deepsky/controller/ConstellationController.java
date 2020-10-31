@@ -22,8 +22,9 @@ import it.attsd.deepsky.service.ConstellationService;
 public class ConstellationController {
 	private Logger logger = LoggerFactory.getLogger(ConstellationController.class);
 	
-	private final String attributeForm = "constellationForm";
-	private final String attributeConstellations = "constellations";
+	private static final String attributeForm = "constellationForm";
+	private static final String attributeConstellations = "constellations";
+	private static final String targetConstellation = "constellation/constellation";
 	
 	@Autowired
 	ConstellationService constellationService;
@@ -35,7 +36,7 @@ public class ConstellationController {
 		model.addAttribute(attributeForm, new ConstellationForm());
 		model.addAttribute(attributeConstellations, constellations);
 
-		return "constellation/constellation";
+		return targetConstellation;
 	}
 
 	@PostMapping("/constellation")
@@ -60,7 +61,7 @@ public class ConstellationController {
 		model.addAttribute(attributeForm, new ConstellationForm());
 		model.addAttribute(attributeConstellations, constellations);
 
-		return "constellation/constellation";
+		return targetConstellation;
 	}
 	
 	@GetMapping(value = "/constellation/modify/{id}")
@@ -75,7 +76,7 @@ public class ConstellationController {
 		List<Constellation> constellations = constellationService.findAll();
 		model.addAttribute(attributeConstellations, constellations);
 
-		return "constellation/constellation";
+		return targetConstellation;
 	}
 	
 	@GetMapping(value = "/constellation/delete/{id}")

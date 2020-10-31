@@ -197,7 +197,7 @@ public class DeepSkyObjectControllerITTest {
 		int tdSize = driver.findElement(By.id("deepSkyObjects")).findElement(By.tagName("tbody"))
 				.findElements(By.tagName("tr")).size();
 
-		assertThat(tdSize).isEqualTo(0);
+		assertThat(tdSize).isZero();
 	}
 	
 	@Test
@@ -223,7 +223,7 @@ public class DeepSkyObjectControllerITTest {
 		int tdSize = driver.findElement(By.id("deepSkyObjects")).findElement(By.tagName("tbody"))
 				.findElements(By.tagName("tr")).size();
 
-		assertThat(tdSize).isEqualTo(0);
+		assertThat(tdSize).isZero();
 	}
 
 	@Test
