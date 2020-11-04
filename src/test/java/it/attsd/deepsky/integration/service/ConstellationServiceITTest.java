@@ -3,6 +3,7 @@ package it.attsd.deepsky.integration.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
@@ -15,11 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -44,7 +45,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testFindAll() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testFindAll() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
@@ -58,7 +59,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testAddConstellationWhenNotExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testAddConstellationWhenNotExists() throws ConstellationAlreadyExistsException {
 		Constellation existingConstellation = constellationService.findByName(ORION);
 		assertNull(existingConstellation);
 
@@ -68,17 +69,20 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testAddConstellationWhenAlreadyExists() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testAddConstellationWhenAlreadyExists() throws ConstellationAlreadyExistsException {
 		// Save first Constellation entity
 		Constellation constellationSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(constellationSaved);
+		
+		Constellation constellation = new Constellation(ORION);
 
 		// Save second Constellation entity
-		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(new Constellation(ORION)));
+		assertThrows(ConstellationAlreadyExistsException.class,
+				() -> constellationService.save(constellation));
 	}
 
 	@Test
-	public void testUpdateConstellationWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testUpdateConstellationWhenIsPresent() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
@@ -94,7 +98,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testDeleteConstellationWhenIsPresent() throws GenericRepositoryException, ConstellationAlreadyExistsException {
+	public void testDeleteConstellationWhenIsPresent() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
@@ -102,6 +106,25 @@ public class ConstellationServiceITTest {
 
 		Constellation orionFound = constellationService.findById(orionSaved.getId());
 		assertNull(orionFound);
+	}
+	
+	@Test
+	public void testOptimisticLocking() throws ConstellationAlreadyExistsException {
+		Constellation orion = constellationService.save(new Constellation(ORION));
+		assertNotNull(orion);
+
+		Constellation orion1 = constellationService.findById(orion.getId());
+		Constellation orion2 = constellationService.findById(orion.getId());
+		
+		assertEquals(0, orion1.getVersion());
+		assertEquals(0, orion2.getVersion());
+		
+		orion1.setName(orion1.getName() + " 1");
+		orion2.setName(orion2.getName() + " 2");
+
+		constellationService.update(orion1);
+		assertThrows(ObjectOptimisticLockingFailureException.class,
+				() -> constellationService.update(orion2));
 	}
 
 }

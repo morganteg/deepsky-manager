@@ -106,9 +106,11 @@ public class DeepSkyObjectTypeRepositoryITTest {
 	public void testAddDeepSkyObjectTypeWhenAlreadyExists() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType galaxySaved = deepSkyObjectTypeRepository.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(galaxySaved);
+		
+		DeepSkyObjectType deepSkyObjectType = new DeepSkyObjectType(GALAXY);
 
 		assertThrows(DeepSkyObjectTypeAlreadyExistsException.class,
-				() -> deepSkyObjectTypeRepository.save(new DeepSkyObjectType(GALAXY)));
+				() -> deepSkyObjectTypeRepository.save(deepSkyObjectType));
 	}
 	
 	@Test

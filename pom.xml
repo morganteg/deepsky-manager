@@ -336,6 +336,7 @@
 				</executions>
 			</plugin>
 
+			<!-- To submit Java code coverage to Coveralls cloud platform -->
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import it.attsd.deepsky.controller.form.ConstellationForm;
@@ -21,36 +22,68 @@ import it.attsd.deepsky.service.ConstellationService;
 public class ConstellationController {
 	private Logger logger = LoggerFactory.getLogger(ConstellationController.class);
 	
+	private static final String attributeForm = "constellationForm";
+	private static final String attributeConstellations = "constellations";
+	private static final String targetConstellation = "constellation/constellation";
+	
 	@Autowired
 	ConstellationService constellationService;
 
 	@GetMapping(value = "/constellation")
-	public String constellations(Model model) {
+	public String getConstellations(Model model) {
 		List<Constellation> constellations = constellationService.findAll();
 
-		model.addAttribute("constellation", new ConstellationForm());
-		model.addAttribute("constellations", constellations);
+		model.addAttribute(attributeForm, new ConstellationForm());
+		model.addAttribute(attributeConstellations, constellations);
 
-		return "constellation/constellation";
+		return targetConstellation;
 	}
 
 	@PostMapping("/constellation")
-	public String constellations(@ModelAttribute ConstellationForm constellationForm, Model model) {
+	public String saveConstellations(@ModelAttribute ConstellationForm constellationForm, Model model) {
 		try {
 			if(constellationForm != null && StringUtils.isNotEmpty(constellationForm.getName())) {
-				constellationService.save(new Constellation(constellationForm.getName().toLowerCase()));
+				if(constellationForm.getId() == 0) {
+					// Save
+					constellationService.save(new Constellation(constellationForm.getName().toLowerCase()));
+				}else {
+					// Update
+					constellationService.update(new Constellation(constellationForm.getId(), constellationForm.getName().toLowerCase()));
+				}
 			}
 		} catch (ConstellationAlreadyExistsException e) {
 			logger.info(e.getMessage());
-			model.addAttribute("error", e.getMessage()); // TODO in UI
+			model.addAttribute("error", e.getMessage());
 		}
 		
-		model.addAttribute("constellation", new ConstellationForm());
+		List<Constellation> constellations = constellationService.findAll();
+
+		model.addAttribute(attributeForm, new ConstellationForm());
+		model.addAttribute(attributeConstellations, constellations);
+
+		return targetConstellation;
+	}
+	
+	@GetMapping(value = "/constellation/modify/{id}")
+	public String modifyConstellation(@PathVariable long id, Model model) {
+		Constellation constellation = constellationService.findById(id);
+		
+		ConstellationForm constellationForm = new ConstellationForm();
+		constellationForm.setId(constellation.getId());
+		constellationForm.setName(constellation.getName());
+		model.addAttribute(attributeForm, constellationForm);
 		
 		List<Constellation> constellations = constellationService.findAll();
-		model.addAttribute("constellations", constellations);
-		
-		return "constellation/constellation";
+		model.addAttribute(attributeConstellations, constellations);
+
+		return targetConstellation;
+	}
+	
+	@GetMapping(value = "/constellation/delete/{id}")
+	public String deleteConstellation(@PathVariable long id, Model model) {
+		constellationService.delete(id);
+
+		return "redirect:/constellation";
 	}
 
 }

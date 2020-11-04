@@ -29,7 +29,6 @@ import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -85,7 +84,7 @@ public class DeepSkyObjectRepositoryTest {
 	}
 
 	@Test
-	public void test3GetDeepSkyObjectByIdWhenIdIsPresent() throws GenericRepositoryException {
+	public void test3GetDeepSkyObjectByIdWhenIdIsPresent() {
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(m42);
 
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectRepository.findById(1L);
@@ -96,7 +95,7 @@ public class DeepSkyObjectRepositoryTest {
 	}
 
 	@Test
-	public void test4GetDeepSkyObjectByIdWhenIdIsNotPresent() throws GenericRepositoryException {
+	public void test4GetDeepSkyObjectByIdWhenIdIsNotPresent() {
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(null);
 
 		DeepSkyObject deepSkyObjectFound = deepSkyObjectRepository.findById(1L);
@@ -107,7 +106,7 @@ public class DeepSkyObjectRepositoryTest {
 	}
 
 	@Test
-	public void test5AddDeepSkyObjectWhenIsNotPresent() throws GenericRepositoryException, DeepSkyObjectAlreadyExistsException {
+	public void test5AddDeepSkyObjectWhenIsNotPresent() throws DeepSkyObjectAlreadyExistsException {
 		deepSkyObjectRepository.save(m42);
 		verify(entityManager, times(1)).persist(m42);
 	}
@@ -121,7 +120,7 @@ public class DeepSkyObjectRepositoryTest {
 	}
 
 	@Test
-	public void testDeleteDeepSkyObjectWhenIsNotPresent() throws GenericRepositoryException {
+	public void testDeleteDeepSkyObjectWhenIsNotPresent() {
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(null);
 		
 		deepSkyObjectRepository.delete(1L);
@@ -131,7 +130,7 @@ public class DeepSkyObjectRepositoryTest {
 	}
 	
 	@Test
-	public void testDeleteDeepSkyObject() throws GenericRepositoryException {
+	public void testDeleteDeepSkyObject() {
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(m42);
 		
 		deepSkyObjectRepository.delete(1L);
@@ -141,7 +140,7 @@ public class DeepSkyObjectRepositoryTest {
 	}
 
 	@Test
-	public void testDeleteDeepSkyObjectWhenIsNull() throws GenericRepositoryException {
+	public void testDeleteDeepSkyObjectWhenIsNull() {
 		when(entityManager.find(DeepSkyObject.class, 1L)).thenReturn(null);
 		
 		deepSkyObjectRepository.delete(1L);

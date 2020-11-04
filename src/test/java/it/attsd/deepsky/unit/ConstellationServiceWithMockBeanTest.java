@@ -21,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -52,7 +51,7 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindConstellationByIdWhenIsPresent() throws GenericRepositoryException {
+	public void testFindConstellationByIdWhenIsPresent() {
 		when(constellationRepository.findById(1)).thenReturn(orion);
 
 		Constellation constellationFound = constellationService.findById(1);
@@ -61,7 +60,7 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindConstellationByTypeWhenIsPresent() throws GenericRepositoryException {
+	public void testFindConstellationByTypeWhenIsPresent() {
 		when(constellationRepository.findByName("orion")).thenReturn(orion);
 
 		Constellation orionFound = constellationRepository.findByName("orion");
@@ -71,7 +70,7 @@ public class ConstellationServiceWithMockBeanTest {
 
 	@Test
 	public void testSaveConstellationWhenNotExists()
-			throws GenericRepositoryException, ConstellationAlreadyExistsException {
+			throws ConstellationAlreadyExistsException {
 		Constellation libraSaved = new Constellation(1L, "libra");
 
 		when(constellationRepository.save(libra)).thenReturn(libraSaved);
@@ -84,14 +83,14 @@ public class ConstellationServiceWithMockBeanTest {
 
 	@Test
 	public void testSaveConstellationWhenAlreadyExists()
-			throws GenericRepositoryException, ConstellationAlreadyExistsException {
+			throws ConstellationAlreadyExistsException {
 		doThrow(new ConstellationAlreadyExistsException()).when(constellationRepository).save(libra);
 
 		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationRepository.save(libra));
 	}
 
 	@Test
-	public void testDeleteConstellationWhenExists() throws GenericRepositoryException {
+	public void testDeleteConstellationWhenExists() {
 		when(constellationRepository.findById(1L)).thenReturn(null);
 
 		constellationRepository.delete(1L);
@@ -102,7 +101,7 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testDeleteConstellationWhenNotExists() throws GenericRepositoryException {
+	public void testDeleteConstellationWhenNotExists() {
 //		doThrow(new GenericRepositoryException("Constellation not found")).when(constellationRepository).delete(1L);
 
 		long constellationId = 1L;

@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
@@ -46,7 +45,7 @@ public class DeepSkyObjectTypeServiceITTest {
 	}
 
 	@Test
-	public void testFindAll() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testFindAll() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType galaxySaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(galaxySaved);
 
@@ -59,7 +58,7 @@ public class DeepSkyObjectTypeServiceITTest {
 	}
 
 	@Test
-	public void testAddDeepSkyObjectTypeWhenNotExists() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testAddDeepSkyObjectTypeWhenNotExists() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 
 		assertNotNull(typeSaved);
@@ -67,16 +66,18 @@ public class DeepSkyObjectTypeServiceITTest {
 	}
 
 	@Test
-	public void testAddDeepSkyObjectTypeWhenAlreadyExists() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testAddDeepSkyObjectTypeWhenAlreadyExists() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(typeSaved);
+		
+		DeepSkyObjectType deepSkyObjectType = new DeepSkyObjectType(GALAXY);
 
 		assertThrows(DeepSkyObjectTypeAlreadyExistsException.class,
-				() -> deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY)));
+				() -> deepSkyObjectTypeService.save(deepSkyObjectType));
 	}
 
 	@Test
-	public void testUpdateDeepSkyObjectTypeWhenIsPresent() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testUpdateDeepSkyObjectTypeWhenIsPresent() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(typeSaved);
 
@@ -92,7 +93,7 @@ public class DeepSkyObjectTypeServiceITTest {
 	}
 
 	@Test
-	public void testDeleteDeepSkyObjectTypeWhenIsPresent() throws GenericRepositoryException, DeepSkyObjectTypeAlreadyExistsException {
+	public void testDeleteDeepSkyObjectTypeWhenIsPresent() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(typeSaved);
 

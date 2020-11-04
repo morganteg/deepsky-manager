@@ -27,7 +27,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.exception.GenericRepositoryException;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -84,7 +83,7 @@ public class DeepSkyObjectTypeRepositoryTest {
 	}
 
 	@Test
-	public void testGetDeepSkyObjectTypeByIdWhenExists() throws GenericRepositoryException {
+	public void testGetDeepSkyObjectTypeByIdWhenExists() {
 		DeepSkyObjectType orion = new DeepSkyObjectType(1L, GALAXY);
 
 		when(entityManager.find(DeepSkyObjectType.class, 1L)).thenReturn(orion);
@@ -97,7 +96,7 @@ public class DeepSkyObjectTypeRepositoryTest {
 	}
 
 	@Test
-	public void testGetDeepSkyObjectTypeByIdWhenNotExists() throws GenericRepositoryException {
+	public void testGetDeepSkyObjectTypeByIdWhenNotExists() {
 		when(entityManager.find(DeepSkyObjectType.class, 1L)).thenReturn(null);
 
 		DeepSkyObjectType deepSkyObjectTypeFound = deepSkyObjectTypeRepository.findById(1L);
