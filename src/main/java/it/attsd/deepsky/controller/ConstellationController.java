@@ -22,9 +22,9 @@ import it.attsd.deepsky.service.ConstellationService;
 public class ConstellationController {
 	private Logger logger = LoggerFactory.getLogger(ConstellationController.class);
 	
-	private static final String attributeForm = "constellationForm";
-	private static final String attributeConstellations = "constellations";
-	private static final String targetConstellation = "constellation/constellation";
+	private static final String ATTRIBUTE_FORM = "constellationForm";
+	private static final String ATTRIBUTE_CONSTELLATIONS = "constellations";
+	private static final String TARGET_CONSTELLATION = "constellation/constellation";
 	
 	@Autowired
 	ConstellationService constellationService;
@@ -33,10 +33,10 @@ public class ConstellationController {
 	public String getConstellations(Model model) {
 		List<Constellation> constellations = constellationService.findAll();
 
-		model.addAttribute(attributeForm, new ConstellationForm());
-		model.addAttribute(attributeConstellations, constellations);
+		model.addAttribute(ATTRIBUTE_FORM, new ConstellationForm());
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
-		return targetConstellation;
+		return TARGET_CONSTELLATION;
 	}
 
 	@PostMapping("/constellation")
@@ -58,10 +58,10 @@ public class ConstellationController {
 		
 		List<Constellation> constellations = constellationService.findAll();
 
-		model.addAttribute(attributeForm, new ConstellationForm());
-		model.addAttribute(attributeConstellations, constellations);
+		model.addAttribute(ATTRIBUTE_FORM, new ConstellationForm());
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
-		return targetConstellation;
+		return TARGET_CONSTELLATION;
 	}
 	
 	@GetMapping(value = "/constellation/modify/{id}")
@@ -71,12 +71,12 @@ public class ConstellationController {
 		ConstellationForm constellationForm = new ConstellationForm();
 		constellationForm.setId(constellation.getId());
 		constellationForm.setName(constellation.getName());
-		model.addAttribute(attributeForm, constellationForm);
+		model.addAttribute(ATTRIBUTE_FORM, constellationForm);
 		
 		List<Constellation> constellations = constellationService.findAll();
-		model.addAttribute(attributeConstellations, constellations);
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
-		return targetConstellation;
+		return TARGET_CONSTELLATION;
 	}
 	
 	@GetMapping(value = "/constellation/delete/{id}")
