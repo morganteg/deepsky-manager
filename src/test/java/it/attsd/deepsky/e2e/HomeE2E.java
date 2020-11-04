@@ -39,6 +39,6 @@ public class HomeE2E {
 		driver.get(baseUrl);
 		WebElement element = driver.findElement(By.id("title"));
 		
-		assertThat(element.getText().equalsIgnoreCase("home"));
+		assertThat(element.getText()).isEqualToIgnoringCase("home");
 	}
 }

@@ -52,9 +52,7 @@ public class ConstellationREST {
 
 		Constellation constellation = new Constellation(constellationUpdateRequest.getId(),
 				constellationUpdateRequest.getName());
-		Constellation updatedConstellation = constellationService.update(constellation);
-		
-		return updatedConstellation;
+		return constellationService.update(constellation);
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

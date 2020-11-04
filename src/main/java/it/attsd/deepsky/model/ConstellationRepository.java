@@ -55,28 +55,11 @@ public class ConstellationRepository extends BaseRepository {
 			entityManager.persist(constellation);
 			entityManager.flush();
 		} 
-//		catch (DataIntegrityViolationException e) {
-//			System.out.println("history already exist");
-//			throw new ConstellationAlreadyExistsException();
-//		} 
 		catch (PersistenceException e) {
 			if (e.getCause() instanceof ConstraintViolationException) {
 				throw new ConstellationAlreadyExistsException();
 			}
 		}
-
-//		try {
-//			entityManager.persist(constellation);
-//			entityManager.flush();
-//		} catch (PersistenceException e) {
-//			if (ExceptionUtils.indexOfType(e, ConstraintViolationException.class) != -1) {
-//				throw new ConstellationAlreadyExistsException();
-//			} else {
-//				throw e;
-//			}
-//		} catch (Exception e) {
-//			throw new GenericRepositoryException(e);
-//		}
 
 		return constellation;
 	}
