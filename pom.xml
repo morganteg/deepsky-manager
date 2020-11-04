@@ -212,8 +212,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<!-- <exclusions> <exclusion> <groupId>org.junit.vintage</groupId> <artifactId>junit-vintage-engine</artifactId> 
-				</exclusion> </exclusions> -->
 			<exclusions>
 				<exclusion>
 					<groupId>org.hamcrest</groupId>
@@ -325,7 +323,6 @@
 				<version>0.8.5</version>
 				<executions>
 					<execution>
-						<!-- <phase>test</phase> -->
 						<goals>
 							<!-- binds by default to the phase "initialize" -->
 							<goal>prepare-agent</goal>
