@@ -32,8 +32,7 @@ import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
-import it.attsd.deepsky.pojo.deepskyobject.DeepSkyObjectSaveRequest;
-import it.attsd.deepsky.pojo.deepskyobject.DeepSkyObjectUpdateRequest;
+import it.attsd.deepsky.pojo.deepskyobject.DeepSkyObjectPojo;
 import it.attsd.deepsky.service.ConstellationService;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
@@ -132,7 +131,7 @@ public class DeepSkyObjectRestITTest {
 		DeepSkyObjectType nebula = deepSkyObjectTypeService.save(new DeepSkyObjectType(NEBULA));
 		assertNotNull(nebula);
 
-		DeepSkyObjectSaveRequest deepSkyObjectSaveRequest = new DeepSkyObjectSaveRequest();
+		DeepSkyObjectPojo deepSkyObjectSaveRequest = new DeepSkyObjectPojo();
 		deepSkyObjectSaveRequest.setName(M42);
 		deepSkyObjectSaveRequest.setConstellationId(orion.getId());
 		deepSkyObjectSaveRequest.setDeepSkyObjectTypeId(nebula.getId());
@@ -162,7 +161,7 @@ public class DeepSkyObjectRestITTest {
 		DeepSkyObject m42 = deepSkyObjectService.save(new DeepSkyObject(M42, orion, nebula));
 		assertNotNull(m42);
 		
-		DeepSkyObjectSaveRequest deepSkyObjectSaveRequest = new DeepSkyObjectSaveRequest();
+		DeepSkyObjectPojo deepSkyObjectSaveRequest = new DeepSkyObjectPojo();
 		deepSkyObjectSaveRequest.setName(M42);
 		deepSkyObjectSaveRequest.setConstellationId(orion.getId());
 		deepSkyObjectSaveRequest.setDeepSkyObjectTypeId(nebula.getId());
@@ -187,7 +186,7 @@ public class DeepSkyObjectRestITTest {
 
 		String m42NameChanged = m42.getName() + " changed";
 
-		DeepSkyObjectUpdateRequest deepSkyObjectUpdateRequest = new DeepSkyObjectUpdateRequest();
+		DeepSkyObjectPojo deepSkyObjectUpdateRequest = new DeepSkyObjectPojo();
 		deepSkyObjectUpdateRequest.setId(m42.getId());
 		deepSkyObjectUpdateRequest.setName(m42NameChanged);
 		deepSkyObjectUpdateRequest.setConstellationId(orion.getId());

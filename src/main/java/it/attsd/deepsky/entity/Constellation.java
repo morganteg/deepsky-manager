@@ -37,14 +37,6 @@ public class Constellation {
 		this.id = id;
 		this.name = name;
 	}
-	
-	public Integer getVersion() {
-		return version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
 
 	public long getId() {
 		return this.id;

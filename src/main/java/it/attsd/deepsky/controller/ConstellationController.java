@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import it.attsd.deepsky.controller.form.ConstellationForm;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.pojo.constellation.ConstellationPojo;
 import it.attsd.deepsky.service.ConstellationService;
 
 @Controller
 public class ConstellationController {
 	private Logger logger = LoggerFactory.getLogger(ConstellationController.class);
 	
-	private static final String attributeForm = "constellationForm";
-	private static final String attributeConstellations = "constellations";
-	private static final String targetConstellation = "constellation/constellation";
+	private static final String ATTRIBUTE_FORM = "constellationForm";
+	private static final String ATTRIBUTE_CONSTELLATIONS = "constellations";
+	private static final String TARGET_CONSTELLATION = "constellation/constellation";
 	
 	@Autowired
 	ConstellationService constellationService;
@@ -33,22 +33,22 @@ public class ConstellationController {
 	public String getConstellations(Model model) {
 		List<Constellation> constellations = constellationService.findAll();
 
-		model.addAttribute(attributeForm, new ConstellationForm());
-		model.addAttribute(attributeConstellations, constellations);
+		model.addAttribute(ATTRIBUTE_FORM, new ConstellationPojo());
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
-		return targetConstellation;
+		return TARGET_CONSTELLATION;
 	}
 
 	@PostMapping("/constellation")
-	public String saveConstellations(@ModelAttribute ConstellationForm constellationForm, Model model) {
+	public String saveConstellations(@ModelAttribute ConstellationPojo constellationPojo, Model model) {
 		try {
-			if(constellationForm != null && StringUtils.isNotEmpty(constellationForm.getName())) {
-				if(constellationForm.getId() == 0) {
+			if(constellationPojo != null && StringUtils.isNotEmpty(constellationPojo.getName())) {
+				if(constellationPojo.getId() == 0) {
 					// Save
-					constellationService.save(new Constellation(constellationForm.getName().toLowerCase()));
+					constellationService.save(new Constellation(constellationPojo.getName().toLowerCase()));
 				}else {
 					// Update
-					constellationService.update(new Constellation(constellationForm.getId(), constellationForm.getName().toLowerCase()));
+					constellationService.update(new Constellation(constellationPojo.getId(), constellationPojo.getName().toLowerCase()));
 				}
 			}
 		} catch (ConstellationAlreadyExistsException e) {
@@ -58,25 +58,25 @@ public class ConstellationController {
 		
 		List<Constellation> constellations = constellationService.findAll();
 
-		model.addAttribute(attributeForm, new ConstellationForm());
-		model.addAttribute(attributeConstellations, constellations);
+		model.addAttribute(ATTRIBUTE_FORM, new ConstellationPojo());
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
-		return targetConstellation;
+		return TARGET_CONSTELLATION;
 	}
 	
 	@GetMapping(value = "/constellation/modify/{id}")
 	public String modifyConstellation(@PathVariable long id, Model model) {
 		Constellation constellation = constellationService.findById(id);
 		
-		ConstellationForm constellationForm = new ConstellationForm();
-		constellationForm.setId(constellation.getId());
-		constellationForm.setName(constellation.getName());
-		model.addAttribute(attributeForm, constellationForm);
+		ConstellationPojo constellationPojo = new ConstellationPojo();
+		constellationPojo.setId(constellation.getId());
+		constellationPojo.setName(constellation.getName());
+		model.addAttribute(ATTRIBUTE_FORM, constellationPojo);
 		
 		List<Constellation> constellations = constellationService.findAll();
-		model.addAttribute(attributeConstellations, constellations);
+		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
-		return targetConstellation;
+		return TARGET_CONSTELLATION;
 	}
 	
 	@GetMapping(value = "/constellation/delete/{id}")

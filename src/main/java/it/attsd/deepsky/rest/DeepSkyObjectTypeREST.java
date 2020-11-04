@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
-import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeSaveRequest;
-import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeUpdateRequest;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
+import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypePojo;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RestController()
@@ -36,15 +36,15 @@ public class DeepSkyObjectTypeREST {
 	}
 
 	@PostMapping(value = "", produces = "application/json", consumes = "application/json")
-	public @ResponseBody DeepSkyObjectType save(@RequestBody DeepSkyObjectTypeSaveRequest deepSkyObjectTypeSaveRequest)
-			throws Exception {
+	public @ResponseBody DeepSkyObjectType save(@RequestBody DeepSkyObjectTypePojo deepSkyObjectTypeSaveRequest)
+			throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType deepSkyObjectType = new DeepSkyObjectType(deepSkyObjectTypeSaveRequest.getType());
 
 		return deepSkyObjectTypeService.save(deepSkyObjectType);
 	}
 
 	@PutMapping(value = "", produces = "application/json", consumes = "application/json")
-	public @ResponseBody DeepSkyObjectType update(@RequestBody DeepSkyObjectTypeUpdateRequest deepSkyObjectTypeUpdateRequest) {
+	public @ResponseBody DeepSkyObjectType update(@RequestBody DeepSkyObjectTypePojo deepSkyObjectTypeUpdateRequest) {
 		DeepSkyObjectType deepSkyObjectType = new DeepSkyObjectType(deepSkyObjectTypeUpdateRequest.getId(),
 				deepSkyObjectTypeUpdateRequest.getType());
 		return deepSkyObjectTypeService.update(deepSkyObjectType);

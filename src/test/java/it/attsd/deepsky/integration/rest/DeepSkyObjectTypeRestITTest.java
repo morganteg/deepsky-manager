@@ -26,8 +26,7 @@ import io.restassured.response.Response;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
-import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeSaveRequest;
-import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypeUpdateRequest;
+import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypePojo;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RunWith(SpringRunner.class)
@@ -86,7 +85,7 @@ public class DeepSkyObjectTypeRestITTest {
 
 	@Test
 	public void testSaveDeepSkyObjectTypeWhenNotExists() throws Exception {
-		DeepSkyObjectTypeSaveRequest deepSkyObjectTypeSaveRequest = new DeepSkyObjectTypeSaveRequest();
+		DeepSkyObjectTypePojo deepSkyObjectTypeSaveRequest = new DeepSkyObjectTypePojo();
 		deepSkyObjectTypeSaveRequest.setType(GALAXY);
 
 		String payload = new Gson().toJson(deepSkyObjectTypeSaveRequest);
@@ -108,7 +107,7 @@ public class DeepSkyObjectTypeRestITTest {
 		DeepSkyObjectType galaxy = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(galaxy);
 		
-		DeepSkyObjectTypeSaveRequest deepSkyObjectTypeSaveRequest = new DeepSkyObjectTypeSaveRequest();
+		DeepSkyObjectTypePojo deepSkyObjectTypeSaveRequest = new DeepSkyObjectTypePojo();
 		deepSkyObjectTypeSaveRequest.setType(GALAXY);
 
 		String payload = new Gson().toJson(deepSkyObjectTypeSaveRequest);
@@ -124,7 +123,7 @@ public class DeepSkyObjectTypeRestITTest {
 		
 		String galaxyTypeChanged = galaxy.getType() + " changed";
 		
-		DeepSkyObjectTypeUpdateRequest deepSkyObjectTypeUpdateRequest = new DeepSkyObjectTypeUpdateRequest();
+		DeepSkyObjectTypePojo deepSkyObjectTypeUpdateRequest = new DeepSkyObjectTypePojo();
 		deepSkyObjectTypeUpdateRequest.setId(galaxy.getId());
 		deepSkyObjectTypeUpdateRequest.setType(galaxyTypeChanged);
 
