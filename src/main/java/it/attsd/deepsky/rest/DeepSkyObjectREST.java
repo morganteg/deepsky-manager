@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.exception.ConstellationNotFoundException;
+import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
-import it.attsd.deepsky.pojo.deepskyobject.DeepSkyObjectSaveRequest;
-import it.attsd.deepsky.pojo.deepskyobject.DeepSkyObjectUpdateRequest;
+import it.attsd.deepsky.pojo.deepskyobject.DeepSkyObjectPojo;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 
 @RestController()
@@ -38,14 +38,16 @@ public class DeepSkyObjectREST {
 	}
 
 	@PostMapping(value = "", produces = "application/json", consumes = "application/json")
-	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObjectSaveRequest deepSkyObjectSaveRequest)
-			throws Exception {
+	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObjectPojo deepSkyObjectSaveRequest)
+			throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException,
+			DeepSkyObjectAlreadyExistsException {
 		return deepSkyObjectService.save(deepSkyObjectSaveRequest.getConstellationId(),
 				deepSkyObjectSaveRequest.getDeepSkyObjectTypeId(), deepSkyObjectSaveRequest.getName());
 	}
 
 	@PutMapping(value = "", produces = "application/json", consumes = "application/json")
-	public @ResponseBody DeepSkyObject update(@RequestBody DeepSkyObjectUpdateRequest deepSkyObjectUpdateRequest) throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectNotFoundException {
+	public @ResponseBody DeepSkyObject update(@RequestBody DeepSkyObjectPojo deepSkyObjectUpdateRequest)
+			throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectNotFoundException {
 		return deepSkyObjectService.update(deepSkyObjectUpdateRequest.getId(), deepSkyObjectUpdateRequest.getName(),
 				deepSkyObjectUpdateRequest.getConstellationId(), deepSkyObjectUpdateRequest.getDeepSkyObjectTypeId());
 	}

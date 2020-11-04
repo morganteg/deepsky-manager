@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import it.attsd.deepsky.controller.form.DeepSkyObjectTypeForm;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
+import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypePojo;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @Controller
@@ -33,22 +33,22 @@ public class DeepSkyObjectTypeController {
 	public String getDeepSkyObjectTypes(Model model) {
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
 
-		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectTypeForm());
+		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectTypePojo());
 		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
 
 		return TARGET_DEEPSKYOBJECTTYPE;
 	}
 
 	@PostMapping("/deepskyobjecttype")
-	public String saveDeepSkyObjectType(@ModelAttribute DeepSkyObjectTypeForm deepSkyObjectTypeForm, Model model) {
+	public String saveDeepSkyObjectType(@ModelAttribute DeepSkyObjectTypePojo deepSkyObjectTypePojo, Model model) {
 		try {
-			if(StringUtils.isNotEmpty(deepSkyObjectTypeForm.getType())) {
-				if(deepSkyObjectTypeForm.getId() == 0) {
+			if(StringUtils.isNotEmpty(deepSkyObjectTypePojo.getType())) {
+				if(deepSkyObjectTypePojo.getId() == 0) {
 					// Save
-					deepSkyObjectTypeService.save(new DeepSkyObjectType(deepSkyObjectTypeForm.getType().toLowerCase()));
+					deepSkyObjectTypeService.save(new DeepSkyObjectType(deepSkyObjectTypePojo.getType().toLowerCase()));
 				}else {
 					// Update
-					deepSkyObjectTypeService.update(new DeepSkyObjectType(deepSkyObjectTypeForm.getId(), deepSkyObjectTypeForm.getType().toLowerCase()));
+					deepSkyObjectTypeService.update(new DeepSkyObjectType(deepSkyObjectTypePojo.getId(), deepSkyObjectTypePojo.getType().toLowerCase()));
 				}
 			}
 		} catch (DeepSkyObjectTypeAlreadyExistsException e) {
@@ -58,7 +58,7 @@ public class DeepSkyObjectTypeController {
 		
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
 		
-		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectTypeForm());
+		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectTypePojo());
 		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);
 		
 		return TARGET_DEEPSKYOBJECTTYPE;
@@ -68,10 +68,10 @@ public class DeepSkyObjectTypeController {
 	public String modifyDeepSkyObjectType(@PathVariable long id, Model model) {
 		DeepSkyObjectType deepSkyObjectType = deepSkyObjectTypeService.findById(id);
 		
-		DeepSkyObjectTypeForm deepSkyObjectTypeForm = new DeepSkyObjectTypeForm();
-		deepSkyObjectTypeForm.setId(deepSkyObjectType.getId());
-		deepSkyObjectTypeForm.setType(deepSkyObjectType.getType());
-		model.addAttribute(ATTRIBUTE_FORM, deepSkyObjectTypeForm);
+		DeepSkyObjectTypePojo deepSkyObjectTypePojo = new DeepSkyObjectTypePojo();
+		deepSkyObjectTypePojo.setId(deepSkyObjectType.getId());
+		deepSkyObjectTypePojo.setType(deepSkyObjectType.getType());
+		model.addAttribute(ATTRIBUTE_FORM, deepSkyObjectTypePojo);
 		
 		List<DeepSkyObjectType> deepSkyObjectTypes = deepSkyObjectTypeService.findAll();
 		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTTYPES, deepSkyObjectTypes);

@@ -26,8 +26,7 @@ import io.restassured.response.Response;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
-import it.attsd.deepsky.pojo.constellation.ConstellationSaveRequest;
-import it.attsd.deepsky.pojo.constellation.ConstellationUpdateRequest;
+import it.attsd.deepsky.pojo.constellation.ConstellationPojo;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)
@@ -86,7 +85,7 @@ public class ConstellationRestITTest {
 
 	@Test
 	public void testSaveConstellationWhenNotExists() throws Exception {
-		ConstellationSaveRequest constellationSaveRequest = new ConstellationSaveRequest();
+		ConstellationPojo constellationSaveRequest = new ConstellationPojo();
 		constellationSaveRequest.setName(ORION);
 
 		String payload = new Gson().toJson(constellationSaveRequest);
@@ -108,7 +107,7 @@ public class ConstellationRestITTest {
 		Constellation orion = constellationService.save(new Constellation(ORION));
 		assertNotNull(orion);
 		
-		ConstellationSaveRequest constellationSaveRequest = new ConstellationSaveRequest();
+		ConstellationPojo constellationSaveRequest = new ConstellationPojo();
 		constellationSaveRequest.setName(ORION);
 
 		String payload = new Gson().toJson(constellationSaveRequest);
@@ -124,7 +123,7 @@ public class ConstellationRestITTest {
 		
 		String orionNameChanged = orion.getName() + " changed";
 		
-		ConstellationUpdateRequest constellationUpdateRequest = new ConstellationUpdateRequest();
+		ConstellationPojo constellationUpdateRequest = new ConstellationPojo();
 		constellationUpdateRequest.setId(orion.getId());
 		constellationUpdateRequest.setName(orionNameChanged);
 

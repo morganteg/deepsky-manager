@@ -1,6 +1,6 @@
 package it.attsd.deepsky.pojo.deepskyobject;
 
-public class DeepSkyObjectUpdateRequest {
+public class DeepSkyObjectPojo {
 	private long id;
 	
 	private String name;

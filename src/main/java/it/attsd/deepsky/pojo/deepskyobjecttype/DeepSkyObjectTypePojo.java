@@ -1,6 +1,6 @@
-package it.attsd.deepsky.controller.form;
+package it.attsd.deepsky.pojo.deepskyobjecttype;
 
-public class DeepSkyObjectTypeForm {
+public class DeepSkyObjectTypePojo {
 	private long id;
 	private String type;
 

@@ -3,7 +3,6 @@ package it.attsd.deepsky.integration.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
@@ -114,10 +113,9 @@ public class ConstellationServiceITTest {
 		assertNotNull(orion);
 
 		Constellation orion1 = constellationService.findById(orion.getId());
+		assertNotNull(orion);
 		Constellation orion2 = constellationService.findById(orion.getId());
-		
-		assertEquals(0, orion1.getVersion());
-		assertEquals(0, orion2.getVersion());
+		assertNotNull(orion);
 		
 		orion1.setName(orion1.getName() + " 1");
 		orion2.setName(orion2.getName() + " 2");

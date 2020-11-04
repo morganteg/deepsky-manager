@@ -1,10 +1,15 @@
 package it.attsd.deepsky.pojo.constellation;
 
-public class ConstellationSaveRequest {
+public class ConstellationPojo {
+	private long id;
 	private String name;
 
-	public ConstellationSaveRequest() {
+	public long getId() {
+		return id;
+	}
 
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getName() {

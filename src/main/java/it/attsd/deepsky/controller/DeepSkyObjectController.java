@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import it.attsd.deepsky.controller.form.DeepSkyObjectForm;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
@@ -21,6 +20,7 @@ import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
+import it.attsd.deepsky.pojo.deepskyobject.DeepSkyObjectPojo;
 import it.attsd.deepsky.service.ConstellationService;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
@@ -47,7 +47,7 @@ public class DeepSkyObjectController {
 	@GetMapping(value = "/deepskyobject")
 	public String getDeepSkyObjects(Model model) {
 		List<DeepSkyObject> deepSkyObjects = deepSkyObjectService.findAll();
-		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectForm());
+		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectPojo());
 		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTS, deepSkyObjects);
 
 		List<Constellation> constellations = constellationService.findAll();
@@ -59,18 +59,18 @@ public class DeepSkyObjectController {
 	}
 
 	@PostMapping("/deepskyobject")
-	public String saveDeepSkyObject(@ModelAttribute DeepSkyObjectForm deepSkyObjectForm, Model model) {
+	public String saveDeepSkyObject(@ModelAttribute DeepSkyObjectPojo deepSkyObjectPojo, Model model) {
 		try {
-			if (StringUtils.isNotEmpty(deepSkyObjectForm.getName()) && deepSkyObjectForm.getConstellationId() > 0
-					&& deepSkyObjectForm.getDeepSkyObjectTypeId() > 0) {
-				if (deepSkyObjectForm.getId() == 0) {
+			if (StringUtils.isNotEmpty(deepSkyObjectPojo.getName()) && deepSkyObjectPojo.getConstellationId() > 0
+					&& deepSkyObjectPojo.getDeepSkyObjectTypeId() > 0) {
+				if (deepSkyObjectPojo.getId() == 0) {
 					// Save
-					deepSkyObjectService.save(deepSkyObjectForm.getConstellationId(),
-							deepSkyObjectForm.getDeepSkyObjectTypeId(), deepSkyObjectForm.getName().toLowerCase());
+					deepSkyObjectService.save(deepSkyObjectPojo.getConstellationId(),
+							deepSkyObjectPojo.getDeepSkyObjectTypeId(), deepSkyObjectPojo.getName().toLowerCase());
 				} else {
 					// Update
-					deepSkyObjectService.update(deepSkyObjectForm.getId(), deepSkyObjectForm.getName().toLowerCase(),
-							deepSkyObjectForm.getConstellationId(), deepSkyObjectForm.getDeepSkyObjectTypeId());
+					deepSkyObjectService.update(deepSkyObjectPojo.getId(), deepSkyObjectPojo.getName().toLowerCase(),
+							deepSkyObjectPojo.getConstellationId(), deepSkyObjectPojo.getDeepSkyObjectTypeId());
 				}
 			}
 		} catch (DeepSkyObjectAlreadyExistsException | ConstellationNotFoundException
@@ -80,7 +80,7 @@ public class DeepSkyObjectController {
 		}
 
 		List<DeepSkyObject> deepSkyObjects = deepSkyObjectService.findAll();
-		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectForm());
+		model.addAttribute(ATTRIBUTE_FORM, new DeepSkyObjectPojo());
 		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTS, deepSkyObjects);
 
 		List<Constellation> constellations = constellationService.findAll();
@@ -95,12 +95,12 @@ public class DeepSkyObjectController {
 	public String modifyDeepSkyObject(@PathVariable long id, Model model) {
 		DeepSkyObject deepSkyObject = deepSkyObjectService.findById(id);
 
-		DeepSkyObjectForm deepSkyObjectForm = new DeepSkyObjectForm();
-		deepSkyObjectForm.setId(deepSkyObject.getId());
-		deepSkyObjectForm.setName(deepSkyObject.getName());
-		deepSkyObjectForm.setConstellationId(deepSkyObject.getConstellation().getId());
-		deepSkyObjectForm.setDeepSkyObjectTypeId(deepSkyObject.getType().getId());
-		model.addAttribute(ATTRIBUTE_FORM, deepSkyObjectForm);
+		DeepSkyObjectPojo deepSkyObjectPojo = new DeepSkyObjectPojo();
+		deepSkyObjectPojo.setId(deepSkyObject.getId());
+		deepSkyObjectPojo.setName(deepSkyObject.getName());
+		deepSkyObjectPojo.setConstellationId(deepSkyObject.getConstellation().getId());
+		deepSkyObjectPojo.setDeepSkyObjectTypeId(deepSkyObject.getType().getId());
+		model.addAttribute(ATTRIBUTE_FORM, deepSkyObjectPojo);
 
 		List<DeepSkyObject> deepSkyObjects = deepSkyObjectService.findAll();
 		model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTS, deepSkyObjects);
