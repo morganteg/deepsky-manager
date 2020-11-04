@@ -3,6 +3,7 @@ package it.attsd.deepsky.integration.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.Constellation;
@@ -104,6 +106,25 @@ public class ConstellationServiceITTest {
 
 		Constellation orionFound = constellationService.findById(orionSaved.getId());
 		assertNull(orionFound);
+	}
+	
+	@Test
+	public void testOptimisticLocking() throws ConstellationAlreadyExistsException {
+		Constellation orion = constellationService.save(new Constellation(ORION));
+		assertNotNull(orion);
+
+		Constellation orion1 = constellationService.findById(orion.getId());
+		Constellation orion2 = constellationService.findById(orion.getId());
+		
+		assertEquals(0, orion1.getVersion());
+		assertEquals(0, orion2.getVersion());
+		
+		orion1.setName(orion1.getName() + " 1");
+		orion2.setName(orion2.getName() + " 2");
+
+		constellationService.update(orion1);
+		assertThrows(ObjectOptimisticLockingFailureException.class,
+				() -> constellationService.update(orion2));
 	}
 
 }

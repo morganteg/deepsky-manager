@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Constellation
@@ -14,6 +15,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "constellation")
 public class Constellation {
+	@Version
+    private int version;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -32,6 +36,14 @@ public class Constellation {
 	public Constellation(long id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+	
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 	public long getId() {
