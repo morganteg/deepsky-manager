@@ -24,8 +24,8 @@ import it.attsd.deepsky.model.ConstellationRepository;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureTestDatabase
-public class ConstellationRepositoryITTest {
-	private Logger logger = LoggerFactory.getLogger(ConstellationRepositoryITTest.class);
+public class ConstellationRepositoryIT {
+	private Logger logger = LoggerFactory.getLogger(ConstellationRepositoryIT.class);
 
 	@Autowired
 	private ConstellationRepository constellationRepository;
@@ -87,7 +87,7 @@ public class ConstellationRepositoryITTest {
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
-		assertThat(orionSaved.getId() > 0);
+		assertThat(orionSaved.getId()).isPositive();
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class ConstellationRepositoryITTest {
 
 		Constellation constellationUpdated = constellationRepository.findById(constellationSaved.getId());
 		assertNotNull(constellationUpdated);
-		assertThat(constellationUpdated.getName().equalsIgnoreCase(nameUpdated));
+		assertThat(constellationUpdated.getName()).isEqualToIgnoringCase(nameUpdated);
 	}
 
 	@Test

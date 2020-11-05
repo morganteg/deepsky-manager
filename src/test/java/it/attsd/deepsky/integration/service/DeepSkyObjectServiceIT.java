@@ -37,8 +37,8 @@ import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class DeepSkyObjectServiceITTest {
-	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectServiceITTest.class);
+public class DeepSkyObjectServiceIT {
+	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectServiceIT.class);
 
 	@Autowired
 	private DeepSkyObjectRepository deepSkyObjectRepository;

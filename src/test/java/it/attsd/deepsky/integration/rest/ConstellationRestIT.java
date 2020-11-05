@@ -32,7 +32,7 @@ import it.attsd.deepsky.service.ConstellationService;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-public class ConstellationRestITTest {
+public class ConstellationRestIT {
 	@LocalServerPort
 	private int port;
 

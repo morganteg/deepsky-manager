@@ -32,7 +32,7 @@ import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-public class DeepSkyObjectTypeRestITTest {
+public class DeepSkyObjectTypeRestIT {
 	@LocalServerPort
 	private int port;
 
