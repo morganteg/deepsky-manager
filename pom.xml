@@ -150,12 +150,6 @@
 						<executions>
 							<execution>
 								<id>integration-tests</id>
-								<!-- <configuration>
-									<includes>
-										<include>**/*E2E.java</include>
-									</includes>
-								</configuration>
-								 -->
 								<goals>
 									<goal>integration-test</goal>
 									<goal>verify</goal>
@@ -212,8 +206,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<!-- <exclusions> <exclusion> <groupId>org.junit.vintage</groupId> <artifactId>junit-vintage-engine</artifactId> 
-				</exclusion> </exclusions> -->
 			<exclusions>
 				<exclusion>
 					<groupId>org.hamcrest</groupId>
