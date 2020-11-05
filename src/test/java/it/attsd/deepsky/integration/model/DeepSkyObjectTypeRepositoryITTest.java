@@ -28,8 +28,8 @@ import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 @SpringBootTest
 @AutoConfigureTestDatabase
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class DeepSkyObjectTypeRepositoryIT {
-	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeRepositoryIT.class);
+public class DeepSkyObjectTypeRepositoryITTest {
+	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeRepositoryITTest.class);
 	
 	@Autowired
 	private DeepSkyObjectTypeRepository deepSkyObjectTypeRepository;
