@@ -93,7 +93,7 @@
 		</profile>
 
 		<profile>
-			<id>e2e-tests</id>
+			<id>integration-tests</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
@@ -147,15 +147,9 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-failsafe-plugin</artifactId>
-
 						<executions>
 							<execution>
-								<id>e2e-tests</id>
-								<configuration>
-									<includes>
-										<include>**/*E2E.java</include>
-									</includes>
-								</configuration>
+								<id>integration-tests</id>
 								<goals>
 									<goal>integration-test</goal>
 									<goal>verify</goal>
@@ -333,7 +327,7 @@
 				</executions>
 			</plugin>
 
-			<!-- To submit Java code coverage to Coveralls cloud platform -->
+			<!-- For Java code coverage submitting to Coveralls cloud platform -->
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>

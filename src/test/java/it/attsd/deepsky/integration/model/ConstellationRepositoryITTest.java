@@ -20,6 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.model.ConstellationRepository;
+import it.attsd.deepsky.model.DeepSkyObjectRepository;
+import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,11 +32,19 @@ public class ConstellationRepositoryITTest {
 	@Autowired
 	private ConstellationRepository constellationRepository;
 
+	@Autowired
+	private DeepSkyObjectTypeRepository deepSkyObjectTypeRepository;
+
+	@Autowired
+	private DeepSkyObjectRepository deepSkyObjectRepository;
+
 	String ORION = "orion";
 	String LIBRA = "libra";
 
 	@Before
 	public void setup() {
+		deepSkyObjectRepository.emptyTable();
+		deepSkyObjectTypeRepository.emptyTable();
 		constellationRepository.emptyTable();
 	}
 

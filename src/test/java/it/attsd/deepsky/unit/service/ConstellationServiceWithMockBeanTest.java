@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit;
+package it.attsd.deepsky.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -34,9 +34,13 @@ public class ConstellationServiceWithMockBeanTest {
 	@InjectMocks
 	private ConstellationService constellationService;
 
-	Constellation orion = new Constellation(1L, "orion");
-	Constellation scorpion = new Constellation(2L, "scorpion");
-	Constellation libra = new Constellation("libra");
+	private String ORION = "orion";
+	private String SCORPION = "scorpion";
+	private String LIBRA = "libra";
+	
+	private Constellation orion = new Constellation(1L, ORION);
+	private Constellation scorpion = new Constellation(2L, SCORPION);
+	private Constellation libra = new Constellation(LIBRA);
 
 	@Test
 	public void testFindAllConstellationsWhenDbIsEmpty() {
@@ -61,9 +65,9 @@ public class ConstellationServiceWithMockBeanTest {
 
 	@Test
 	public void testFindConstellationByTypeWhenIsPresent() {
-		when(constellationRepository.findByName("orion")).thenReturn(orion);
+		when(constellationRepository.findByName(ORION)).thenReturn(orion);
 
-		Constellation orionFound = constellationRepository.findByName("orion");
+		Constellation orionFound = constellationRepository.findByName(ORION);
 
 		assertThat(orionFound).isEqualTo(orion);
 	}
@@ -71,7 +75,7 @@ public class ConstellationServiceWithMockBeanTest {
 	@Test
 	public void testSaveConstellationWhenNotExists()
 			throws ConstellationAlreadyExistsException {
-		Constellation libraSaved = new Constellation(1L, "libra");
+		Constellation libraSaved = new Constellation(1L, LIBRA);
 
 		when(constellationRepository.save(libra)).thenReturn(libraSaved);
 		Constellation libraSavedFromService = constellationRepository.save(libra);
@@ -88,6 +92,21 @@ public class ConstellationServiceWithMockBeanTest {
 
 		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationRepository.save(libra));
 	}
+	
+	@Test
+	public void testUpdateConstellationWhenExists()
+			throws ConstellationAlreadyExistsException {
+		String libraNameUpdated = LIBRA + " changed";
+		Constellation libraUpdated = new Constellation(1L, libraNameUpdated);
+
+		when(constellationRepository.update(libra)).thenReturn(libraUpdated);
+		libra.setName(libraNameUpdated);
+		Constellation libraUpdatedFromService = constellationRepository.update(libra);
+
+		verify(constellationRepository, times(1)).update(libra);
+		assertNotNull(libraUpdatedFromService);
+		assertThat(libraUpdatedFromService.getId()).isPositive();
+	}
 
 	@Test
 	public void testDeleteConstellationWhenExists() {
@@ -102,8 +121,6 @@ public class ConstellationServiceWithMockBeanTest {
 
 	@Test
 	public void testDeleteConstellationWhenNotExists() {
-//		doThrow(new GenericRepositoryException("Constellation not found")).when(constellationRepository).delete(1L);
-
 		long constellationId = 1L;
 		when(constellationRepository.findById(constellationId)).thenReturn(null);
 

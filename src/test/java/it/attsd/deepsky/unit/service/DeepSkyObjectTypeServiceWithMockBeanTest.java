@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit;
+package it.attsd.deepsky.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
+import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
@@ -33,11 +34,12 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 
 	@InjectMocks
 	private DeepSkyObjectTypeService deepSkyObjectTypeService;
-	
-	String GALAXY = "galaxy";
 
-	DeepSkyObjectType nebula = new DeepSkyObjectType(1L, "nebula");
-	DeepSkyObjectType galaxy = new DeepSkyObjectType(2L, GALAXY);
+	private String NEBULA = "nebula";
+	private String GALAXY = "galaxy";
+
+	private DeepSkyObjectType nebula = new DeepSkyObjectType(1L, NEBULA);
+	private DeepSkyObjectType galaxy = new DeepSkyObjectType(2L, GALAXY);
 
 	@Test
 	public void testFindAllDeepSkyObjectTypesWhenDbIsEmpty() {
@@ -62,9 +64,9 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 
 	@Test
 	public void testFindDeepSkyObjectTypeByTypeWhenIsPresent() {
-		when(deepSkyObjectTypeRepository.findByType("nebula")).thenReturn(nebula);
+		when(deepSkyObjectTypeRepository.findByType(NEBULA)).thenReturn(nebula);
 
-		DeepSkyObjectType nebulaFound = deepSkyObjectTypeService.findByType("nebula");
+		DeepSkyObjectType nebulaFound = deepSkyObjectTypeService.findByType(NEBULA);
 
 		assertThat(nebulaFound).isEqualTo(nebula);
 	}
@@ -86,11 +88,23 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	public void testSaveDeepSkyObjectTypeWhenAlreadyExists() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType galaxy = new DeepSkyObjectType(GALAXY);
 
-		doThrow(new DeepSkyObjectTypeAlreadyExistsException()).when(deepSkyObjectTypeRepository)
-				.save(galaxy);
+		doThrow(new DeepSkyObjectTypeAlreadyExistsException()).when(deepSkyObjectTypeRepository).save(galaxy);
 
-		assertThrows(DeepSkyObjectTypeAlreadyExistsException.class,
-				() -> deepSkyObjectTypeService.save(galaxy));
+		assertThrows(DeepSkyObjectTypeAlreadyExistsException.class, () -> deepSkyObjectTypeService.save(galaxy));
+	}
+
+	@Test
+	public void testUpdateDeepSkyObjectTypeWhenExists() throws ConstellationAlreadyExistsException {
+		String galaxyNameUpdated = GALAXY + " changed";
+		DeepSkyObjectType galaxyUpdated = new DeepSkyObjectType(1L, galaxyNameUpdated);
+
+		when(deepSkyObjectTypeRepository.update(galaxy)).thenReturn(galaxyUpdated);
+		galaxy.setType(galaxyNameUpdated);
+		DeepSkyObjectType deepSkyObjectTypeUpdatedFromService = deepSkyObjectTypeRepository.update(galaxy);
+
+		verify(deepSkyObjectTypeRepository, times(1)).update(galaxy);
+		assertNotNull(deepSkyObjectTypeUpdatedFromService);
+		assertThat(deepSkyObjectTypeUpdatedFromService.getId()).isPositive();
 	}
 
 	@Test
@@ -104,12 +118,4 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 		assertNull(clusterDeleted);
 	}
 
-//	@Test(expected = GenericRepositoryException.class)
-//	public void testDeleteDeepSkyObjectTypeWhenNotExists() {
-//		doThrow(new GenericRepositoryException("DeepSkyObjectType not found")).when(deepSkyObjectTypeRepository).delete(1L);
-//
-//		deepSkyObjectTypeService.delete(1L);
-//
-//		verify(deepSkyObjectTypeRepository, times(1)).delete(1L);
-//	}
 }

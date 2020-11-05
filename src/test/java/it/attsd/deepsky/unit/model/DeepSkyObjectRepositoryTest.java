@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit;
+package it.attsd.deepsky.unit.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
