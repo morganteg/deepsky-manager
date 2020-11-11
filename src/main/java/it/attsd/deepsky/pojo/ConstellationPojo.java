@@ -1,4 +1,4 @@
-package it.attsd.deepsky.pojo.constellation;
+package it.attsd.deepsky.pojo;
 
 public class ConstellationPojo {
 	private long id;

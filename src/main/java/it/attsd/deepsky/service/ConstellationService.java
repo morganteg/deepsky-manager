@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.model.ConstellationRepository;
 
 @Service
@@ -19,8 +20,13 @@ public class ConstellationService {
 		return constellationRepository.findAll();
 	}
 	
-	public Constellation findById(long id) {
-		return constellationRepository.findById(id);
+	public Constellation findById(long id) throws ConstellationNotFoundException {
+		Constellation constellation = constellationRepository.findById(id);
+		if(constellation == null) {
+			throw new ConstellationNotFoundException();
+		}
+		
+		return constellation;
 	}
 	
 	public Constellation findByName(String name) {

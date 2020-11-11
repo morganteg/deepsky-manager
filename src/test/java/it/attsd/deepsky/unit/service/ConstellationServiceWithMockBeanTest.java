@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -55,7 +56,7 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindConstellationByIdWhenIsPresent() {
+	public void testFindConstellationByIdWhenIsPresent() throws ConstellationNotFoundException {
 		when(constellationRepository.findById(1)).thenReturn(orion);
 
 		Constellation constellationFound = constellationService.findById(1);

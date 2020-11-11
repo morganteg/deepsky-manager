@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypePojo;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
+import it.attsd.deepsky.pojo.DeepSkyObjectTypePojo;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RestController()
@@ -31,7 +32,7 @@ public class DeepSkyObjectTypeREST {
 	}
 
 	@GetMapping(value = "/{id}", produces = "application/json")
-	public @ResponseBody DeepSkyObjectType getById(@PathVariable long id) {
+	public @ResponseBody DeepSkyObjectType getById(@PathVariable long id) throws DeepSkyObjectTypeNotFoundException {
 		return deepSkyObjectTypeService.findById(id);
 	}
 

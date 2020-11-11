@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.pojo.constellation.ConstellationPojo;
+import it.attsd.deepsky.exception.ConstellationNotFoundException;
+import it.attsd.deepsky.pojo.ConstellationPojo;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RestController()
@@ -35,7 +36,7 @@ public class ConstellationREST {
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Constellation getById(@PathVariable long id) {
+	public @ResponseBody Constellation getById(@PathVariable long id) throws ConstellationNotFoundException {
 		logger.debug("{}", id);
 
 		return constellationService.findById(id);

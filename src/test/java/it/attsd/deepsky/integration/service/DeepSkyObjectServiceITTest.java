@@ -98,7 +98,7 @@ public class DeepSkyObjectServiceITTest {
 
 	@Test
 	public void testFindById() throws ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException,
-			DeepSkyObjectAlreadyExistsException {
+			DeepSkyObjectAlreadyExistsException, DeepSkyObjectNotFoundException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
@@ -405,7 +405,7 @@ public class DeepSkyObjectServiceITTest {
 	@Test
 	public void testDeleteDeepSkyObjectIfPresent()
 			throws ConstellationAlreadyExistsException, DeepSkyObjectTypeAlreadyExistsException,
-			ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectAlreadyExistsException {
+			ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectAlreadyExistsException, DeepSkyObjectNotFoundException {
 		Constellation orion = constellationService.save(new Constellation(ORION));
 		assertNotNull(orion);
 

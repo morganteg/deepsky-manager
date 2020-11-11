@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
@@ -54,7 +55,7 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindDeepSkyObjectTypeByIdWhenIsPresent() {
+	public void testFindDeepSkyObjectTypeByIdWhenIsPresent() throws DeepSkyObjectTypeNotFoundException {
 		when(deepSkyObjectTypeRepository.findById(1L)).thenReturn(nebula);
 
 		DeepSkyObjectType nebulaFound = deepSkyObjectTypeService.findById(1L);
@@ -108,7 +109,7 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testDeleteDeepSkyObjectTypeWhenExists() {
+	public void testDeleteDeepSkyObjectTypeWhenExists() throws DeepSkyObjectTypeNotFoundException {
 		when(deepSkyObjectTypeRepository.findById(1L)).thenReturn(null);
 
 		deepSkyObjectTypeService.delete(1L);

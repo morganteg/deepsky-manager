@@ -1,4 +1,4 @@
-package it.attsd.deepsky.e2e;
+package it.attsd.deepsky.e2e.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -20,7 +20,7 @@ import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
-import it.attsd.deepsky.pojo.deepskyobject.DeepSkyObjectPojo;
+import it.attsd.deepsky.pojo.DeepSkyObjectPojo;
 import it.attsd.deepsky.service.ConstellationService;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
@@ -92,7 +92,7 @@ public class DeepSkyObjectController {
 	}
 
 	@GetMapping(value = "/deepskyobject/modify/{id}")
-	public String modifyDeepSkyObject(@PathVariable long id, Model model) {
+	public String modifyDeepSkyObject(@PathVariable long id, Model model) throws DeepSkyObjectNotFoundException {
 		DeepSkyObject deepSkyObject = deepSkyObjectService.findById(id);
 
 		DeepSkyObjectPojo deepSkyObjectPojo = new DeepSkyObjectPojo();

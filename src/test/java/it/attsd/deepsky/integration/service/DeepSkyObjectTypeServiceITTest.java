@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
@@ -77,7 +78,7 @@ public class DeepSkyObjectTypeServiceITTest {
 	}
 
 	@Test
-	public void testUpdateDeepSkyObjectTypeWhenIsPresent() throws DeepSkyObjectTypeAlreadyExistsException {
+	public void testUpdateDeepSkyObjectTypeWhenIsPresent() throws DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectTypeNotFoundException {
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(typeSaved);
 
@@ -93,7 +94,7 @@ public class DeepSkyObjectTypeServiceITTest {
 	}
 
 	@Test
-	public void testDeleteDeepSkyObjectTypeWhenIsPresent() throws DeepSkyObjectTypeAlreadyExistsException {
+	public void testDeleteDeepSkyObjectTypeWhenIsPresent() throws DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectTypeNotFoundException {
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(typeSaved);
 

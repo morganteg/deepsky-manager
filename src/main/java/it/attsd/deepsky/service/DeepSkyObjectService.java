@@ -38,8 +38,12 @@ public class DeepSkyObjectService {
 		return deepSkyObjectRepository.findAll();
 	}
 
-	public DeepSkyObject findById(long id) {
-		return deepSkyObjectRepository.findById(id);
+	public DeepSkyObject findById(long id) throws DeepSkyObjectNotFoundException {
+		DeepSkyObject deepSkyObject = deepSkyObjectRepository.findById(id);
+		if(deepSkyObject == null) {
+			throw new DeepSkyObjectNotFoundException();
+		}
+		return deepSkyObject;
 	}
 
 	public DeepSkyObject findByName(String name) {
