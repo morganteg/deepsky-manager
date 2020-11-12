@@ -3,8 +3,8 @@ package it.attsd.deepsky.integration.rest;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,6 +28,7 @@ import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
+import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
@@ -212,9 +213,8 @@ public class DeepSkyObjectRestITTest {
 		DeepSkyObject m42 = saveDeepSkyObject(M42);
 
 		given().contentType(ContentType.JSON).delete(BASE_URL + "/" + m42.getId()).then().statusCode(200);
-
-		DeepSkyObject orionDeleted = deepSkyObjectService.findById(m42.getId());
-		assertNull(orionDeleted);
+		
+		assertThrows(DeepSkyObjectNotFoundException.class, () -> deepSkyObjectService.findById(m42.getId()));
 	}
 
 }

@@ -98,14 +98,14 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testDeleteConstellationWhenIsPresent() throws ConstellationAlreadyExistsException, ConstellationNotFoundException {
+	public void testDeleteConstellationWhenIsPresent() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
 		constellationService.delete(orionSaved.getId());
-
-		Constellation orionFound = constellationService.findById(orionSaved.getId());
-		assertNull(orionFound);
+		
+		assertThrows(ConstellationNotFoundException.class,
+				() -> constellationService.findById(orionSaved.getId()));
 	}
 	
 	@Test

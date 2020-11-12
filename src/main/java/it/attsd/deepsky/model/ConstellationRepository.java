@@ -7,8 +7,6 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +15,6 @@ import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 
 @Repository
 public class ConstellationRepository extends BaseRepository {
-	private Logger logger = LoggerFactory.getLogger(ConstellationRepository.class);
 
 	@Transactional
 	public void emptyTable() {
@@ -44,7 +41,7 @@ public class ConstellationRepository extends BaseRepository {
 			query.setParameter("name", name.toLowerCase());
 			result = (Constellation) query.getSingleResult();
 		} catch (NoResultException e) {
-			logger.info(String.format("No Constellation found with name %s", name));
+			
 		}
 		return result;
 	}
@@ -54,10 +51,11 @@ public class ConstellationRepository extends BaseRepository {
 		try {
 			entityManager.persist(constellation);
 			entityManager.flush();
-		} 
-		catch (PersistenceException e) {
+		} catch (PersistenceException e) {
 			if (e.getCause() instanceof ConstraintViolationException) {
 				throw new ConstellationAlreadyExistsException();
+			}else {
+				throw e;
 			}
 		}
 

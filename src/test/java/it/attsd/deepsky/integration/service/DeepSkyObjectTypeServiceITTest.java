@@ -2,7 +2,6 @@ package it.attsd.deepsky.integration.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
@@ -94,14 +93,14 @@ public class DeepSkyObjectTypeServiceITTest {
 	}
 
 	@Test
-	public void testDeleteDeepSkyObjectTypeWhenIsPresent() throws DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectTypeNotFoundException {
+	public void testDeleteDeepSkyObjectTypeWhenIsPresent() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType typeSaved = deepSkyObjectTypeService.save(new DeepSkyObjectType(GALAXY));
 		assertNotNull(typeSaved);
 
 		deepSkyObjectTypeService.delete(typeSaved.getId());
-
-		DeepSkyObjectType typeFound = deepSkyObjectTypeService.findById(typeSaved.getId());
-		assertNull(typeFound);
+		
+		assertThrows(DeepSkyObjectTypeNotFoundException.class,
+				() -> deepSkyObjectTypeService.findById(typeSaved.getId()));
 	}
 
 }

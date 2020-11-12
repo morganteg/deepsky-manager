@@ -3,8 +3,8 @@ package it.attsd.deepsky.integration.rest;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -24,6 +24,7 @@ import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.pojo.DeepSkyObjectTypePojo;
@@ -150,8 +151,7 @@ public class DeepSkyObjectTypeRestITTest {
 		given().contentType(ContentType.JSON).delete(BASE_URL + "/" + galaxy.getId()).then()
 				.statusCode(200);
 		
-		DeepSkyObjectType galaxyDeleted = deepSkyObjectTypeService.findById(galaxy.getId());
-		assertNull(galaxyDeleted);
+		assertThrows(DeepSkyObjectTypeNotFoundException.class, () -> deepSkyObjectTypeService.findById(galaxy.getId()));
 	}
 
 }
