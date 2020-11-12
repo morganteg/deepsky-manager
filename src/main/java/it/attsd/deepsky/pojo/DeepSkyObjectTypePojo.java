@@ -1,4 +1,4 @@
-package it.attsd.deepsky.pojo.deepskyobjecttype;
+package it.attsd.deepsky.pojo;
 
 public class DeepSkyObjectTypePojo {
 	private long id;

@@ -26,7 +26,7 @@ import io.restassured.response.Response;
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
-import it.attsd.deepsky.pojo.constellation.ConstellationPojo;
+import it.attsd.deepsky.pojo.ConstellationPojo;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)

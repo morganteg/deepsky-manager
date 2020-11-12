@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.pojo.constellation.ConstellationPojo;
+import it.attsd.deepsky.exception.ConstellationNotFoundException;
+import it.attsd.deepsky.pojo.ConstellationPojo;
 import it.attsd.deepsky.service.ConstellationService;
 
 @Controller
@@ -65,7 +66,7 @@ public class ConstellationController {
 	}
 	
 	@GetMapping(value = "/constellation/modify/{id}")
-	public String modifyConstellation(@PathVariable long id, Model model) {
+	public String modifyConstellation(@PathVariable long id, Model model) throws ConstellationNotFoundException {
 		Constellation constellation = constellationService.findById(id);
 		
 		ConstellationPojo constellationPojo = new ConstellationPojo();

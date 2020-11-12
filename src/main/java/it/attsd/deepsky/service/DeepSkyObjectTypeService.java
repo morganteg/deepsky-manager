@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 
 @Service
@@ -19,8 +20,13 @@ public class DeepSkyObjectTypeService {
 		return deepSkyObjectTypeRepository.findAll();
 	}
 
-	public DeepSkyObjectType findById(long id) {
-		return deepSkyObjectTypeRepository.findById(id);
+	public DeepSkyObjectType findById(long id) throws DeepSkyObjectTypeNotFoundException {
+		DeepSkyObjectType deepSkyObjectType = deepSkyObjectTypeRepository.findById(id);
+		if(deepSkyObjectType == null) {
+			throw new DeepSkyObjectTypeNotFoundException();
+		}
+		
+		return deepSkyObjectType;
 	}
 
 	public DeepSkyObjectType findByType(String type) {

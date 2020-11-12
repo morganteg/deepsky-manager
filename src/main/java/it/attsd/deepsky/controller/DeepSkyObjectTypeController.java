@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.pojo.deepskyobjecttype.DeepSkyObjectTypePojo;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
+import it.attsd.deepsky.pojo.DeepSkyObjectTypePojo;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @Controller
@@ -65,7 +66,7 @@ public class DeepSkyObjectTypeController {
 	}
 	
 	@GetMapping(value = "/deepskyobjecttype/modify/{id}")
-	public String modifyDeepSkyObjectType(@PathVariable long id, Model model) {
+	public String modifyDeepSkyObjectType(@PathVariable long id, Model model) throws DeepSkyObjectTypeNotFoundException {
 		DeepSkyObjectType deepSkyObjectType = deepSkyObjectTypeService.findById(id);
 		
 		DeepSkyObjectTypePojo deepSkyObjectTypePojo = new DeepSkyObjectTypePojo();

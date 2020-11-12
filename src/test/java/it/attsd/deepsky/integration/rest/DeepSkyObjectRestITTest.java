@@ -32,7 +32,7 @@ import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
-import it.attsd.deepsky.pojo.deepskyobject.DeepSkyObjectPojo;
+import it.attsd.deepsky.pojo.DeepSkyObjectPojo;
 import it.attsd.deepsky.service.ConstellationService;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;

@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -81,7 +82,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testUpdateConstellationWhenIsPresent() throws ConstellationAlreadyExistsException {
+	public void testUpdateConstellationWhenIsPresent() throws ConstellationAlreadyExistsException, ConstellationNotFoundException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
@@ -97,7 +98,7 @@ public class ConstellationServiceITTest {
 	}
 
 	@Test
-	public void testDeleteConstellationWhenIsPresent() throws ConstellationAlreadyExistsException {
+	public void testDeleteConstellationWhenIsPresent() throws ConstellationAlreadyExistsException, ConstellationNotFoundException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
 
@@ -108,7 +109,7 @@ public class ConstellationServiceITTest {
 	}
 	
 	@Test
-	public void testOptimisticLocking() throws ConstellationAlreadyExistsException {
+	public void testOptimisticLocking() throws ConstellationAlreadyExistsException, ConstellationNotFoundException {
 		Constellation orion = constellationService.save(new Constellation(ORION));
 		assertNotNull(orion);
 

@@ -23,6 +23,7 @@ import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
+import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 
@@ -60,7 +61,7 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindDeepSkyObjectByIdWhenIsPresent() {
+	public void testFindDeepSkyObjectByIdWhenIsPresent() throws DeepSkyObjectNotFoundException {
 		when(deepSkyObjectRepository.findById(1L)).thenReturn(m42);
 
 		DeepSkyObject m42Found = deepSkyObjectService.findById(1L);
@@ -99,7 +100,7 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testDeleteDeepSkyObjectWhenExists() {
+	public void testDeleteDeepSkyObjectWhenExists() throws DeepSkyObjectNotFoundException {
 		when(deepSkyObjectRepository.findById(1L)).thenReturn(null);
 
 		deepSkyObjectService.delete(1L);
