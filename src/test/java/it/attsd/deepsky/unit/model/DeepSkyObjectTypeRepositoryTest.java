@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.junit.FixMethodOrder;
@@ -22,10 +23,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import it.attsd.deepsky.entity.DeepSkyObjectType;
+import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 
@@ -46,6 +51,18 @@ public class DeepSkyObjectTypeRepositoryTest {
 	private final String GALAXY = "galaxy";
 	private final String NEBULA = "nebula";
 
+	@Test
+	public void testEmptyDeepSkyObjectTypeTable() {
+		String queryString = String.format("DELETE FROM %s", DeepSkyObjectType.class.getName());
+
+		when(entityManager.createQuery(queryString)).thenReturn(query);
+		deepSkyObjectTypeRepository.emptyTable();
+
+		verify(entityManager).createQuery(queryString);
+		verify(query).executeUpdate();
+		verify(entityManager).flush();
+	}
+	
 	@Test
 	public void testGetAllDeepSkyObjectTypesWhenDBIsEmpty() {
 		String queryString = String.format("SELECT t FROM %s t", DeepSkyObjectType.class.getName());
@@ -90,7 +107,7 @@ public class DeepSkyObjectTypeRepositoryTest {
 
 		DeepSkyObjectType deepSkyObjectTypeFound = deepSkyObjectTypeRepository.findById(1L);
 
-		verify(entityManager, times(1)).find(DeepSkyObjectType.class, 1L);
+		verify(entityManager).find(DeepSkyObjectType.class, 1L);
 
 		assertNotNull(deepSkyObjectTypeFound);
 	}
@@ -101,17 +118,49 @@ public class DeepSkyObjectTypeRepositoryTest {
 
 		DeepSkyObjectType deepSkyObjectTypeFound = deepSkyObjectTypeRepository.findById(1L);
 
-		verify(entityManager, times(1)).find(DeepSkyObjectType.class, 1L);
+		verify(entityManager).find(DeepSkyObjectType.class, 1L);
 
 		assertNull(deepSkyObjectTypeFound);
+	}
+	
+	@Test
+	public void testGetDeepSkyObjectTypeByTypeWhenExists() {
+		DeepSkyObjectType galaxy = new DeepSkyObjectType(1L, GALAXY);
+
+		String queryString = String.format("SELECT t FROM %s t WHERE t.type=:type", DeepSkyObjectType.class.getName());
+
+		when(entityManager.createQuery(queryString)).thenReturn(query);
+		when(query.setParameter("type", GALAXY)).thenReturn(query);
+		when(query.getSingleResult()).thenReturn(galaxy);
+
+		DeepSkyObjectType galaxyFound = deepSkyObjectTypeRepository.findByType(GALAXY);
+
+		verify(entityManager).createQuery(queryString);
+		verify(query).setParameter("type", GALAXY);
+		verify(query).getSingleResult();
+
+		assertNotNull(galaxyFound);
 	}
 
 	@Test
 	public void testAddDeepSkyObjectTypeWhenNotExists() throws DeepSkyObjectTypeAlreadyExistsException {
 		DeepSkyObjectType galaxy = new DeepSkyObjectType(GALAXY);
+		
+		Mockito.doAnswer(new Answer<Object>() {
+			@Override
+			public Object answer(InvocationOnMock invocation) {
+				DeepSkyObjectType galaxySaved = (DeepSkyObjectType) invocation.getArguments()[0];
+				galaxySaved.setId(1L);
+				return null;
+			}
+		}).when(entityManager).persist(galaxy);
 
-		deepSkyObjectTypeRepository.save(galaxy);
-		verify(entityManager, times(1)).persist(galaxy);
+		DeepSkyObjectType galaxySaved = deepSkyObjectTypeRepository.save(galaxy);
+		assertNotNull(galaxySaved);
+		assertThat(galaxySaved.getId()).isPositive();
+		
+		verify(entityManager).persist(galaxy);
+		verify(entityManager).flush();
 	}
 
 	@Test
@@ -125,11 +174,36 @@ public class DeepSkyObjectTypeRepositoryTest {
 	}
 	
 	@Test
-	public void testUpdateDeepSkyObjectTypeWhenExists() throws DeepSkyObjectTypeAlreadyExistsException {
-		DeepSkyObjectType galaxy = new DeepSkyObjectType(1L, GALAXY + " changed");
+	public void testAddDeepSkyObjectTypeWithPersistenceException() throws ConstellationAlreadyExistsException {
+		DeepSkyObjectType galaxy = new DeepSkyObjectType(GALAXY);
 
-		deepSkyObjectTypeRepository.update(galaxy);
-		verify(entityManager, times(1)).merge(galaxy);
+		PersistenceException exc = new PersistenceException();
+		doThrow(exc).when(entityManager).persist(galaxy);
+
+		assertThrows(PersistenceException.class, () -> deepSkyObjectTypeRepository.save(galaxy));
+	}
+	
+	@Test
+	public void testUpdateDeepSkyObjectTypeWhenExists() throws DeepSkyObjectTypeAlreadyExistsException {
+		DeepSkyObjectType galaxy = new DeepSkyObjectType(1L, GALAXY);
+
+		when(entityManager.find(DeepSkyObjectType.class, 1L)).thenReturn(galaxy);
+
+		DeepSkyObjectType galaxyFound = deepSkyObjectTypeRepository.findById(1L);
+
+		verify(entityManager).find(DeepSkyObjectType.class, 1L);
+
+		String typeChanged = galaxyFound.getType() + " changed";
+		galaxyFound.setType(typeChanged);
+
+		DeepSkyObjectType galaxyChangedMock = new DeepSkyObjectType(1L, typeChanged);
+
+		when(entityManager.merge(galaxyFound)).thenReturn(galaxyChangedMock);
+
+		DeepSkyObjectType galaxyChanged = deepSkyObjectTypeRepository.update(galaxyFound);
+		assertNotNull(galaxyChanged);
+		verify(entityManager).merge(galaxyFound);
+		verify(entityManager).flush();
 	}
 
 	@Test
@@ -138,7 +212,7 @@ public class DeepSkyObjectTypeRepositoryTest {
 
 		deepSkyObjectTypeRepository.delete(1L);
 		
-		verify(entityManager, times(1)).find(DeepSkyObjectType.class, 1L);
+		verify(entityManager).find(DeepSkyObjectType.class, 1L);
 		verify(entityManager, times(0)).remove(1L);
 	}
 
@@ -149,8 +223,9 @@ public class DeepSkyObjectTypeRepositoryTest {
 
 		deepSkyObjectTypeRepository.delete(1L);
 
-		verify(entityManager, times(1)).find(DeepSkyObjectType.class, 1L);
-		verify(entityManager, times(1)).remove(galaxy);
+		verify(entityManager).find(DeepSkyObjectType.class, 1L);
+		verify(entityManager).remove(galaxy);
+		verify(entityManager).flush();
 	}
 
 }

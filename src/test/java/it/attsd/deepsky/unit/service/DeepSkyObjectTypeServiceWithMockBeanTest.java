@@ -2,7 +2,6 @@ package it.attsd.deepsky.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -113,10 +112,10 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 		when(deepSkyObjectTypeRepository.findById(1L)).thenReturn(null);
 
 		deepSkyObjectTypeService.delete(1L);
-		DeepSkyObjectType clusterDeleted = deepSkyObjectTypeService.findById(1L);
+		
+		assertThrows(DeepSkyObjectTypeNotFoundException.class, () -> deepSkyObjectTypeService.findById(1L));
 
 		verify(deepSkyObjectTypeRepository, times(1)).delete(1L);
-		assertNull(clusterDeleted);
 	}
 
 }

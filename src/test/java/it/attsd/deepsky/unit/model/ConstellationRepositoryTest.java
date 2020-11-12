@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.junit.Before;
@@ -21,8 +22,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import it.attsd.deepsky.entity.Constellation;
@@ -31,7 +35,6 @@ import it.attsd.deepsky.model.ConstellationRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 @DataJpaTest
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConstellationRepositoryTest {
 
 	@Mock
@@ -49,7 +52,19 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void test1GetAllConstellationsWhenDBIsEmpty() {
+	public void testEmptyConstellationTable() {
+		String queryString = String.format("DELETE FROM %s", Constellation.class.getName());
+
+		when(entityManager.createQuery(queryString)).thenReturn(query);
+		constellationRepository.emptyTable();
+
+		verify(entityManager).createQuery(queryString);
+		verify(query).executeUpdate();
+		verify(entityManager).flush();
+	}
+
+	@Test
+	public void testGetAllConstellationsWhenDBIsEmpty() {
 		String queryString = String.format("SELECT t FROM %s t", Constellation.class.getName());
 		List<Constellation> constellations = new ArrayList<Constellation>();
 
@@ -64,7 +79,7 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void test2GetAllConstellationsWhenContainsTwo() {
+	public void testGetAllConstellationsWhenContainsTwo() {
 		Constellation orion = new Constellation(1, "orion");
 		Constellation scorpion = new Constellation(1, "scorpion");
 
@@ -85,28 +100,25 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void test3GetConstellationByIdWhenIdIsPresent() {
+	public void testGetConstellationByIdWhenIdIsPresent() {
 		Constellation orion = new Constellation(1L, "orion");
 
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(orion);
 
 		Constellation constellationFound = constellationRepository.findById(1L);
 
-		verify(entityManager, times(1)).find(Constellation.class, 1L);
+		verify(entityManager).find(Constellation.class, 1L);
 
 		assertNotNull(constellationFound);
 	}
 
 	@Test
-	public void test4GetConstellationByIdWhenIdIsNotPresent() {
+	public void testGetConstellationByIdWhenIdIsNotPresent() {
 		when(entityManager.find(Constellation.class, 1L)).thenReturn(null);
-
-//		NoResultException noResultException = new NoResultException();
-//		doThrow(noResultException).when(entityManager).find(Constellation.class, 1L);
 
 		Constellation constellationFound = constellationRepository.findById(1L);
 
-		verify(entityManager, times(1)).find(Constellation.class, 1L);
+		verify(entityManager).find(Constellation.class, 1L);
 
 		assertNull(constellationFound);
 	}
@@ -151,10 +163,23 @@ public class ConstellationRepositoryTest {
 
 	@Test
 	public void testAddConstellationWhenNotExists() throws ConstellationAlreadyExistsException {
-		Constellation orion = new Constellation(1L, "orion");
+		Constellation orion = new Constellation("orion");
 
-		constellationRepository.save(orion);
-		verify(entityManager, times(1)).persist(orion);
+		Mockito.doAnswer(new Answer<Object>() {
+			@Override
+			public Object answer(InvocationOnMock invocation) {
+				Constellation orionSaved = (Constellation) invocation.getArguments()[0];
+				orionSaved.setId(1L);
+				return null;
+			}
+		}).when(entityManager).persist(orion);
+
+		Constellation orionSaved = constellationRepository.save(orion);
+		assertNotNull(orionSaved);
+		assertThat(orionSaved.getId()).isPositive();
+		
+		verify(entityManager).persist(orion);
+		verify(entityManager).flush();
 	}
 
 	@Test
@@ -166,6 +191,39 @@ public class ConstellationRepositoryTest {
 
 		assertThrows(IllegalStateException.class, () -> constellationRepository.save(orion));
 	}
+	
+	@Test
+	public void testAddConstellationWithPersistenceException() throws ConstellationAlreadyExistsException {
+		Constellation orion = new Constellation("orion");
+
+		PersistenceException exc = new PersistenceException();
+		doThrow(exc).when(entityManager).persist(orion);
+
+		assertThrows(PersistenceException.class, () -> constellationRepository.save(orion));
+	}
+
+	@Test
+	public void testUpdateConstellationWhenExists() throws ConstellationAlreadyExistsException {
+		Constellation orion = new Constellation(1L, "orion");
+
+		when(entityManager.find(Constellation.class, 1L)).thenReturn(orion);
+
+		Constellation orionFound = constellationRepository.findById(1L);
+
+		verify(entityManager).find(Constellation.class, 1L);
+
+		String nameChanged = orionFound.getName() + " changed";
+		orionFound.setName(nameChanged);
+
+		Constellation orionChangedMock = new Constellation(1L, nameChanged);
+
+		when(entityManager.merge(orionFound)).thenReturn(orionChangedMock);
+
+		Constellation orionChanged = constellationRepository.update(orionFound);
+		assertNotNull(orionChanged);
+		verify(entityManager).merge(orionFound);
+		verify(entityManager).flush();
+	}
 
 	@Test
 	public void testDeleteConstellationWhenNotExists() {
@@ -173,7 +231,7 @@ public class ConstellationRepositoryTest {
 
 		constellationRepository.delete(1L);
 
-		verify(entityManager, times(1)).find(Constellation.class, 1L);
+		verify(entityManager).find(Constellation.class, 1L);
 		verify(entityManager, times(0)).remove(1L);
 	}
 
@@ -184,8 +242,9 @@ public class ConstellationRepositoryTest {
 
 		constellationRepository.delete(1L);
 
-		verify(entityManager, times(1)).find(Constellation.class, 1L);
-		verify(entityManager, times(1)).remove(orion);
+		verify(entityManager).find(Constellation.class, 1L);
+		verify(entityManager).remove(orion);
+		verify(entityManager).flush();
 	}
 
 }

@@ -7,8 +7,6 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +15,6 @@ import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
 
 @Repository
 public class DeepSkyObjectRepository extends BaseRepository {
-	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectRepository.class);
-
 	@Transactional
 	public void emptyTable() {
 		entityManager.createQuery(String.format("DELETE FROM %s", DeepSkyObject.class.getName())).executeUpdate();
@@ -44,7 +40,7 @@ public class DeepSkyObjectRepository extends BaseRepository {
 			query.setParameter("name", name.toLowerCase());
 			result = (DeepSkyObject) query.getSingleResult();
 		} catch (NoResultException e) {
-			logger.info(String.format("No DeepSkyObject found with name %s", name));
+
 		}
 		return result;
 	}
@@ -57,6 +53,8 @@ public class DeepSkyObjectRepository extends BaseRepository {
 		} catch (PersistenceException e) {
 			if (e.getCause() instanceof ConstraintViolationException) {
 				throw new DeepSkyObjectAlreadyExistsException();
+			} else {
+				throw e;
 			}
 		}
 

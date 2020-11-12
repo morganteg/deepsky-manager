@@ -28,6 +28,10 @@ public class Constellation {
 	public Constellation() {
 
 	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public Constellation(String name) {
 		this.name = name;

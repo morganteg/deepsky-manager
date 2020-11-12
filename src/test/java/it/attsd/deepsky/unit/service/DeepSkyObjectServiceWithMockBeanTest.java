@@ -24,6 +24,7 @@ import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
+import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 
@@ -104,10 +105,9 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 		when(deepSkyObjectRepository.findById(1L)).thenReturn(null);
 
 		deepSkyObjectService.delete(1L);
-		DeepSkyObject m42Found = deepSkyObjectService.findById(1L);
-
 		verify(deepSkyObjectRepository, times(1)).delete(1L);
-		assertNull(m42Found);
+		
+		assertThrows(DeepSkyObjectNotFoundException.class, () -> deepSkyObjectService.findById(1L));
 	}
 
 }

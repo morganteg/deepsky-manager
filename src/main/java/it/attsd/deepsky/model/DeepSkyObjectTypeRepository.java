@@ -7,8 +7,6 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +15,6 @@ import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 
 @Repository
 public class DeepSkyObjectTypeRepository extends BaseRepository {
-	private Logger logger = LoggerFactory.getLogger(DeepSkyObjectTypeRepository.class);
 
 	@Transactional
 	public void emptyTable() {
@@ -44,7 +41,7 @@ public class DeepSkyObjectTypeRepository extends BaseRepository {
 			query.setParameter("type", type.toLowerCase());
 			result = (DeepSkyObjectType) query.getSingleResult();
 		} catch (NoResultException e) {
-			logger.info(String.format("No DeepSkyObjectType found with type %s", type));
+
 		}
 		return result;
 	}
@@ -57,6 +54,8 @@ public class DeepSkyObjectTypeRepository extends BaseRepository {
 		} catch (PersistenceException e) {
 			if (e.getCause() instanceof ConstraintViolationException) {
 				throw new DeepSkyObjectTypeAlreadyExistsException();
+			} else {
+				throw e;
 			}
 		}
 

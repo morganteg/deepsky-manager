@@ -24,6 +24,10 @@ public class DeepSkyObjectType {
 	public DeepSkyObjectType() {
 
 	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public DeepSkyObjectType(String type) {
 		this.type = type;
