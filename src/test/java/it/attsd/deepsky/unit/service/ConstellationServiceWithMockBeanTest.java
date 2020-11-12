@@ -65,12 +65,22 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindConstellationByTypeWhenIsPresent() {
+	public void testFindConstellationByNameWhenIsPresent() {
 		when(constellationRepository.findByName(ORION)).thenReturn(orion);
 
 		Constellation orionFound = constellationRepository.findByName(ORION);
 
+		assertNotNull(orionFound);
 		assertThat(orionFound).isEqualTo(orion);
+	}
+	
+	@Test
+	public void testFindConstellationByNameWhenIsNotPresent() {
+		when(constellationRepository.findByName(ORION)).thenReturn(null);
+
+		Constellation orionFound = constellationRepository.findByName(ORION);
+
+		assertNull(orionFound);
 	}
 
 	@Test
