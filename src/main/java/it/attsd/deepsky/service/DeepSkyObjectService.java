@@ -109,8 +109,7 @@ public class DeepSkyObjectService {
 	@Transactional(rollbackFor = { DeepSkyObjectNotFoundException.class, ConstellationNotFoundException.class,
 			DeepSkyObjectTypeNotFoundException.class })
 	public DeepSkyObject update(long id, String name, long constellationId, long deepSkyObjectTypeId)
-			throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectNotFoundException,
-			DeepSkyObjectEmptyAttributeException {
+			throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectNotFoundException {
 		DeepSkyObject deepSkyObject = findById(id);
 		if (deepSkyObject == null) {
 			throw new DeepSkyObjectNotFoundException();
@@ -130,15 +129,15 @@ public class DeepSkyObjectService {
 		deepSkyObject.setConstellation(constellation);
 		deepSkyObject.setType(deepSkyObjectType);
 		
-		if(StringUtils.isEmpty(deepSkyObject.getName())) {
-			throw new DeepSkyObjectEmptyAttributeException("name");
-		}
-		if(deepSkyObject.getConstellation() == null) {
-			throw new DeepSkyObjectEmptyAttributeException("constellation");
-		}
-		if(deepSkyObject.getType() == null) {
-			throw new DeepSkyObjectEmptyAttributeException("type");
-		}
+//		if(StringUtils.isEmpty(deepSkyObject.getName())) {
+//			throw new DeepSkyObjectEmptyAttributeException("name");
+//		}
+//		if(deepSkyObject.getConstellation() == null) {
+//			throw new DeepSkyObjectEmptyAttributeException("constellation");
+//		}
+//		if(deepSkyObject.getType() == null) {
+//			throw new DeepSkyObjectEmptyAttributeException("type");
+//		}
 
 		return deepSkyObjectRepository.update(deepSkyObject);
 	}
