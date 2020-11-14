@@ -115,7 +115,7 @@ public class ConstellationRepositoryITTest {
 		Constellation constellationSaved = constellationRepository.save(new Constellation(ORION));
 		assertNotNull(constellationSaved);
 
-		String nameUpdated = "orion changed";
+		String nameUpdated = constellationSaved.getName() + " changed";
 		constellationSaved.setName(nameUpdated);
 		constellationRepository.update(constellationSaved);
 
@@ -128,11 +128,9 @@ public class ConstellationRepositoryITTest {
 	public void testDeleteById() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
 		assertNotNull(orionSaved);
+		assertThat(orionSaved.getId()).isPositive();
 
 		long orionId = orionSaved.getId();
-
-		Constellation constellationBeforeDelete = constellationRepository.findById(orionId);
-		assertNotNull(constellationBeforeDelete);
 
 		constellationRepository.delete(orionId);
 

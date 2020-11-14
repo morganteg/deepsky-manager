@@ -11,10 +11,12 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -41,6 +43,11 @@ public class DeepSkyObjectTypeServiceWithMockBeanTest {
 	private DeepSkyObjectType nebula = new DeepSkyObjectType(1L, NEBULA);
 	private DeepSkyObjectType galaxy = new DeepSkyObjectType(2L, GALAXY);
 
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(this);
+	}
+	
 	@Test
 	public void testFindAllDeepSkyObjectTypesWhenDbIsEmpty() {
 		List<DeepSkyObjectType> deepSkyObjectTypes = new ArrayList<DeepSkyObjectType>();
