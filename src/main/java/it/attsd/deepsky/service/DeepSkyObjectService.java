@@ -2,7 +2,6 @@ package it.attsd.deepsky.service;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,6 @@ import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
-import it.attsd.deepsky.exception.DeepSkyObjectEmptyAttributeException;
 import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
@@ -58,6 +56,19 @@ public class DeepSkyObjectService {
 		return deepSkyObjectRepository.save(deepSkyObject);
 	}
 
+	/**
+	 * Creates a DeepSkyObject into database. If even just one of the provided 
+	 * constellationId or deepSkyObjectTypeId, to which the DeepSkyObject would be related, 
+	 * don't exist, a rollback is performed.
+	 * 
+	 * @param constellationId the Constellation ID
+	 * @param deepSkyObjectTypeId the DeepSkyObjectType ID
+	 * @param deepSkyObjectName the DeepSkyObject name
+	 * @return the created DeepSkyObject object
+	 * @throws ConstellationNotFoundException
+	 * @throws DeepSkyObjectTypeNotFoundException
+	 * @throws DeepSkyObjectAlreadyExistsException
+	 */
 	@Transactional(rollbackFor = { ConstellationAlreadyExistsException.class,
 			DeepSkyObjectTypeAlreadyExistsException.class, DeepSkyObjectAlreadyExistsException.class })
 	public DeepSkyObject save(long constellationId, long deepSkyObjectTypeId, String deepSkyObjectName)
@@ -79,6 +90,19 @@ public class DeepSkyObjectService {
 		return deepSkyObjectRepository.save(new DeepSkyObject(deepSkyObjectName, constellation, deepSkyObjectType));
 	}
 
+	/**
+	 * Creates a DeepSkyObject and contextually the related Constellation and DeepSkyObjectType
+	 * if they don't exist. If even just one of Constellation or DeepSkyObjectType already exist,
+	 * the operation is canceled and a rollback is performed.
+	 * 
+	 * @param constellationName the Constellation name
+	 * @param deepSkyObjectName the DeepSkyObject name
+	 * @param deepSkyObjectType the DeepSkyObjectType name
+	 * @return the created DeepSkyObject
+	 * @throws ConstellationAlreadyExistsException
+	 * @throws DeepSkyObjectAlreadyExistsException
+	 * @throws DeepSkyObjectTypeAlreadyExistsException
+	 */
 	@Transactional(rollbackFor = { ConstellationAlreadyExistsException.class,
 			DeepSkyObjectTypeAlreadyExistsException.class })
 	public DeepSkyObject saveConstellationAndDeepSkyObject(String constellationName, String deepSkyObjectName,
