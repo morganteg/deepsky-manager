@@ -35,6 +35,16 @@
 						<!-- configured in pluginManagement -->
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
+						<configuration>
+							<rules>
+								<rule>
+									<element>CLASS</element>
+									<excludes>
+										<exclude>it.attsd.deepsky.DeepskyAppApplication</exclude>
+									</excludes>
+								</rule>
+							</rules>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

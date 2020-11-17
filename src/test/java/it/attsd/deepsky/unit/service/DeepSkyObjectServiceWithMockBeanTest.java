@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,6 @@ import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
-import it.attsd.deepsky.exception.DeepSkyObjectEmptyAttributeException;
 import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
@@ -239,7 +238,7 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 	@Test
 	public void testUpdateDeepSkyObjectName() throws ConstellationAlreadyExistsException,
 			DeepSkyObjectTypeAlreadyExistsException, DeepSkyObjectAlreadyExistsException,
-			ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectNotFoundException, DeepSkyObjectEmptyAttributeException {
+			ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectNotFoundException {
 		String m42NameChanged = M42 + " changed";
 
 		Constellation orionSaved = new Constellation(1L, ORION);
@@ -257,6 +256,22 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 
 		verify(deepSkyObjectRepository).update(any(DeepSkyObject.class));
 		assertNotNull(m42SavedFromService);
+	}
+	
+	@Test
+	public void testUpdateDeepSkyObjectWhenDeepSkyObjectNotExists() {
+		String m42NameChanged = M42 + " changed";
+
+		Constellation orionSaved = new Constellation(1L, ORION);
+		DeepSkyObjectType nebulaSaved = new DeepSkyObjectType(1L, NEBULA);
+		DeepSkyObject m42Saved = new DeepSkyObject(1L, M42, orionSaved, nebulaSaved);
+
+		when(deepSkyObjectRepository.findById(m42Saved.getId())).thenReturn(null);
+
+		assertThrows(DeepSkyObjectNotFoundException.class,
+				() -> deepSkyObjectService.update(1L, m42NameChanged, orionSaved.getId(), nebulaSaved.getId()));
+
+		verify(deepSkyObjectRepository, times(0)).update(any(DeepSkyObject.class));
 	}
 
 	@Test

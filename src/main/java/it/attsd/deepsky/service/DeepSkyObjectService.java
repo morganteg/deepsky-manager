@@ -134,7 +134,7 @@ public class DeepSkyObjectService {
 			DeepSkyObjectTypeNotFoundException.class })
 	public DeepSkyObject update(long id, String name, long constellationId, long deepSkyObjectTypeId)
 			throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectNotFoundException {
-		DeepSkyObject deepSkyObject = findById(id);
+		DeepSkyObject deepSkyObject = deepSkyObjectRepository.findById(id);
 		if (deepSkyObject == null) {
 			throw new DeepSkyObjectNotFoundException();
 		}
