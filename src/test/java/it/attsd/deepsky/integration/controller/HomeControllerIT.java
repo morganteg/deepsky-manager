@@ -19,7 +19,7 @@ import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class HomeControllerITTest {
+public class HomeControllerIT {
 	@LocalServerPort
 	private int port;
 	private WebDriver driver;

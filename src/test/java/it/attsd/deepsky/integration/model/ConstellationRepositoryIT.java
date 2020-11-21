@@ -26,8 +26,8 @@ import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureTestDatabase
-public class ConstellationRepositoryITTest {
-	private Logger logger = LoggerFactory.getLogger(ConstellationRepositoryITTest.class);
+public class ConstellationRepositoryIT {
+	private Logger logger = LoggerFactory.getLogger(ConstellationRepositoryIT.class);
 
 	@Autowired
 	private ConstellationRepository constellationRepository;

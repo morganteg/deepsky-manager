@@ -24,7 +24,7 @@ import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureTestDatabase
-public class DeepSkyObjectTypeServiceITTest {
+public class DeepSkyObjectTypeServiceIT {
 
 	@Autowired
 	private DeepSkyObjectTypeRepository deepSkyObjectTypeRepository;
