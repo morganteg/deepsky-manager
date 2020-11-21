@@ -43,7 +43,7 @@ public class ConstellationController {
 	@PostMapping("/constellation")
 	public String saveConstellation(@ModelAttribute ConstellationPojo constellationPojo, Model model) {
 		try {
-			if (constellationPojo != null && StringUtils.isNotEmpty(constellationPojo.getName())) {
+			if (StringUtils.isNotEmpty(constellationPojo.getName())) {
 				if (constellationPojo.getId() == 0) {
 					// Save
 					constellationService.save(new Constellation(constellationPojo.getName().toLowerCase()));

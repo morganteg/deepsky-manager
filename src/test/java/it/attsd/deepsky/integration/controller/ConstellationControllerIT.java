@@ -98,6 +98,22 @@ public class ConstellationControllerIT {
 
 		assertThat(tdSize).isEqualTo(1);
 	}
+	
+	@Test
+	public void testSaveConstellationIfNotExistsWithoutName() throws ConstellationAlreadyExistsException {
+		driver.get(baseUrl + "/constellation");
+
+		WebElement nameElement = getInputName();
+		nameElement.sendKeys("");
+
+		WebElement submitButtonElement = driver.findElement(By.id("submitButton"));
+		submitButtonElement.click();
+
+		int tdSize = driver.findElement(By.id("constellations")).findElement(By.tagName("tbody"))
+				.findElements(By.tagName("tr")).size();
+
+		assertThat(tdSize).isZero();
+	}
 
 	@Test
 	public void testSaveConstellationIfAlreadyExists() throws ConstellationAlreadyExistsException {
