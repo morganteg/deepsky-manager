@@ -152,16 +152,6 @@ public class DeepSkyObjectService {
 		deepSkyObject.setName(name);
 		deepSkyObject.setConstellation(constellation);
 		deepSkyObject.setType(deepSkyObjectType);
-		
-//		if(StringUtils.isEmpty(deepSkyObject.getName())) {
-//			throw new DeepSkyObjectEmptyAttributeException("name");
-//		}
-//		if(deepSkyObject.getConstellation() == null) {
-//			throw new DeepSkyObjectEmptyAttributeException("constellation");
-//		}
-//		if(deepSkyObject.getType() == null) {
-//			throw new DeepSkyObjectEmptyAttributeException("type");
-//		}
 
 		return deepSkyObjectRepository.update(deepSkyObject);
 	}
