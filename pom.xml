@@ -32,19 +32,29 @@
 			<build>
 				<plugins>
 					<plugin>
-						<!-- configured in pluginManagement -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
-						<configuration>
-							<rules>
-								<rule>
-									<element>CLASS</element>
-									<excludes>
-										<exclude>it.attsd.deepsky.DeepskyAppApplication</exclude>
-									</excludes>
-								</rule>
-							</rules>
-						</configuration>
+						<version>0.8.6</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
@@ -269,7 +279,6 @@
 
 		<!-- This is important, in this way, in order to "mvn verify" without org.junit 
 			compilation errors and EclEmma coverage always zero issue -->
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -360,22 +369,6 @@
 								</manifest>
 							</archive>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.5</version>
-				<executions>
-					<execution>
-						<goals>
-							<!-- binds by default to the phase "initialize" -->
-							<goal>prepare-agent</goal>
-							<!-- binds by default to the phase "verify" -->
-							<goal>report</goal>
-						</goals>
 					</execution>
 				</executions>
 			</plugin>
