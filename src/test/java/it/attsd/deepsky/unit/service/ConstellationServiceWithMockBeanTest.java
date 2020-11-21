@@ -5,17 +5,18 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -43,6 +44,11 @@ public class ConstellationServiceWithMockBeanTest {
 	private Constellation scorpion = new Constellation(2L, SCORPION);
 	private Constellation libra = new Constellation(LIBRA);
 
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(this);
+	}
+	
 	@Test
 	public void testFindAllConstellationsWhenDbIsEmpty() {
 		List<Constellation> constellations = new ArrayList<Constellation>();
@@ -65,12 +71,22 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindConstellationByTypeWhenIsPresent() {
+	public void testFindConstellationByNameWhenIsPresent() {
 		when(constellationRepository.findByName(ORION)).thenReturn(orion);
 
-		Constellation orionFound = constellationRepository.findByName(ORION);
+		Constellation orionFound = constellationService.findByName(ORION);
 
+		assertNotNull(orionFound);
 		assertThat(orionFound).isEqualTo(orion);
+	}
+	
+	@Test
+	public void testFindConstellationByNameWhenIsNotPresent() {
+		when(constellationRepository.findByName(ORION)).thenReturn(null);
+
+		Constellation orionFound = constellationService.findByName(ORION);
+
+		assertNull(orionFound);
 	}
 
 	@Test
@@ -79,9 +95,9 @@ public class ConstellationServiceWithMockBeanTest {
 		Constellation libraSaved = new Constellation(1L, LIBRA);
 
 		when(constellationRepository.save(libra)).thenReturn(libraSaved);
-		Constellation libraSavedFromService = constellationRepository.save(libra);
+		Constellation libraSavedFromService = constellationService.save(libra);
 
-		verify(constellationRepository, times(1)).save(libra);
+		verify(constellationRepository).save(libra);
 		assertNotNull(libraSavedFromService);
 		assertThat(libraSavedFromService.getId()).isPositive();
 	}
@@ -91,7 +107,7 @@ public class ConstellationServiceWithMockBeanTest {
 			throws ConstellationAlreadyExistsException {
 		doThrow(new ConstellationAlreadyExistsException()).when(constellationRepository).save(libra);
 
-		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationRepository.save(libra));
+		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(libra));
 	}
 	
 	@Test
@@ -102,31 +118,28 @@ public class ConstellationServiceWithMockBeanTest {
 
 		when(constellationRepository.update(libra)).thenReturn(libraUpdated);
 		libra.setName(libraNameUpdated);
-		Constellation libraUpdatedFromService = constellationRepository.update(libra);
+		Constellation libraUpdatedFromService = constellationService.update(libra);
 
-		verify(constellationRepository, times(1)).update(libra);
+		verify(constellationRepository).update(libra);
 		assertNotNull(libraUpdatedFromService);
 		assertThat(libraUpdatedFromService.getId()).isPositive();
 	}
 
 	@Test
-	public void testDeleteConstellationWhenExists() {
-		when(constellationRepository.findById(1L)).thenReturn(null);
+	public void testDeleteConstellationWhenExists() throws ConstellationNotFoundException {
+		when(constellationRepository.findById(orion.getId())).thenReturn(orion);
 
-		constellationRepository.delete(1L);
-		Constellation libraDeleted = constellationRepository.findById(1L);
+		constellationService.delete(orion.getId());
 
-		verify(constellationRepository, times(1)).delete(1L);
-		assertNull(libraDeleted);
+		verify(constellationRepository).delete(orion.getId());
 	}
 
 	@Test
 	public void testDeleteConstellationWhenNotExists() {
-		long constellationId = 1L;
-		when(constellationRepository.findById(constellationId)).thenReturn(null);
+		when(constellationRepository.findById(orion.getId())).thenReturn(null);
 
-		constellationRepository.delete(constellationId);
+		constellationService.delete(orion.getId());
 
-		verify(constellationRepository, times(1)).delete(constellationId);
+		verify(constellationRepository).delete(orion.getId());
 	}
 }

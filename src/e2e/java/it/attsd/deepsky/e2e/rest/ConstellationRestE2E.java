@@ -25,7 +25,6 @@ import io.restassured.response.Response;
 import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.pojo.ConstellationPojo;
-import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -40,13 +39,8 @@ public class ConstellationRestE2E {
 	@Autowired
 	private DeepSkyObjectRepository deepSkyObjectRepository;
 
-	@Autowired
-	private ConstellationService constellationService;
-
 	private final String BASE_URL = "/api/constellation";
-
 	private final String ORION = "orion";
-	private final String SCORPIUS = "scorpius";
 
 	@BeforeClass
 	public static void init() {

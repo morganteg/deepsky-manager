@@ -22,11 +22,11 @@ import it.attsd.deepsky.service.ConstellationService;
 @Controller
 public class ConstellationController {
 	private Logger logger = LoggerFactory.getLogger(ConstellationController.class);
-	
+
 	private static final String ATTRIBUTE_FORM = "constellationForm";
 	private static final String ATTRIBUTE_CONSTELLATIONS = "constellations";
 	private static final String TARGET_CONSTELLATION = "constellation/constellation";
-	
+
 	@Autowired
 	ConstellationService constellationService;
 
@@ -41,22 +41,23 @@ public class ConstellationController {
 	}
 
 	@PostMapping("/constellation")
-	public String saveConstellations(@ModelAttribute ConstellationPojo constellationPojo, Model model) {
+	public String saveConstellation(@ModelAttribute ConstellationPojo constellationPojo, Model model) {
 		try {
-			if(constellationPojo != null && StringUtils.isNotEmpty(constellationPojo.getName())) {
-				if(constellationPojo.getId() == 0) {
+			if (constellationPojo != null && StringUtils.isNotEmpty(constellationPojo.getName())) {
+				if (constellationPojo.getId() == 0) {
 					// Save
 					constellationService.save(new Constellation(constellationPojo.getName().toLowerCase()));
-				}else {
+				} else {
 					// Update
-					constellationService.update(new Constellation(constellationPojo.getId(), constellationPojo.getName().toLowerCase()));
+					constellationService.update(
+							new Constellation(constellationPojo.getId(), constellationPojo.getName().toLowerCase()));
 				}
 			}
 		} catch (ConstellationAlreadyExistsException e) {
 			logger.info(e.getMessage());
 			model.addAttribute("error", e.getMessage());
 		}
-		
+
 		List<Constellation> constellations = constellationService.findAll();
 
 		model.addAttribute(ATTRIBUTE_FORM, new ConstellationPojo());
@@ -64,22 +65,22 @@ public class ConstellationController {
 
 		return TARGET_CONSTELLATION;
 	}
-	
+
 	@GetMapping(value = "/constellation/modify/{id}")
 	public String modifyConstellation(@PathVariable long id, Model model) throws ConstellationNotFoundException {
 		Constellation constellation = constellationService.findById(id);
-		
+
 		ConstellationPojo constellationPojo = new ConstellationPojo();
 		constellationPojo.setId(constellation.getId());
 		constellationPojo.setName(constellation.getName());
 		model.addAttribute(ATTRIBUTE_FORM, constellationPojo);
-		
+
 		List<Constellation> constellations = constellationService.findAll();
 		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
 		return TARGET_CONSTELLATION;
 	}
-	
+
 	@GetMapping(value = "/constellation/delete/{id}")
 	public String deleteConstellation(@PathVariable long id, Model model) {
 		constellationService.delete(id);

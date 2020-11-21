@@ -27,8 +27,8 @@ import it.attsd.deepsky.service.ConstellationService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureTestDatabase
-public class ConstellationServiceITTest {
-	private Logger logger = LoggerFactory.getLogger(ConstellationServiceITTest.class);
+public class ConstellationServiceIT {
+	private Logger logger = LoggerFactory.getLogger(ConstellationServiceIT.class);
 
 	@Autowired
 	private ConstellationRepository constellationRepository;

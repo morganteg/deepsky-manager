@@ -12,23 +12,23 @@ import it.attsd.deepsky.model.ConstellationRepository;
 
 @Service
 public class ConstellationService {
-	
+
 	@Autowired
 	private ConstellationRepository constellationRepository;
-	
+
 	public List<Constellation> findAll() {
 		return constellationRepository.findAll();
 	}
-	
+
 	public Constellation findById(long id) throws ConstellationNotFoundException {
 		Constellation constellation = constellationRepository.findById(id);
-		if(constellation == null) {
+		if (constellation == null) {
 			throw new ConstellationNotFoundException();
 		}
-		
+
 		return constellation;
 	}
-	
+
 	public Constellation findByName(String name) {
 		return constellationRepository.findByName(name);
 	}
@@ -42,8 +42,7 @@ public class ConstellationService {
 	}
 
 	public void delete(long id) {
-			constellationRepository.delete(id);
-		
+		constellationRepository.delete(id);
 	}
 
 }
