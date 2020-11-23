@@ -41,7 +41,7 @@ public class ConstellationRepository extends BaseRepository {
 			query.setParameter("name", name.toLowerCase());
 			result = (Constellation) query.getSingleResult();
 		} catch (NoResultException e) {
-			
+			// NoResultException
 		}
 		return result;
 	}
