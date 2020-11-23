@@ -9,7 +9,7 @@
 		<version>2.3.4.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>it.attsd</groupId>
 	<artifactId>deepsky-manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>deepsky-manager</name>
@@ -36,6 +36,7 @@
 						<artifactId>maven-failsafe-plugin</artifactId>
 						<executions>
 							<execution>
+								<id>jacoco:integration-test</id>
 								<goals>
 									<goal>integration-test</goal>
 									<goal>verify</goal>
@@ -69,6 +70,19 @@
 			</properties>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>docker:integration-test</id>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>io.fabric8</groupId>
 						<artifactId>docker-maven-plugin</artifactId>
