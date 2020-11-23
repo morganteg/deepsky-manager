@@ -41,7 +41,7 @@ public class DeepSkyObjectTypeRepository extends BaseRepository {
 			query.setParameter("type", type.toLowerCase());
 			result = (DeepSkyObjectType) query.getSingleResult();
 		} catch (NoResultException e) {
-
+			// NoResultException
 		}
 		return result;
 	}
