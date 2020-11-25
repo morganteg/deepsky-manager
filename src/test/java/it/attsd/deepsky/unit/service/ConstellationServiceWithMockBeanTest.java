@@ -11,13 +11,11 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.entity.Constellation;
@@ -27,13 +25,13 @@ import it.attsd.deepsky.model.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@ContextConfiguration(classes=ConstellationService.class)
 public class ConstellationServiceWithMockBeanTest {
 
-	@Mock
+	@MockBean
 	private ConstellationRepository constellationRepository;
 
-	@InjectMocks
+	@Autowired
 	private ConstellationService constellationService;
 
 	private String ORION = "orion";
@@ -44,40 +42,29 @@ public class ConstellationServiceWithMockBeanTest {
 	private Constellation scorpion = new Constellation(2L, SCORPION);
 	private Constellation libra = new Constellation(LIBRA);
 
-	@Before
-	public void setup() {
-		MockitoAnnotations.initMocks(this);
-	}
-	
 	@Test
 	public void testFindAllConstellationsWhenDbIsEmpty() {
 		List<Constellation> constellations = new ArrayList<Constellation>();
 		constellations.add(orion);
 		constellations.add(scorpion);
+		
 		when(constellationRepository.findAll()).thenReturn(constellations);
 
-		List<Constellation> constellationsFound = constellationService.findAll();
-
-		assertThat(constellationsFound).isEqualTo(constellations);
+		assertThat(constellationService.findAll()).containsAll(constellations);
 	}
 
 	@Test
 	public void testFindConstellationByIdWhenIsPresent() throws ConstellationNotFoundException {
 		when(constellationRepository.findById(1)).thenReturn(orion);
 
-		Constellation constellationFound = constellationService.findById(1);
-
-		assertThat(constellationFound).isEqualTo(orion);
+		assertThat(constellationService.findById(1)).isSameAs(orion);
 	}
 
 	@Test
 	public void testFindConstellationByNameWhenIsPresent() {
 		when(constellationRepository.findByName(ORION)).thenReturn(orion);
-
-		Constellation orionFound = constellationService.findByName(ORION);
-
-		assertNotNull(orionFound);
-		assertThat(orionFound).isEqualTo(orion);
+		
+		assertThat(constellationService.findByName(ORION)).isSameAs(orion);
 	}
 	
 	@Test

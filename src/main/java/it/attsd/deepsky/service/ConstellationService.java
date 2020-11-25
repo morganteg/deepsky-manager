@@ -2,7 +2,6 @@ package it.attsd.deepsky.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.entity.Constellation;
@@ -13,8 +12,11 @@ import it.attsd.deepsky.model.ConstellationRepository;
 @Service
 public class ConstellationService {
 
-	@Autowired
 	private ConstellationRepository constellationRepository;
+	
+	public ConstellationService(ConstellationRepository constellationRepository) {
+		this.constellationRepository = constellationRepository;
+	}
 
 	public List<Constellation> findAll() {
 		return constellationRepository.findAll();
