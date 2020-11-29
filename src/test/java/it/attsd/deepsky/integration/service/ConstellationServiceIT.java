@@ -18,10 +18,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.ConstellationNotFoundException;
-import it.attsd.deepsky.model.ConstellationRepository;
+import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)

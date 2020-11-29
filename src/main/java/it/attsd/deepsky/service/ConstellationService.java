@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.ConstellationNotFoundException;
-import it.attsd.deepsky.model.ConstellationRepository;
+import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.repository.ConstellationRepository;
 
 @Service
 public class ConstellationService {
@@ -22,29 +22,26 @@ public class ConstellationService {
 		return constellationRepository.findAll();
 	}
 
-	public Constellation findById(long id) throws ConstellationNotFoundException {
-		Constellation constellation = constellationRepository.findById(id);
-		if (constellation == null) {
-			throw new ConstellationNotFoundException();
-		}
-
-		return constellation;
+	public Constellation findById(long id) {
+		return constellationRepository.findById(id).orElse(null);
 	}
 
 	public Constellation findByName(String name) {
 		return constellationRepository.findByName(name);
 	}
 
-	public Constellation save(Constellation constellation) throws ConstellationAlreadyExistsException {
+	public Constellation save(Constellation constellation) {
+		constellation.setId(null);
 		return constellationRepository.save(constellation);
 	}
 
-	public Constellation update(Constellation constellation) {
-		return constellationRepository.update(constellation);
+	public Constellation updateById(long id, Constellation constellation) {
+		constellation.setId(id);
+		return constellationRepository.save(constellation);
 	}
 
-	public void delete(long id) {
-		constellationRepository.delete(id);
+	public void deleteById(long id) {
+		constellationRepository.deleteById(id);
 	}
 
 }

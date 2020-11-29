@@ -1,4 +1,4 @@
-package it.attsd.deepsky.model;
+package it.attsd.deepsky.repository;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.attsd.deepsky.entity.DeepSkyObject;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
+import it.attsd.deepsky.model.DeepSkyObject;
 
 @Repository
 public class DeepSkyObjectRepository extends BaseRepository {

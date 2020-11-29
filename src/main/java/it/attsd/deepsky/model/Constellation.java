@@ -1,4 +1,4 @@
-package it.attsd.deepsky.entity;
+package it.attsd.deepsky.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +20,7 @@ public class Constellation {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Column(unique = true, nullable = false)
 	private String name;
@@ -29,7 +29,12 @@ public class Constellation {
 
 	}
 	
-	public void setId(long id) {
+	public Constellation(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -37,12 +42,7 @@ public class Constellation {
 		this.name = name;
 	}
 
-	public Constellation(long id, String name) {
-		this.id = id;
-		this.name = name;
-	}
-
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 

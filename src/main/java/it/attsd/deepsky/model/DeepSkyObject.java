@@ -1,4 +1,4 @@
-package it.attsd.deepsky.entity;
+package it.attsd.deepsky.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

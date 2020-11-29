@@ -9,7 +9,7 @@
 	<h1>Constellations</h1>
 
 	<div style="margin-bottom: 1em;">
-		<form action="" th:action="@{/constellation}" th:object="${constellationForm}" method="post">
+		<form action="" th:action="@{/constellation}" th:object="${constellation}" method="post">
 			<input type="hidden" id="constellationId" th:field="*{id}" />
 	        <label>Name:</label> 
 	        <input type="text" id="constellationName" th:field="*{name}" />

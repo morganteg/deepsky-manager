@@ -19,11 +19,11 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.model.ConstellationRepository;
-import it.attsd.deepsky.model.DeepSkyObjectRepository;
-import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
+import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)

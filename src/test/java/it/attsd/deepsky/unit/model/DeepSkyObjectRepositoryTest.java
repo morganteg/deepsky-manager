@@ -27,12 +27,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import it.attsd.deepsky.entity.Constellation;
-import it.attsd.deepsky.entity.DeepSkyObject;
-import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
-import it.attsd.deepsky.model.DeepSkyObjectRepository;
+import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.model.DeepSkyObject;
+import it.attsd.deepsky.model.DeepSkyObjectType;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 @DataJpaTest

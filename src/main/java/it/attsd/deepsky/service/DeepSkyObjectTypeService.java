@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
-import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
+import it.attsd.deepsky.model.DeepSkyObjectType;
+import it.attsd.deepsky.repository.DeepSkyObjectTypeRepository;
 
 @Service
 public class DeepSkyObjectTypeService {

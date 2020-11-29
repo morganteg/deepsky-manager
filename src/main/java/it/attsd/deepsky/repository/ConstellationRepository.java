@@ -1,19 +1,8 @@
-package it.attsd.deepsky.model;
+package it.attsd.deepsky.repository;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
-
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import it.attsd.deepsky.entity.Constellation;
-import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.model.Constellation;
 
 public interface ConstellationRepository extends JpaRepository<Constellation, Long> {
 	

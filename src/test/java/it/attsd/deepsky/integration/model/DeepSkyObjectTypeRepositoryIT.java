@@ -19,10 +19,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.model.DeepSkyObjectRepository;
-import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
+import it.attsd.deepsky.model.DeepSkyObjectType;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectTypeRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

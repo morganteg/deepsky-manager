@@ -23,11 +23,11 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
-import it.attsd.deepsky.entity.Constellation;
 import it.attsd.deepsky.exception.ConstellationNotFoundException;
-import it.attsd.deepsky.model.ConstellationRepository;
-import it.attsd.deepsky.model.DeepSkyObjectRepository;
+import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.pojo.ConstellationPojo;
+import it.attsd.deepsky.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)

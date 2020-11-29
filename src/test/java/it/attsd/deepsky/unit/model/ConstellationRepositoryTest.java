@@ -17,8 +17,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import it.attsd.deepsky.entity.Constellation;
-import it.attsd.deepsky.model.ConstellationRepository;
+import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.repository.ConstellationRepository;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -70,11 +70,6 @@ public class ConstellationRepositoryTest {
 	}
 
 	@Test
-	public void testGetConstellationByNameWhenIsNotPresent() {
-		assertThat(constellationRepository.findByName(ORION)).isNull();
-	}
-
-	@Test
 	public void testGetConstellationByNameWhenIsPresent() {
 		Constellation orionSaved = entityManager.persistAndFlush(new Constellation(ORION));
 		assertNotNull(orionSaved);
@@ -82,6 +77,11 @@ public class ConstellationRepositoryTest {
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);
 		
 		assertThat(constellationRepository.findByName(ORION)).isEqualTo(orionSaved);
+	}
+	
+	@Test
+	public void testGetConstellationByNameWhenIsNotPresent() {
+		assertThat(constellationRepository.findByName(ORION)).isNull();
 	}
 	
 	@Test

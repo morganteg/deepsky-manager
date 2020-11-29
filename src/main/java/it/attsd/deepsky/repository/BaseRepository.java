@@ -1,8 +1,9 @@
-package it.attsd.deepsky.model;
+package it.attsd.deepsky.repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+@Deprecated
 public abstract class BaseRepository {
 
 	@PersistenceContext(name = "it.attsd.deepsky")

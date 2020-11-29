@@ -22,9 +22,9 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
-import it.attsd.deepsky.model.ConstellationRepository;
-import it.attsd.deepsky.model.DeepSkyObjectRepository;
 import it.attsd.deepsky.pojo.ConstellationPojo;
+import it.attsd.deepsky.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

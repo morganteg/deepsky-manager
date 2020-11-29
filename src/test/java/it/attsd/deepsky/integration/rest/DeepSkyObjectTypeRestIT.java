@@ -23,11 +23,11 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
-import it.attsd.deepsky.entity.DeepSkyObjectType;
 import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
-import it.attsd.deepsky.model.DeepSkyObjectRepository;
-import it.attsd.deepsky.model.DeepSkyObjectTypeRepository;
+import it.attsd.deepsky.model.DeepSkyObjectType;
 import it.attsd.deepsky.pojo.DeepSkyObjectTypePojo;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 @RunWith(SpringRunner.class)
