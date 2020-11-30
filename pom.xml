@@ -277,6 +277,12 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>net.sourceforge.htmlunit</groupId>
+			<artifactId>htmlunit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<!-- This is important, in this way, in order to "mvn verify" without org.junit 
 			compilation errors and EclEmma coverage always zero issue -->
 		<dependency>

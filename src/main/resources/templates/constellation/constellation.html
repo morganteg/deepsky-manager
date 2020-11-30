@@ -6,33 +6,43 @@
 <body class="container">
 	<div th:replace="fragments/header :: header">...</div>
 
-	<h1>Constellations</h1>
+	<h1 id="pageTitle">Constellations</h1>
 
 	<div style="margin-bottom: 1em;">
-		<form action="" th:action="@{/constellation}" th:object="${constellation}" method="post">
-			<input type="hidden" id="constellationId" th:field="*{id}" />
-	        <label>Name:</label> 
-	        <input type="text" id="constellationName" th:field="*{name}" />
-	        <input type="submit" id="submitButton" class="btn btn-primary" value="Save" />
-	    </form>
-    </div>
+		<form id="constellationForm" name="constellationForm" action="" th:action="@{/constellation}"
+			th:object="${constellation}" method="post">
+			<input type="hidden" id="constellationId" th:field="*{id}" /> <label>Name:</label>
+			<input type="text" id="constellationName" th:field="*{name}" /> <input
+				type="submit" id="submitButton" name="submitButton" class="btn btn-primary" value="Save" />
+		</form>
+	</div>
 
-	<table id="constellations" class="table">
+	<div id="emptyMessage" th:if="constellations">
+		No constellations
+	</div>
+
+	<table id="constellations" class="table" th:unless="${constellations.empty}">
 		<thead>
 			<tr>
 				<th style="width: 2%;">&nbsp;</th>
 				<th style="width: 2%;">&nbsp;</th>
 				<th style="width: 2%;">ID</th>
 				<th>Name</th>
-				
+
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="constellation: ${constellations}" th:id="@{'constellation-' + ${constellation.id}}">
-				<td><a th:href="@{'/constellation/delete/' + ${constellation.id}}"><i class="fas fa-trash-alt"></i></a></td>
-				<td><a th:href="@{'/constellation/modify/' + ${constellation.id}}"><i class="fas fa-edit"></i></a></td>
+			<tr th:each="constellation: ${constellations}"
+				th:id="@{'constellation-' + ${constellation.id}}">
+				<td><a
+					th:href="@{'/constellation/delete/' + ${constellation.id}}"><i
+						class="fas fa-trash-alt"></i></a></td>
+				<td><a
+					th:href="@{'/constellation/modify/' + ${constellation.id}}"><i
+						class="fas fa-edit"></i></a></td>
 				<td th:text="${constellation.id}" />
-				<td th:id="@{'constellation-name-' + ${constellation.id}}" th:text="${constellation.name}" />
+				<td th:id="@{'constellation-name-' + ${constellation.id}}"
+					th:text="${constellation.name}" />
 			</tr>
 		</tbody>
 	</table>

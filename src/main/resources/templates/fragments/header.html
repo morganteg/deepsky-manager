@@ -14,5 +14,9 @@
 	<div th:if= "${error != null && error != ''}" class="alert alert-danger" role="alert">
 	  <p id="errorMessage" th:text="${error}"></p>
 	</div>
+	
+	<div th:if= "${message != null && message != ''}" class="alert alert-primary" role="alert">
+	  <p id="message" th:text="${message}"></p>
+	</div>
   
 </div>

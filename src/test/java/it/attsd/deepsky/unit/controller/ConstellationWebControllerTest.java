@@ -7,9 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.CoreMatchers.*;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -102,7 +99,7 @@ public class ConstellationWebControllerTest {
 				.andExpect(view().name("constellation/constellation"))
 				.andExpect(model().attribute("constellation.id", Matchers.nullValue()))
 				.andExpect(model().attribute("constellation.name", Matchers.nullValue()))
-				.andExpect(model().attribute("constellations", constellations));
-//				.andExpect(model().attribute("message", ""));
+				.andExpect(model().attribute("constellations", constellations))
+				.andExpect(model().attribute("message", Matchers.equalToIgnoringCase("Constellation not found")));
 	}
 }

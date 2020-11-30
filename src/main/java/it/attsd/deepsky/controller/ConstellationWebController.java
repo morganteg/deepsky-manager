@@ -19,6 +19,7 @@ public class ConstellationWebController {
 
 	private static final String ATTRIBUTE_CONSTELLATION = "constellation";
 	private static final String ATTRIBUTE_CONSTELLATIONS = "constellations";
+	private static final String ATTRIBUTE_MESSAGE = "message";
 	private static final String TARGET_CONSTELLATION = "constellation/constellation";
 
 	@Autowired
@@ -28,7 +29,7 @@ public class ConstellationWebController {
 	public String getConstellations(Model model) {
 		List<Constellation> constellations = constellationService.findAll();
 
-//		model.addAttribute(ATTRIBUTE_FORM, new ConstellationPojo());
+		model.addAttribute(ATTRIBUTE_CONSTELLATION, new Constellation());
 		model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellations);
 
 		return TARGET_CONSTELLATION;
@@ -72,6 +73,7 @@ public class ConstellationWebController {
 		Constellation constellation = constellationService.findById(id);
 		if(constellation == null) {
 			constellation = new Constellation();
+			model.addAttribute(ATTRIBUTE_MESSAGE, "Constellation not found");
 		}
 		
 		model.addAttribute(ATTRIBUTE_CONSTELLATION, constellation);
