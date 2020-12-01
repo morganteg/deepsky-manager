@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.model;
+package it.attsd.deepsky.unit.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -15,25 +15,35 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.repository.ConstellationRepository;
 
 @DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringRunner.class)
+//@ContextConfiguration(classes = ConstellationRepository.class)
 public class ConstellationRepositoryTest {
-	
+
 	@Autowired
 	private ConstellationRepository constellationRepository;
-	
+
 	@Autowired
 	private TestEntityManager entityManager;
-	
+
 	private final String ORION = "orion";
 	private final String SCORPIUS = "scorpius";
 
+	@Test
+	public void testJpaMapping() {
+		Constellation orionSaved = entityManager.persistFlushFind(new Constellation(ORION));
+		assertNotNull(orionSaved);
+		assertThat(orionSaved).hasFieldOrPropertyWithValue("id", 1L);
+		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);
+	}
+	
 	@Test
 	public void testGetAllConstellationsWhenDBIsEmpty() {
 		assertThat(constellationRepository.findAll()).isEmpty();
@@ -45,12 +55,12 @@ public class ConstellationRepositoryTest {
 		assertNotNull(orionSaved);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);
-		
+
 		Constellation scorpiusSaved = entityManager.persistAndFlush(new Constellation(SCORPIUS));
 		assertNotNull(scorpiusSaved);
 		assertThat(scorpiusSaved).hasFieldOrPropertyWithValue("id", 2L);
 		assertThat(scorpiusSaved).hasFieldOrPropertyWithValue("name", SCORPIUS);
-		
+
 		assertThat(constellationRepository.findAll()).containsExactly(orionSaved, scorpiusSaved);
 	}
 
@@ -60,7 +70,7 @@ public class ConstellationRepositoryTest {
 		assertNotNull(orionSaved);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);
-		
+
 		assertThat(constellationRepository.findById(1L)).isEqualTo(Optional.of(orionSaved));
 	}
 
@@ -75,15 +85,15 @@ public class ConstellationRepositoryTest {
 		assertNotNull(orionSaved);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);
-		
+
 		assertThat(constellationRepository.findByName(ORION)).isEqualTo(orionSaved);
 	}
-	
+
 	@Test
 	public void testGetConstellationByNameWhenIsNotPresent() {
 		assertThat(constellationRepository.findByName(ORION)).isNull();
 	}
-	
+
 	@Test
 	public void testAddConstellationWhenNotExists() {
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
@@ -98,27 +108,28 @@ public class ConstellationRepositoryTest {
 		assertNotNull(orionSaved);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);
-		
-		assertThrows(DataIntegrityViolationException.class, () -> constellationRepository.saveAndFlush(new Constellation(ORION)));
+
+		assertThrows(DataIntegrityViolationException.class,
+				() -> constellationRepository.saveAndFlush(new Constellation(ORION)));
 	}
 
 	@Test
 	public void testUpdateConstellationWhenExists() {
 		String nameChanged = ORION + " changed";
-		
+
 		Constellation orionSaved = entityManager.persistAndFlush(new Constellation(ORION));
 		assertNotNull(orionSaved);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);
-		
+
 		orionSaved.setName(nameChanged);
-		
+
 		Constellation orionUpdated = constellationRepository.saveAndFlush(orionSaved);
 		assertThat(orionUpdated).isNotNull();
 		assertThat(orionUpdated).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(orionUpdated).hasFieldOrPropertyWithValue("name", nameChanged);
 	}
-	
+
 //	@Test
 //	public void testUpdateConstellationWhenNotExists() {
 //		String nameChanged = ORION + " changed";
@@ -138,21 +149,21 @@ public class ConstellationRepositoryTest {
 //		assertThat(orionUpdated).hasFieldOrPropertyWithValue("id", 1L);
 //		assertThat(orionUpdated).hasFieldOrPropertyWithValue("name", nameChanged);
 //	}
-	
+
 	@Test
 	public void testDeleteConstellationWhenExists() {
 		Constellation orionSaved = entityManager.persistAndFlush(new Constellation(ORION));
 		assertNotNull(orionSaved);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);
-		
+
 		Constellation orionExisting = entityManager.find(Constellation.class, 1L);
 		assertNotNull(orionSaved);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);
-		
+
 		constellationRepository.delete(orionExisting);
-		
+
 		assertThat(entityManager.find(Constellation.class, 1L)).isNull();
 	}
 
