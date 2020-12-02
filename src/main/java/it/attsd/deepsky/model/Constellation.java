@@ -1,5 +1,7 @@
 package it.attsd.deepsky.model;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,9 +17,9 @@ import javax.persistence.Version;
 @Entity
 @Table(name = "constellation")
 public class Constellation {
-	@Version
-    private int version;
-	
+//	@Version
+//    private int version;
+//	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -28,12 +30,12 @@ public class Constellation {
 	public Constellation() {
 
 	}
-	
+
 	public Constellation(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -52,6 +54,18 @@ public class Constellation {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Constellation other = (Constellation) obj;
+		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
 	}
 
 }

@@ -57,9 +57,11 @@ public class ConstellationWebControllerHtmlTest {
 	@Test
 	public void testSaveConstellation() throws Exception {
 		HtmlPage page = webClient.getPage("/constellation");
+		
 		final HtmlForm constellationForm = page.getFormByName("constellationForm");
 		constellationForm.getInputByName("name").setValueAttribute(ORION);
 		constellationForm.getButtonByName("submitButton").click();
+		
 		verify(constellationService, times(2)).findAll();
 		verify(constellationService).save(new Constellation(null, ORION));
 	}
@@ -88,7 +90,7 @@ public class ConstellationWebControllerHtmlTest {
 
 	@Test
 	public void testModifyConstellationWhenExists() throws Exception {
-		Constellation constellation = spy(new Constellation(1L, ORION));
+		Constellation constellation = new Constellation(1L, ORION);
 
 		when(constellationService.findById(1L)).thenReturn(constellation);
 
@@ -96,14 +98,17 @@ public class ConstellationWebControllerHtmlTest {
 		final HtmlForm constellationForm = page.getFormByName("constellationForm");
 
 		constellationForm.getInputByValue(ORION).setValueAttribute(ORION + " changed");
-		constellationForm.getInputByName("submitButton").click();
+		constellationForm.getButtonByName("submitButton").click();
+		
+		verify(constellationService, times(2)).findAll();
+		verify(constellationService).updateById(1L, new Constellation(1L, ORION + " changed"));
 
-		InOrder inOrder = inOrder(constellation, constellationService);
-		inOrder.verify(constellationService).findById(1L);
-		inOrder.verify(constellationService).findAll();
-		inOrder.verify(constellation).getId();
-		inOrder.verify(constellationService).updateById(1L, constellation);
-		inOrder.verify(constellationService).findAll();
+//		InOrder inOrder = inOrder(constellation, constellationService);
+//		inOrder.verify(constellationService).findById(1L);
+//		inOrder.verify(constellationService).findAll();
+//		inOrder.verify(constellation).getId();
+//		inOrder.verify(constellationService).updateById(1L, constellation);
+//		inOrder.verify(constellationService).findAll();
 //
 //		verify(constellationService).findById(1L);
 //		verify(constellationService).findAll();
