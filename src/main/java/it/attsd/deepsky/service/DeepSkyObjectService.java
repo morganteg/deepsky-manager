@@ -75,7 +75,7 @@ public class DeepSkyObjectService {
 			throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException,
 			DeepSkyObjectAlreadyExistsException {
 		// 1 - Retrieve Constellation
-		Constellation constellation = constellationRepository.findById(constellationId);
+		Constellation constellation = constellationRepository.findById(constellationId).orElseGet(null);
 		if (constellation == null) {
 			throw new ConstellationNotFoundException();
 		}
@@ -139,7 +139,7 @@ public class DeepSkyObjectService {
 			throw new DeepSkyObjectNotFoundException();
 		}
 
-		Constellation constellation = constellationRepository.findById(constellationId);
+		Constellation constellation = constellationRepository.findById(constellationId).orElseGet(null);
 		if (constellation == null) {
 			throw new ConstellationNotFoundException();
 		}

@@ -17,9 +17,9 @@ import javax.persistence.Version;
 @Entity
 @Table(name = "constellation")
 public class Constellation {
-//	@Version
-//    private int version;
-//	
+	@Version
+    private int version;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

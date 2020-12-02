@@ -15,16 +15,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.repository.ConstellationRepository;
 
 @DataJpaTest
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringRunner.class)
-//@ContextConfiguration(classes = ConstellationRepository.class)
 public class ConstellationRepositoryTest {
 
 	@Autowired

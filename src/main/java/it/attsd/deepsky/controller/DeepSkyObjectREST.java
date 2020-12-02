@@ -1,4 +1,4 @@
-package it.attsd.deepsky.rest;
+package it.attsd.deepsky.controller;
 
 import java.util.List;
 

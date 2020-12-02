@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.repository.ConstellationRepository;
 

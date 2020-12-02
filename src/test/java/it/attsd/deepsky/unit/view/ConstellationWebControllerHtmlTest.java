@@ -1,16 +1,12 @@
 package it.attsd.deepsky.unit.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.internal.verification.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -102,17 +98,14 @@ public class ConstellationWebControllerHtmlTest {
 		
 		verify(constellationService, times(2)).findAll();
 		verify(constellationService).updateById(1L, new Constellation(1L, ORION + " changed"));
-
-//		InOrder inOrder = inOrder(constellation, constellationService);
-//		inOrder.verify(constellationService).findById(1L);
-//		inOrder.verify(constellationService).findAll();
-//		inOrder.verify(constellation).getId();
-//		inOrder.verify(constellationService).updateById(1L, constellation);
-//		inOrder.verify(constellationService).findAll();
-//
-//		verify(constellationService).findById(1L);
-//		verify(constellationService).findAll();
-//		verify(constellationService).updateById(1L, constellation);
+	}
+	
+	@Test
+	public void testDeleteConstellation() throws Exception {
+		webClient.getPage("/constellation/delete/1");
+		
+		verify(constellationService).findAll();
+		verify(constellationService).deleteById(1L);
 	}
 
 }

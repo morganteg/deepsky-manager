@@ -52,7 +52,7 @@ public class ConstellationRestE2E {
 	public void setup() {
 		RestAssured.port = port;
 		deepSkyObjectRepository.emptyTable();
-		constellationRepository.emptyTable();
+//		constellationRepository.emptyTable();
 	}
 
 	@Test
