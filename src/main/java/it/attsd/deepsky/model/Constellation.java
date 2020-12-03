@@ -55,6 +55,11 @@ public class Constellation {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name);
+	}
 
 	@Override
 	public boolean equals(Object obj) {

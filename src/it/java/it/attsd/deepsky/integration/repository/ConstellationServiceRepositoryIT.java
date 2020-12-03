@@ -1,4 +1,4 @@
-package it.attsd.deepsky.integration.model;
+package it.attsd.deepsky.integration.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -14,7 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
@@ -22,21 +24,19 @@ import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectTypeRepository;
+import it.attsd.deepsky.service.ConstellationService;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//@AutoConfigureTestDatabase
-public class ConstellationRepositoryIT {
-	private Logger logger = LoggerFactory.getLogger(ConstellationRepositoryIT.class);
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@Import(ConstellationService.class)
+public class ConstellationServiceRepositoryIT {
+	private Logger logger = LoggerFactory.getLogger(ConstellationServiceRepositoryIT.class);
 
 	@Autowired
 	private ConstellationRepository constellationRepository;
 
 	@Autowired
-	private DeepSkyObjectTypeRepository deepSkyObjectTypeRepository;
-
-	@Autowired
-	private DeepSkyObjectRepository deepSkyObjectRepository;
+	private ConstellationService constellationService;
 
 	String ORION = "orion";
 	String LIBRA = "libra";
@@ -47,7 +47,15 @@ public class ConstellationRepositoryIT {
 //		deepSkyObjectTypeRepository.emptyTable();
 ////		constellationRepository.emptyTable();
 //	}
-//
+
+	@Test
+	public void testSaveIntoRepository() throws ConstellationAlreadyExistsException {
+		Constellation saved = constellationService.save(new Constellation(ORION));
+		constellationRepository.findById(saved.getId()).isPresent();
+
+		assertThat(constellationRepository.findById(saved.getId()).get()).isEqualTo(saved);
+	}
+
 //	@Test
 //	public void testFindAll() throws ConstellationAlreadyExistsException {
 //		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));

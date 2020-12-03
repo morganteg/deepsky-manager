@@ -1,4 +1,4 @@
-package it.attsd.deepsky.integration.model;
+package it.attsd.deepsky.integration.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
