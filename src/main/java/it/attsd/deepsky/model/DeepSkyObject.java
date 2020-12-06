@@ -17,39 +17,34 @@ public class DeepSkyObject {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Column(unique = true, nullable = false)
 	private String name;
 
 	@ManyToOne
 	private Constellation constellation;
-	
-	@ManyToOne
-	private DeepSkyObjectType type;
 
 	public DeepSkyObject() {
 
 	}
 
-	public DeepSkyObject(String name, Constellation constellation, DeepSkyObjectType type) {
+	public DeepSkyObject(String name, Constellation constellation) {
 		this.name = name;
 		this.constellation = constellation;
-		this.type = type;
 	}
 
-	public DeepSkyObject(long id, String name, Constellation constellation, DeepSkyObjectType type) {
+	public DeepSkyObject(Long id, String name, Constellation constellation) {
 		this.id = id;
 		this.name = name;
 		this.constellation = constellation;
-		this.type = type;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -67,14 +62,6 @@ public class DeepSkyObject {
 
 	public void setConstellation(Constellation constellation) {
 		this.constellation = constellation;
-	}
-
-	public DeepSkyObjectType getType() {
-		return type;
-	}
-
-	public void setType(DeepSkyObjectType type) {
-		this.type = type;
 	}
 
 }

@@ -6,19 +6,24 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -34,17 +39,11 @@ import it.attsd.deepsky.model.DeepSkyObjectType;
 import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectTypeRepository;
+import it.attsd.deepsky.service.ConstellationService;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class DeepSkyObjectServiceWithMockBeanTest {
-	@Mock
-	private ConstellationRepository constellationRepository;
-
-	@Mock
-	private DeepSkyObjectTypeRepository deepSkyObjectTypeRepository;
-
 	@Mock
 	private DeepSkyObjectRepository deepSkyObjectRepository;
 
@@ -55,18 +54,97 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 	private String NEBULA = "nebula";
 	private String M42 = "m42";
 	private String M43 = "m43";
-
-	private Constellation orion = new Constellation(ORION);
-	private DeepSkyObjectType nebula = new DeepSkyObjectType(NEBULA);
-
-	private DeepSkyObject m42 = new DeepSkyObject(M42, orion, nebula);
-	private DeepSkyObject m43 = new DeepSkyObject(M43, orion, nebula);
-
-//	@Before
-//	public void setup() {
-//		MockitoAnnotations.initMocks(this);
-//	}
+	
+	Constellation orionSaved = new Constellation(1L, ORION);
+	DeepSkyObject m42Saved = new DeepSkyObject(1L, M42, orionSaved);
+	DeepSkyObject m43Saved = new DeepSkyObject(1L, M43, orionSaved);
 //
+//	private Constellation orion = new Constellation(ORION);
+//	private DeepSkyObjectType nebula = new DeepSkyObjectType(NEBULA);
+//
+//	private DeepSkyObject m42 = new DeepSkyObject(M42, orion, nebula);
+//	private DeepSkyObject m43 = new DeepSkyObject(M43, orion, nebula);
+
+	@Test
+	public void testFindAllDeepSkyObjectsWhenDbIsEmpty() {
+		when(deepSkyObjectRepository.findAll()).thenReturn(new ArrayList<DeepSkyObject>());
+
+		assertThat(deepSkyObjectService.findAll()).isEmpty();
+	}
+	
+	@Test
+	public void testFindAllDeepSkyObjectsWhenDbHasTwo() {
+		List<DeepSkyObject> deepSkyObjects = new ArrayList<DeepSkyObject>();
+		deepSkyObjects.add(m42Saved);
+		deepSkyObjects.add(m43Saved);
+
+		when(deepSkyObjectRepository.findAll()).thenReturn(deepSkyObjects);
+
+		assertThat(deepSkyObjectService.findAll()).containsExactly(m42Saved, m43Saved);
+	}
+	
+	@Test
+	public void testFindDeepSkyObjectByIdWhenIsPresent() throws DeepSkyObjectNotFoundException {
+		when(deepSkyObjectRepository.findById(1L)).thenReturn(Optional.of(m42Saved));
+
+		assertThat(deepSkyObjectService.findById(1L)).isSameAs(m42Saved);
+	}
+	
+	@Test
+	public void testFindDeepSkyObjectByIdWhenIsNotPresent() throws ConstellationNotFoundException {
+		when(deepSkyObjectRepository.findById(1L)).thenReturn(Optional.empty());
+
+		assertThat(deepSkyObjectService.findById(1L)).isNull();
+	}
+	
+	@Test
+	public void testFindDeepSkyObjectByNameWhenIsPresent() {
+		when(deepSkyObjectRepository.findByName(M42)).thenReturn(m42Saved);
+
+		assertThat(deepSkyObjectService.findByName(M42)).isSameAs(m42Saved);
+	}
+	
+	@Test
+	public void testFindDeepSkyObjectByNameWhenIsNotPresent() {
+		when(deepSkyObjectRepository.findByName(M42)).thenReturn(null);
+
+		assertThat(deepSkyObjectService.findByName(M42)).isNull();
+	}
+	
+	@Test
+	public void testSaveDeepSkyObject() throws ConstellationAlreadyExistsException {
+		DeepSkyObject m42ToSave = spy(new DeepSkyObject(100L, M42, orionSaved));
+
+		when(deepSkyObjectRepository.save(m42ToSave)).thenReturn(m42Saved);
+
+		DeepSkyObject m42Saved = deepSkyObjectService.save(m42ToSave);
+		assertThat(m42Saved).isSameAs(m42Saved);
+
+		InOrder inOrder = inOrder(m42ToSave, deepSkyObjectRepository);
+		inOrder.verify(m42ToSave).setId(null);
+		inOrder.verify(deepSkyObjectRepository).save(m42ToSave);
+	}
+	
+	@Test
+	public void testUpdateDeepSkyObject() throws ConstellationAlreadyExistsException {
+		DeepSkyObject m42ToUpdate = spy(new DeepSkyObject(null, M42, orionSaved));
+		DeepSkyObject m42Updated = new DeepSkyObject(1L, M42, orionSaved);
+
+		when(deepSkyObjectRepository.save(any(DeepSkyObject.class))).thenReturn(m42Updated);
+
+		DeepSkyObject result = deepSkyObjectService.updateById(1L, m42ToUpdate);
+		assertThat(result).isSameAs(m42Updated);
+		
+		InOrder inOrder = inOrder(m42ToUpdate, deepSkyObjectRepository);
+		inOrder.verify(m42ToUpdate).setId(1L);
+		inOrder.verify(deepSkyObjectRepository).save(m42ToUpdate);
+	}
+	
+	@Test
+	public void testDeleteDeepSkyObjectWhenExists() {
+		deepSkyObjectService.deleteById(1L);
+	}
+	
 //	@Test
 //	public void testFindAllDeepSkyObjectsWhenDbIsEmpty() {
 //		List<DeepSkyObject> deepSkyObjects = new ArrayList<DeepSkyObject>();

@@ -99,7 +99,6 @@ public class DeepSkyObjectController {
 		deepSkyObjectPojo.setId(deepSkyObject.getId());
 		deepSkyObjectPojo.setName(deepSkyObject.getName());
 		deepSkyObjectPojo.setConstellationId(deepSkyObject.getConstellation().getId());
-		deepSkyObjectPojo.setDeepSkyObjectTypeId(deepSkyObject.getType().getId());
 		model.addAttribute(ATTRIBUTE_FORM, deepSkyObjectPojo);
 
 		List<DeepSkyObject> deepSkyObjects = deepSkyObjectService.findAll();
