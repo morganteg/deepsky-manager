@@ -2,22 +2,10 @@ package it.attsd.deepsky.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.ConstellationNotFoundException;
-import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
-import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
-import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
-import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.model.DeepSkyObjectType;
-import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
-import it.attsd.deepsky.repository.DeepSkyObjectTypeRepository;
 
 @Service
 public class DeepSkyObjectService {

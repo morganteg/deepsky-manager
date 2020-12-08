@@ -23,7 +23,7 @@ import it.attsd.deepsky.service.DeepSkyObjectService;
 
 @RestController()
 @RequestMapping("/api/deepskyobject")
-public class DeepSkyObjectREST {
+public class DeepSkyObjectRestController {
 	@Autowired
 	private DeepSkyObjectService deepSkyObjectService;
 

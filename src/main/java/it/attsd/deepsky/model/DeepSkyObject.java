@@ -1,5 +1,7 @@
 package it.attsd.deepsky.model;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -62,6 +64,18 @@ public class DeepSkyObject {
 
 	public void setConstellation(Constellation constellation) {
 		this.constellation = constellation;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeepSkyObject other = (DeepSkyObject) obj;
+		return Objects.equals(id, other.id) && Objects.equals(name, other.name) && Objects.equals(constellation, other.constellation);
 	}
 
 }
