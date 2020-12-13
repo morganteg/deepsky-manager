@@ -2,6 +2,7 @@ package it.attsd.deepsky.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ public class ConstellationWebController {
 	private static final String ATTRIBUTE_CONSTELLATION = "constellation";
 	private static final String ATTRIBUTE_CONSTELLATIONS = "constellations";
 	private static final String ATTRIBUTE_MESSAGE = "message";
+	private static final String ATTRIBUTE_ERROR = "error";
 	private static final String TARGET_CONSTELLATION = "constellation/constellation";
 
 	@Autowired
@@ -34,12 +36,20 @@ public class ConstellationWebController {
 	}
 
 	@PostMapping("/constellation")
-	public String saveConstellation(@ModelAttribute("constellation") Constellation constellation) {
-		final Long id = constellation.getId();
-		if (id == null) {
-			constellationService.save(constellation);
+	public String saveConstellation(@ModelAttribute("constellation") Constellation constellation, Model model) {
+		if (StringUtils.isEmpty(constellation.getName())) {
+			model.addAttribute(ATTRIBUTE_ERROR, "Please, fill all mandatory attributes");
+			model.addAttribute(ATTRIBUTE_CONSTELLATION, constellation);
+			model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellationService.findAll());
+			
+			return TARGET_CONSTELLATION;
 		} else {
-			constellationService.updateById(id, constellation);
+			final Long id = constellation.getId();
+			if (id == null) {
+				constellationService.save(constellation);
+			} else {
+				constellationService.updateById(id, constellation);
+			}
 		}
 
 		return "redirect:/constellation";

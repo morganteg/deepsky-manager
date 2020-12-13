@@ -11,9 +11,9 @@
 	<div style="margin-bottom: 1em;">
 		<form action="#" th:action="@{/deepskyobject}"
 			th:object="${deepSkyObject}" method="post">
-			<input type="hidden" id="deepSkyObjectId" th:field="*{id}" /> <label>Name:</label>
-			<input type="text" id="deepSkyObjectName" th:field="*{name}" /> <label>Constellation:</label>
-			<select id="constellationId" name="constellationId">
+			<input type="hidden" id="deepSkyObjectId" th:field="*{id}" /> <label>Name*:</label>
+			<input type="text" id="deepSkyObjectName" th:field="*{name}" /> <label>Constellation*:</label>
+			<select id="constellationId" name="constellationId" th:field="*{constellation}">
 				<option value="0">Select...</option>
 				<option th:unless="${constellations.empty}"
 					th:each="constellation: ${constellations}"
@@ -23,8 +23,12 @@
 				value="Save" />
 		</form>
 	</div>
+	
+	<div id="emptyMessage" th:unless="${!deepSkyObjects.empty}">
+		No deep-sky objects
+	</div>
 
-	<table id="deepSkyObjects" class="table">
+	<table id="deepSkyObjects" class="table" th:unless="${deepSkyObjects.empty}">
 		<thead>
 			<tr>
 				<th style="width: 2%;">&nbsp;</th>
@@ -36,16 +40,16 @@
 		</thead>
 		<tbody>
 			<tr th:each="deepSkyObject: ${deepSkyObjects}">
-				<td><a
+				<td class="deepskyobject-delete"><a
 					th:href="@{'/deepskyobject/delete/' + ${deepSkyObject.id}}"><i
 						class="fas fa-trash-alt"></i></a></td>
-				<td><a
+				<td class="deepskyobject-delete"><a
 					th:href="@{'/deepskyobject/modify/' + ${deepSkyObject.id}}"><i
 						class="fas fa-edit"></i></a></td>
-				<td th:text="${deepSkyObject.id}" />
-				<td th:id="@{'deepskyobject-name-' + ${deepSkyObject.id}}"
+				<td class="deepskyobject-id" th:text="${deepSkyObject.id}" />
+				<td class="deepskyobject-name" th:id="@{'deepskyobject-name-' + ${deepSkyObject.id}}"
 					th:text="${deepSkyObject.name}" />
-				<td th:id="@{'deepskyobject-constellation-' + ${deepSkyObject.id}}"
+				<td class="deepskyobject-constellationname" th:id="@{'deepskyobject-constellation-' + ${deepSkyObject.id}}"
 					th:text="${deepSkyObject.constellation.name}" />
 			</tr>
 		</tbody>

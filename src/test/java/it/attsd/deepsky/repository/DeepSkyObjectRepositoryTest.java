@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.repository;
+package it.attsd.deepsky.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;

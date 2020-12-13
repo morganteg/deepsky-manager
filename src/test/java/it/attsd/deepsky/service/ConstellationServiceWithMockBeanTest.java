@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.service;
+package it.attsd.deepsky.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

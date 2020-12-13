@@ -11,13 +11,13 @@
 	<div style="margin-bottom: 1em;">
 		<form id="constellationForm" name="constellationForm" action="" th:action="@{/constellation}"
 			th:object="${constellation}" method="post">
-			<input type="hidden" id="constellationId" th:field="*{id}" /> <label>Name:</label>
+			<input type="hidden" id="constellationId" th:field="*{id}" /> <label>Name*:</label>
 			<input type="text" id="constellationName" th:field="*{name}" /> 
 			<button type="submit" id="submitButton" name="submitButton" class="btn btn-primary">Save</button>
 		</form>
 	</div>
 
-	<div id="emptyMessage" th:if="constellations">
+	<div id="emptyMessage" th:unless="${!constellations.empty}">
 		No constellations
 	</div>
 
@@ -34,14 +34,14 @@
 		<tbody>
 			<tr th:each="constellation: ${constellations}"
 				th:id="@{'constellation-' + ${constellation.id}}">
-				<td><a
+				<td class="constellation-delete"><a
 					th:href="@{'/constellation/delete/' + ${constellation.id}}"><i
 						class="fas fa-trash-alt"></i></a></td>
-				<td><a
+				<td class="constellation-modify"><a
 					th:href="@{'/constellation/modify/' + ${constellation.id}}"><i
 						class="fas fa-edit"></i></a></td>
-				<td th:text="${constellation.id}" />
-				<td th:id="@{'constellation-name-' + ${constellation.id}}"
+				<td class="constellation-id" th:text="${constellation.id}" />
+				<td class="constellation-name" th:id="@{'constellation-name-' + ${constellation.id}}"
 					th:text="${constellation.name}" />
 			</tr>
 		</tbody>

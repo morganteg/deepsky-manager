@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.controller;
+package it.attsd.deepsky.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;

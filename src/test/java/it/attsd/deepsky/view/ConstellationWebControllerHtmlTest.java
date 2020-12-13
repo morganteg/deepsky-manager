@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.view;
+package it.attsd.deepsky.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;

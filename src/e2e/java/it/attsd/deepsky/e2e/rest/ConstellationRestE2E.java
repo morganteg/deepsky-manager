@@ -22,13 +22,12 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
-import it.attsd.deepsky.pojo.ConstellationPojo;
 import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+//@AutoConfigureTestDatabase
 public class ConstellationRestE2E {
 	@LocalServerPort
 	private int port;
@@ -48,49 +47,49 @@ public class ConstellationRestE2E {
 		RestAssured.defaultParser = Parser.JSON;
 	}
 
-	@Before
-	public void setup() {
-		RestAssured.port = port;
-		deepSkyObjectRepository.emptyTable();
-//		constellationRepository.emptyTable();
-	}
-
-	@Test
-	public void testRestEndPoints() throws Exception {
-		// Save new Constellation
-		ConstellationPojo constellationSaveRequest = new ConstellationPojo();
-		constellationSaveRequest.setName(ORION);
-
-		String savePayload = new Gson().toJson(constellationSaveRequest);
-
-		Response saveResponse = given().contentType(ContentType.JSON).body(savePayload).post(BASE_URL).then()
-				.statusCode(200).extract().response();
-
-		int orionId = saveResponse.body().path("id");
-		assertThat(orionId).isPositive();
-
-		// Read saved Constellation
-		given().accept(ContentType.JSON).when().get(BASE_URL + "/" + orionId).then().statusCode(200)
-				.assertThat().body("id", equalTo(orionId), "name", equalToIgnoringCase(ORION));
-		
-		// Update Constellation
-		String orionName = saveResponse.body().path("name");
-		String orionNameChanged = orionName + " changed";
-
-		ConstellationPojo constellationUpdateRequest = new ConstellationPojo();
-		constellationUpdateRequest.setId(orionId);
-		constellationUpdateRequest.setName(orionNameChanged);
-
-		String updatePayload = new Gson().toJson(constellationUpdateRequest);
-		given().contentType(ContentType.JSON).body(updatePayload).put(BASE_URL).then().statusCode(200)
-				.assertThat().body("id", equalTo(orionId), "name", equalToIgnoringCase(orionNameChanged));
-		
-		// Delete Constellation
-		given().contentType(ContentType.JSON).delete(BASE_URL + "/" + orionId).then().statusCode(200);
-		
-		// Check Constellation is deleted
-		given().accept(ContentType.JSON).when().get(BASE_URL + "/" + orionId).then().statusCode(404);
-	}
+//	@Before
+//	public void setup() {
+//		RestAssured.port = port;
+//		deepSkyObjectRepository.emptyTable();
+////		constellationRepository.emptyTable();
+//	}
+//
+//	@Test
+//	public void testRestEndPoints() throws Exception {
+//		// Save new Constellation
+//		ConstellationPojo constellationSaveRequest = new ConstellationPojo();
+//		constellationSaveRequest.setName(ORION);
+//
+//		String savePayload = new Gson().toJson(constellationSaveRequest);
+//
+//		Response saveResponse = given().contentType(ContentType.JSON).body(savePayload).post(BASE_URL).then()
+//				.statusCode(200).extract().response();
+//
+//		int orionId = saveResponse.body().path("id");
+//		assertThat(orionId).isPositive();
+//
+//		// Read saved Constellation
+//		given().accept(ContentType.JSON).when().get(BASE_URL + "/" + orionId).then().statusCode(200)
+//				.assertThat().body("id", equalTo(orionId), "name", equalToIgnoringCase(ORION));
+//		
+//		// Update Constellation
+//		String orionName = saveResponse.body().path("name");
+//		String orionNameChanged = orionName + " changed";
+//
+//		ConstellationPojo constellationUpdateRequest = new ConstellationPojo();
+//		constellationUpdateRequest.setId(orionId);
+//		constellationUpdateRequest.setName(orionNameChanged);
+//
+//		String updatePayload = new Gson().toJson(constellationUpdateRequest);
+//		given().contentType(ContentType.JSON).body(updatePayload).put(BASE_URL).then().statusCode(200)
+//				.assertThat().body("id", equalTo(orionId), "name", equalToIgnoringCase(orionNameChanged));
+//		
+//		// Delete Constellation
+//		given().contentType(ContentType.JSON).delete(BASE_URL + "/" + orionId).then().statusCode(200);
+//		
+//		// Check Constellation is deleted
+//		given().accept(ContentType.JSON).when().get(BASE_URL + "/" + orionId).then().statusCode(404);
+//	}
 
 //	@Test
 //	public void testGetConstellationById() throws Exception {
