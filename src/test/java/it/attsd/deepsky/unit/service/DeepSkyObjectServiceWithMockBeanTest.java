@@ -1,45 +1,25 @@
 package it.attsd.deepsky.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.ConstellationNotFoundException;
-import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
-import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
-import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.model.DeepSkyObjectType;
-import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
-import it.attsd.deepsky.repository.DeepSkyObjectTypeRepository;
-import it.attsd.deepsky.service.ConstellationService;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -51,7 +31,6 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 	private DeepSkyObjectService deepSkyObjectService;
 
 	private String ORION = "orion";
-	private String NEBULA = "nebula";
 	private String M42 = "m42";
 	private String M43 = "m43";
 	
@@ -84,14 +63,14 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 	}
 	
 	@Test
-	public void testFindDeepSkyObjectByIdWhenIsPresent() throws DeepSkyObjectNotFoundException {
+	public void testFindDeepSkyObjectByIdWhenIsPresent() {
 		when(deepSkyObjectRepository.findById(1L)).thenReturn(Optional.of(m42Saved));
 
 		assertThat(deepSkyObjectService.findById(1L)).isSameAs(m42Saved);
 	}
 	
 	@Test
-	public void testFindDeepSkyObjectByIdWhenIsNotPresent() throws ConstellationNotFoundException {
+	public void testFindDeepSkyObjectByIdWhenIsNotPresent() {
 		when(deepSkyObjectRepository.findById(1L)).thenReturn(Optional.empty());
 
 		assertThat(deepSkyObjectService.findById(1L)).isNull();
@@ -112,7 +91,7 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 	}
 	
 	@Test
-	public void testSaveDeepSkyObject() throws ConstellationAlreadyExistsException {
+	public void testSaveDeepSkyObject() {
 		DeepSkyObject m42ToSave = spy(new DeepSkyObject(100L, M42, orionSaved));
 
 		when(deepSkyObjectRepository.save(m42ToSave)).thenReturn(m42Saved);
@@ -126,7 +105,7 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 	}
 	
 	@Test
-	public void testUpdateDeepSkyObject() throws ConstellationAlreadyExistsException {
+	public void testUpdateDeepSkyObject() {
 		DeepSkyObject m42ToUpdate = spy(new DeepSkyObject(null, M42, orionSaved));
 		DeepSkyObject m42Updated = new DeepSkyObject(1L, M42, orionSaved);
 

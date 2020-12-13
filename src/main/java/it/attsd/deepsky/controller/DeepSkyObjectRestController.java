@@ -3,6 +3,7 @@ package it.attsd.deepsky.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,12 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.attsd.deepsky.exception.ConstellationNotFoundException;
-import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
-import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
-import it.attsd.deepsky.exception.DeepSkyObjectTypeNotFoundException;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.pojo.DeepSkyObjectPojo;
 import it.attsd.deepsky.service.DeepSkyObjectService;
 
 @RestController()
@@ -27,34 +23,29 @@ public class DeepSkyObjectRestController {
 	@Autowired
 	private DeepSkyObjectService deepSkyObjectService;
 
-	@GetMapping(value = "", produces = "application/json")
+	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<DeepSkyObject> getAll() {
 		return deepSkyObjectService.findAll();
 	}
 
-	@GetMapping(value = "/{id}", produces = "application/json")
-	public @ResponseBody DeepSkyObject getById(@PathVariable long id) throws DeepSkyObjectNotFoundException {
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody DeepSkyObject getById(@PathVariable long id) {
 		return deepSkyObjectService.findById(id);
 	}
 
-	@PostMapping(value = "", produces = "application/json", consumes = "application/json")
-	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObjectPojo deepSkyObjectSaveRequest)
-			throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException,
-			DeepSkyObjectAlreadyExistsException {
-		return deepSkyObjectService.save(deepSkyObjectSaveRequest.getConstellationId(),
-				deepSkyObjectSaveRequest.getDeepSkyObjectTypeId(), deepSkyObjectSaveRequest.getName());
+	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObject deepSkyObject) {
+		return deepSkyObjectService.save(deepSkyObject);
 	}
 
-	@PutMapping(value = "", produces = "application/json", consumes = "application/json")
-	public @ResponseBody DeepSkyObject update(@RequestBody DeepSkyObjectPojo deepSkyObjectUpdateRequest)
-			throws ConstellationNotFoundException, DeepSkyObjectTypeNotFoundException, DeepSkyObjectNotFoundException {
-		return deepSkyObjectService.update(deepSkyObjectUpdateRequest.getId(), deepSkyObjectUpdateRequest.getName(),
-				deepSkyObjectUpdateRequest.getConstellationId(), deepSkyObjectUpdateRequest.getDeepSkyObjectTypeId());
+	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody DeepSkyObject update(@PathVariable long id, @RequestBody DeepSkyObject deepSkyObject) {
+		return deepSkyObjectService.updateById(id, deepSkyObject);
 	}
 
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	public void delete(@PathVariable long id) {
-		deepSkyObjectService.delete(id);
+		deepSkyObjectService.deleteById(id);
 	}
 
 }

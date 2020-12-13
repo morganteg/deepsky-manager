@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import it.attsd.deepsky.exception.DeepSkyObjectNotFoundException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.service.ConstellationService;
@@ -88,7 +87,7 @@ public class DeepSkyObjectWebController {
 //	}
 
 	@GetMapping(value = "/deepskyobject/modify/{id}")
-	public String modifyDeepSkyObject(@PathVariable long id, Model model) throws DeepSkyObjectNotFoundException {
+	public String modifyDeepSkyObject(@PathVariable long id, Model model) {
 		DeepSkyObject deepSkyObject = deepSkyObjectService.findById(id);
 		if(deepSkyObject == null) {
 			deepSkyObject = new DeepSkyObject();

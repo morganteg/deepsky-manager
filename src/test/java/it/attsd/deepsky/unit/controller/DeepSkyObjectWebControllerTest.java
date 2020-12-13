@@ -37,6 +37,8 @@ public class DeepSkyObjectWebControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
+	private String BASE_URL = "/deepskyobject";
+
 	private final String ORION = "orion";
 	private final String SCORPIUS = "scorpius";
 
@@ -56,7 +58,7 @@ public class DeepSkyObjectWebControllerTest {
 		when(constellationService.findAll()).thenReturn(constellations);
 		when(deepSkyObjectService.findAll()).thenReturn(deepSkyObjects);
 
-		mvc.perform(get("/deepskyobject")).andExpect(view().name("deepSkyObject/deepSkyObject"))
+		mvc.perform(get(BASE_URL)).andExpect(view().name("deepSkyObject/deepSkyObject"))
 				.andExpect(model().attribute("deepSkyObject", new DeepSkyObject()))
 				.andExpect(model().attribute("deepSkyObjects", deepSkyObjects))
 				.andExpect(model().attribute("constellations", constellations));
@@ -74,48 +76,50 @@ public class DeepSkyObjectWebControllerTest {
 //	}
 
 	@Test
-	public void test_PostConstellationWithoutId_ShouldSaveNewConstellation() throws Exception {
+	public void test_PostDeepSkyObjectWithoutId_ShouldSaveNewConstellation() throws Exception {
 		DeepSkyObject m42 = new DeepSkyObject(M42, orion);
 
-		mvc.perform(post("/deepskyobject").param("name", M42).param("constellation.id", String.valueOf(orion.getId()))
-//				.param("constellation.name", String.valueOf(orion.getName()))
+		mvc.perform(post(BASE_URL).param("name", M42).param("constellation.id", String.valueOf(orion.getId()))
 				.flashAttr("deepskyobject", m42)).andExpect(view().name("redirect:/deepskyobject"));
 
 		verify(deepSkyObjectService).save(m42);
 	}
 
 	@Test
-	public void test_PostConstellationWithId_ShouldUpdateConstellation() throws Exception {
-		Constellation orion = new Constellation(1L, M42);
+	public void test_PostDeepSkyObjectWithId_ShouldUpdateDeepSkyObject() throws Exception {
+		DeepSkyObject m42 = new DeepSkyObject(1L, M42, orion);
 
-		mvc.perform(post("/constellation").param("id", "1").param("name", M42).flashAttr("constellation", orion))
-				.andExpect(view().name("redirect:/constellation"));
+		mvc.perform(post(BASE_URL).param("name", M42).param("constellation.id", String.valueOf(orion.getId()))
+				.flashAttr("deepskyobject", m42)).andExpect(view().name("redirect:/deepskyobject"));
 
-		verify(deepSkyObjectService).updateById(1L, orion);
+		verify(deepSkyObjectService).updateById(1L, m42);
 	}
 
 	@Test
-	public void test_EditConstellation_WhenConstellationIsFound() throws Exception {
-		Constellation orion = new Constellation(1L, M42);
+	public void test_EditDeepSkyObject_WhenDeepSkyObjectIsFound() throws Exception {
+		DeepSkyObject m42 = new DeepSkyObject(1L, M42, orion);
 
-		when(deepSkyObjectService.findById(1L)).thenReturn(orion);
+		when(deepSkyObjectService.findById(1L)).thenReturn(m42);
 		when(deepSkyObjectService.findAll()).thenReturn(deepSkyObjects);
 
-		mvc.perform(get("/constellation/modify/1")).andExpect(view().name("constellation/constellation"))
-				.andExpect(model().attribute("constellation", orion))
-				.andExpect(model().attribute("constellations", deepSkyObjects));
-//				.andExpect(model().attribute("message", ""));
+		mvc.perform(get(BASE_URL + "/modify/1")).andExpect(view().name("deepSkyObject/deepSkyObject"))
+				.andExpect(model().attribute("deepSkyObject", m42))
+				.andExpect(model().attribute("deepSkyObjects", deepSkyObjects));
 	}
 
 	@Test
-	public void test_EditConstellation_WhenConstellationIsNotFound() throws Exception {
+	public void test_EditDeepSkyObject_WhenDeepSkyObjectIsNotFound() throws Exception {
 		when(deepSkyObjectService.findById(1L)).thenReturn(null);
 		when(deepSkyObjectService.findAll()).thenReturn(deepSkyObjects);
 
-		mvc.perform(get("/constellation/modify/1")).andExpect(view().name("constellation/constellation"))
-				.andExpect(model().attribute("constellation.id", Matchers.nullValue()))
-				.andExpect(model().attribute("constellation.name", Matchers.nullValue()))
-				.andExpect(model().attribute("constellations", deepSkyObjects))
-				.andExpect(model().attribute("message", Matchers.equalToIgnoringCase("Constellation not found")));
+		mvc.perform(get(BASE_URL + "/modify/1")).andExpect(view().name("deepSkyObject/deepSkyObject"))
+				.andExpect(model().attribute("deepSkyObject", new DeepSkyObject()))
+				.andExpect(model().attribute("deepSkyObjects", deepSkyObjects))
+				.andExpect(model().attribute("message", Matchers.equalToIgnoringCase("DeepSkyObject not found")));
+	}
+
+	@Test
+	public void test_DeleteDeepSkyObject() throws Exception {
+		mvc.perform(get(BASE_URL + "/delete/1")).andExpect(view().name("redirect:/deepskyobject"));
 	}
 }

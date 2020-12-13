@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -36,7 +35,7 @@ public class ConstellationRestController {
 	}
 
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Constellation save(@RequestBody Constellation constellation) throws ConstellationAlreadyExistsException {
+	public @ResponseBody Constellation save(@RequestBody Constellation constellation) {
 		return constellationService.save(constellation);
 	}
 
