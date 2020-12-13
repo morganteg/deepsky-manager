@@ -68,7 +68,7 @@ public class ConstellationWebControllerHtmlTest {
 
 		HtmlPage page = webClient.getPage("/constellation/modify/1");
 
-		HtmlParagraph message = page.getHtmlElementById("message");
+		HtmlParagraph message = page.getHtmlElementById("errorMessage");
 		assertThat(message.getTextContent().trim()).isEqualTo("Constellation not found");
 	}
 

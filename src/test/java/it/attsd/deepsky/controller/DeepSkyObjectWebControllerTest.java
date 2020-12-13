@@ -1,5 +1,6 @@
 package it.attsd.deepsky.controller;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import it.attsd.deepsky.controller.DeepSkyObjectWebController;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.service.ConstellationService;
@@ -84,6 +84,24 @@ public class DeepSkyObjectWebControllerTest {
 
 		verify(deepSkyObjectService).save(m42);
 	}
+	
+	@Test
+	public void test_PostDeepSkyObjectWithoutIdAndName_ShouldNotSaveNewConstellation() throws Exception {
+		when(constellationService.findAll()).thenReturn(constellations);
+		when(deepSkyObjectService.findAll()).thenReturn(deepSkyObjects);
+		
+		DeepSkyObject m42 = new DeepSkyObject(null, orion);
+
+		mvc.perform(post(BASE_URL).param("constellation.id", String.valueOf(orion.getId()))
+				.flashAttr("deepskyobject", m42))
+		.andExpect(view().name("deepSkyObject/deepSkyObject"))
+		.andExpect(model().attribute("error", "Please, fill all mandatory attributes"))
+		.andExpect(model().attribute("deepSkyObject", m42))
+		.andExpect(model().attribute("deepSkyObjects", deepSkyObjects))
+		.andExpect(model().attribute("constellations", constellations));
+
+		verify(deepSkyObjectService, times(0)).save(m42);
+	}
 
 	@Test
 	public void test_PostDeepSkyObjectWithId_ShouldUpdateDeepSkyObject() throws Exception {
@@ -115,7 +133,7 @@ public class DeepSkyObjectWebControllerTest {
 		mvc.perform(get(BASE_URL + "/modify/1")).andExpect(view().name("deepSkyObject/deepSkyObject"))
 				.andExpect(model().attribute("deepSkyObject", new DeepSkyObject()))
 				.andExpect(model().attribute("deepSkyObjects", deepSkyObjects))
-				.andExpect(model().attribute("message", Matchers.equalToIgnoringCase("DeepSkyObject not found")));
+				.andExpect(model().attribute("error", Matchers.equalToIgnoringCase("Deep-Sky object not found")));
 	}
 
 	@Test

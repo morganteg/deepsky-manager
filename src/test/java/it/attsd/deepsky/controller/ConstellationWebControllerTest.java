@@ -1,5 +1,6 @@
 package it.attsd.deepsky.controller;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import it.attsd.deepsky.controller.ConstellationWebController;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.service.ConstellationService;
 
@@ -68,6 +68,20 @@ public class ConstellationWebControllerTest {
 
 		verify(constellationService).save(orion);
 	}
+	
+	@Test
+	public void test_PostConstellationWithoutIdAndName_ShouldNotSaveNewConstellation() throws Exception {
+		when(constellationService.findAll()).thenReturn(constellations);
+		
+		Constellation orion = new Constellation(null);
+
+		mvc.perform(post(BASE_URL).flashAttr("constellation", orion))
+				.andExpect(view().name("constellation/constellation"))
+				.andExpect(model().attribute("error", "Please, fill all mandatory attributes"))
+				.andExpect(model().attribute("constellations", constellations));
+
+		verify(constellationService, times(0)).save(orion);
+	}
 
 	@Test
 	public void test_PostConstellationWithId_ShouldUpdateConstellation() throws Exception {
@@ -101,7 +115,7 @@ public class ConstellationWebControllerTest {
 				.andExpect(view().name("constellation/constellation"))
 				.andExpect(model().attribute("constellation", new Constellation()))
 				.andExpect(model().attribute("constellations", constellations))
-				.andExpect(model().attribute("message", Matchers.equalToIgnoringCase("Constellation not found")));
+				.andExpect(model().attribute("error", Matchers.equalToIgnoringCase("Constellation not found")));
 	}
 	
 	@Test

@@ -61,9 +61,9 @@ public class DeepSkyObjectRestControllerIT {
 		DeepSkyObject m42Saved = deepSkyObjectRepository.save(new DeepSkyObject(M42, orionSaved));
 		
 		String nameChanged = M42 + " changed";
-		given().contentType(MediaType.APPLICATION_JSON_VALUE).body(new Constellation(nameChanged)).when()
+		given().contentType(MediaType.APPLICATION_JSON_VALUE).body(new DeepSkyObject(nameChanged, orionSaved)).when()
 				.put("/api/deepskyobject/" + m42Saved.getId()).then().statusCode(200).body(
-						"id", equalTo(m42Saved.getId().intValue()), "name", equalTo(nameChanged), "constellation.name", equalTo(orionSaved.getName()));
+						"id", equalTo(m42Saved.getId().intValue()), "name", equalTo(nameChanged), "constellation.id", equalTo(orionSaved.getId().intValue()));
 	}
 
 }
