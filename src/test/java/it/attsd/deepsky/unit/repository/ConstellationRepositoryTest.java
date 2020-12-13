@@ -94,7 +94,7 @@ public class ConstellationRepositoryTest {
 
 	@Test
 	public void testAddConstellationWhenNotExists() {
-		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
+		Constellation orionSaved = constellationRepository.saveAndFlush(new Constellation(ORION));
 		assertNotNull(orionSaved);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(orionSaved).hasFieldOrPropertyWithValue("name", ORION);

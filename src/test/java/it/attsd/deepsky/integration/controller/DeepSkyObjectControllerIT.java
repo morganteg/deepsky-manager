@@ -1,37 +1,14 @@
 package it.attsd.deepsky.integration.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.DeepSkyObjectAlreadyExistsException;
-import it.attsd.deepsky.exception.DeepSkyObjectTypeAlreadyExistsException;
-import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.model.DeepSkyObjectType;
 import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectTypeRepository;
 import it.attsd.deepsky.service.ConstellationService;
 import it.attsd.deepsky.service.DeepSkyObjectService;
-import it.attsd.deepsky.service.DeepSkyObjectTypeService;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -44,9 +21,6 @@ public class DeepSkyObjectControllerIT {
 
 	@Autowired
 	private DeepSkyObjectRepository deepSkyObjectRepository;
-
-	@Autowired
-	private DeepSkyObjectTypeService deepSkyObjectTypeService;
 
 	@Autowired
 	private ConstellationService constellationService;

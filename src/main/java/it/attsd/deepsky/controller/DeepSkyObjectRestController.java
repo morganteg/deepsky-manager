@@ -14,39 +14,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.service.ConstellationService;
+import it.attsd.deepsky.model.DeepSkyObject;
+import it.attsd.deepsky.service.DeepSkyObjectService;
 
 @RestController()
-@RequestMapping("/api/constellation")
-public class ConstellationRestController {
-
+@RequestMapping("/api/deepskyobject")
+public class DeepSkyObjectRestController {
 	@Autowired
-	private ConstellationService constellationService;
+	private DeepSkyObjectService deepSkyObjectService;
 
 	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<Constellation> getAll() {
-		return constellationService.findAll();
+	public @ResponseBody List<DeepSkyObject> getAll() {
+		return deepSkyObjectService.findAll();
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Constellation getById(@PathVariable long id) {
-		return constellationService.findById(id);
+	public @ResponseBody DeepSkyObject getById(@PathVariable long id) {
+		return deepSkyObjectService.findById(id);
 	}
 
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Constellation save(@RequestBody Constellation constellation) {
-		return constellationService.save(constellation);
+	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObject deepSkyObject) {
+		return deepSkyObjectService.save(deepSkyObject);
 	}
 
 	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Constellation update(@PathVariable long id, @RequestBody Constellation constellation) {
-		return constellationService.updateById(id, constellation);
+	public @ResponseBody DeepSkyObject update(@PathVariable long id, @RequestBody DeepSkyObject deepSkyObject) {
+		return deepSkyObjectService.updateById(id, deepSkyObject);
 	}
 
-	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "/{id}", produces = "application/json")
 	public void delete(@PathVariable long id) {
-		constellationService.deleteById(id);
+		deepSkyObjectService.deleteById(id);
 	}
 
 }

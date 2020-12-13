@@ -17,8 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import it.attsd.deepsky.exception.ConstellationAlreadyExistsException;
-import it.attsd.deepsky.exception.ConstellationNotFoundException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
@@ -57,14 +55,14 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testFindConstellationByIdWhenIsPresent() throws ConstellationNotFoundException {
+	public void testFindConstellationByIdWhenIsPresent() {
 		when(constellationRepository.findById(1L)).thenReturn(Optional.of(orion));
 
 		assertThat(constellationService.findById(1L)).isSameAs(orion);
 	}
 
 	@Test
-	public void testFindConstellationByIdWhenIsNotPresent() throws ConstellationNotFoundException {
+	public void testFindConstellationByIdWhenIsNotPresent() {
 		when(constellationRepository.findById(1L)).thenReturn(Optional.empty());
 
 		assertThat(constellationService.findById(1L)).isNull();
@@ -85,7 +83,7 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testSaveConstellation() throws ConstellationAlreadyExistsException {
+	public void testSaveConstellation() {
 		Constellation orionToSave = spy(new Constellation(100L, ORION));
 
 		when(constellationRepository.save(orionToSave)).thenReturn(orion);
@@ -106,7 +104,7 @@ public class ConstellationServiceWithMockBeanTest {
 //	}
 
 	@Test
-	public void testUpdateConstellation() throws ConstellationAlreadyExistsException {
+	public void testUpdateConstellation() {
 		Constellation orionToUpdate = spy(new Constellation(null, ORION));
 		Constellation orionUpdated = new Constellation(1L, ORION);
 

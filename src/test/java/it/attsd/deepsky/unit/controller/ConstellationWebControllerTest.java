@@ -31,6 +31,8 @@ public class ConstellationWebControllerTest {
 
 	@Autowired
 	private MockMvc mvc;
+	
+	private final String BASE_URL = "/constellation";
 
 	private final String ORION = "orion";
 	private final String SCORPIUS = "scorpius";
@@ -42,7 +44,7 @@ public class ConstellationWebControllerTest {
 	public void test_GetConstellation_ShowsConstellations() throws Exception {
 		when(constellationService.findAll()).thenReturn(constellations);
 
-		mvc.perform(get("/constellation")).andExpect(view().name("constellation/constellation"))
+		mvc.perform(get(BASE_URL)).andExpect(view().name("constellation/constellation"))
 				.andExpect(model().attribute("constellations", constellations));
 	}
 
@@ -61,7 +63,7 @@ public class ConstellationWebControllerTest {
 	public void test_PostConstellationWithoutId_ShouldSaveNewConstellation() throws Exception {
 		Constellation orion = new Constellation(ORION);
 
-		mvc.perform(post("/constellation").param("name", ORION).flashAttr("constellation", orion))
+		mvc.perform(post(BASE_URL).param("name", ORION).flashAttr("constellation", orion))
 				.andExpect(view().name("redirect:/constellation"));
 
 		verify(constellationService).save(orion);
@@ -71,7 +73,7 @@ public class ConstellationWebControllerTest {
 	public void test_PostConstellationWithId_ShouldUpdateConstellation() throws Exception {
 		Constellation orion = new Constellation(1L, ORION);
 
-		mvc.perform(post("/constellation").param("id", "1").param("name", ORION).flashAttr("constellation", orion))
+		mvc.perform(post(BASE_URL).param("id", "1").param("name", ORION).flashAttr("constellation", orion))
 				.andExpect(view().name("redirect:/constellation"));
 
 		verify(constellationService).updateById(1L, orion);
@@ -84,7 +86,7 @@ public class ConstellationWebControllerTest {
 		when(constellationService.findById(1L)).thenReturn(orion);
 		when(constellationService.findAll()).thenReturn(constellations);
 
-		mvc.perform(get("/constellation/modify/1")).andExpect(view().name("constellation/constellation"))
+		mvc.perform(get(BASE_URL + "/modify/1")).andExpect(view().name("constellation/constellation"))
 				.andExpect(model().attribute("constellation", orion))
 				.andExpect(model().attribute("constellations", constellations));
 //				.andExpect(model().attribute("message", ""));
@@ -95,11 +97,15 @@ public class ConstellationWebControllerTest {
 		when(constellationService.findById(1L)).thenReturn(null);
 		when(constellationService.findAll()).thenReturn(constellations);
 
-		mvc.perform(get("/constellation/modify/1"))
+		mvc.perform(get(BASE_URL + "/modify/1"))
 				.andExpect(view().name("constellation/constellation"))
-				.andExpect(model().attribute("constellation.id", Matchers.nullValue()))
-				.andExpect(model().attribute("constellation.name", Matchers.nullValue()))
+				.andExpect(model().attribute("constellation", new Constellation()))
 				.andExpect(model().attribute("constellations", constellations))
 				.andExpect(model().attribute("message", Matchers.equalToIgnoringCase("Constellation not found")));
+	}
+	
+	@Test
+	public void test_DeleteConstellation() throws Exception {
+		mvc.perform(get(BASE_URL + "/delete/1")).andExpect(view().name("redirect:/constellation"));
 	}
 }
