@@ -1,4 +1,4 @@
-package it.attsd.deepsky.controller;
+package it.attsd.deepsky.unit.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 

@@ -1,4 +1,4 @@
-package it.attsd.deepsky.controller;
+package it.attsd.deepsky.unit.controller;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import it.attsd.deepsky.controller.DeepSkyObjectWebController;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.service.ConstellationService;

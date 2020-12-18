@@ -1,4 +1,4 @@
-package it.attsd.deepsky;
+package it.attsd.deepsky.it;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
