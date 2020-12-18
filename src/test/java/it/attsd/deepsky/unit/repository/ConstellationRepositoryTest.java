@@ -1,7 +1,9 @@
 package it.attsd.deepsky.unit.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.repository.ConstellationRepository;
 
 @DataJpaTest
@@ -40,6 +43,51 @@ public class ConstellationRepositoryTest {
 		assertNotNull(orionSaved);
 		assertThat(orionSaved.getId()).isGreaterThan(0);
 		assertThat(orionSaved.getName()).isEqualTo(ORION);
+	}
+	
+	@Test
+	public void testEqualsObjectsAreEquals() {
+		Constellation orion1 = new Constellation(1L, ORION);
+		Constellation orion2 = new Constellation(1L, ORION);
+		
+		assertTrue(orion1.equals(orion2));
+	}
+	
+	@Test
+	public void testEqualsObjectsAreDifferent() {
+		Constellation orion1 = new Constellation(1L, ORION);
+		Constellation orion2 = new Constellation(2L, ORION);
+		
+		assertFalse(orion1.equals(orion2));
+	}
+	
+	@Test
+	public void testEqualsWithItself() {
+		Constellation orion1 = new Constellation(1L, ORION);
+		
+		assertTrue(orion1.equals(orion1));
+	}
+	
+	@Test
+	public void testEqualsWithNull() {
+		Constellation orion1 = new Constellation(1L, ORION);
+		
+		assertFalse(orion1.equals(null));
+	}
+	
+	@Test
+	public void testEqualsWithDifferentClass() {
+		Constellation orion1 = new Constellation(1L, ORION);
+		
+		assertFalse(orion1.equals(new String("")));
+	}
+	
+	@Test
+	public void testEqualsWithDifferentAttributes() {
+		Constellation orion1 = new Constellation(1L, ORION);
+		Constellation orion2 = new Constellation(2L, ORION);
+		
+		assertFalse(orion1.equals(orion2));
 	}
 //	
 //	@Test

@@ -1,6 +1,8 @@
 package it.attsd.deepsky.unit.repository;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
@@ -44,6 +46,43 @@ public class DeepSkyObjectRepositoryTest {
 		assertThat(m42Saved.getId()).isGreaterThan(0);
 		assertThat(m42Saved.getName()).isEqualTo(M42);
 		assertThat(m42Saved.getConstellation()).isEqualTo(orionSaved);
+	}
+	
+	@Test
+	public void testEqualsObjectsAreEquals() {
+		DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+		DeepSkyObject dso2 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+		
+		assertTrue(dso1.equals(dso2));
+	}
+	
+	@Test
+	public void testEqualsObjectsAreDifferent() {
+		DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+		DeepSkyObject dso2 = new DeepSkyObject(2L, M42, new Constellation(1L, ORION));
+		
+		assertFalse(dso1.equals(dso2));
+	}
+	
+	@Test
+	public void testEqualsWithItself() {
+		DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+		
+		assertTrue(dso1.equals(dso1));
+	}
+	
+	@Test
+	public void testEqualsWithNull() {
+		DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+		
+		assertFalse(dso1.equals(null));
+	}
+	
+	@Test
+	public void testEqualsWithDifferentClass() {
+		DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+		
+		assertFalse(dso1.equals(new String("")));
 	}
 	
 //	@Test
