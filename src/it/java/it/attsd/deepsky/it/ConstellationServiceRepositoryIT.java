@@ -6,7 +6,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.model.Constellation;
@@ -14,8 +16,10 @@ import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-@Import(ConstellationService.class)
+//@DataJpaTest
+//@Import(ConstellationService.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ConstellationServiceRepositoryIT {
 	@Autowired
 	private ConstellationRepository constellationRepository;

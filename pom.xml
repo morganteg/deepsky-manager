@@ -20,6 +20,7 @@
 		<database.host>localhost</database.host>
 		<database.username>root</database.username>
 		<database.password>root</database.password>
+		<database.port>3316</database.port>
 		<sonar.projectKey>morganteg_deepsky-manager</sonar.projectKey>
 		<sonar.organization>morganteg</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -31,18 +32,18 @@
 			<id>jacoco</id>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
+<!--					<plugin>-->
+<!--						<groupId>org.apache.maven.plugins</groupId>-->
+<!--						<artifactId>maven-failsafe-plugin</artifactId>-->
+<!--						<executions>-->
+<!--							<execution>-->
+<!--								<goals>-->
+<!--									<goal>integration-test</goal>-->
+<!--									<goal>verify</goal>-->
+<!--								</goals>-->
+<!--							</execution>-->
+<!--						</executions>-->
+<!--					</plugin>-->
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
@@ -67,7 +68,7 @@
 					<plugin>
 						<groupId>org.pitest</groupId>
 						<artifactId>pitest-maven</artifactId>
-						<version>1.4.10</version>
+						<version>1.6.1</version>
 						<configuration>
 							<targetClasses>
 								<!-- excludes testing.example.bank.app.Main -->
@@ -92,9 +93,10 @@
 		<profile>
 			<id>docker</id>
 			<properties>
-				<database.host>mysql-service</database.host>
+				<database.host>localhost</database.host>
 				<database.username>root</database.username>
 				<database.password>root</database.password>
+				<database.port>3316</database.port>
 			</properties>
 			<build>
 				<plugins>
@@ -103,20 +105,75 @@
 						<artifactId>docker-maven-plugin</artifactId>
 						<version>0.27.2</version>
 						<configuration>
+							<autoCreateCustomNetworks>true</autoCreateCustomNetworks>
 							<showLogs>true</showLogs>
 							<images>
 								<image>
-									<alias>full-app</alias>
-									<external>
-										<type>compose</type>
-										<basedir>${project.basedir}</basedir>
-									</external>
+									<name>deepsky-manager-app</name>
+									<build>
+										<dockerFileDir>${project.basedir}</dockerFileDir>
+									</build>
 									<run>
+										<network>
+											<mode>custom</mode>
+											<name>my-network</name>
+										</network>
 										<wait>
-											<time>1000000</time>
+											<log>Application started!</log>
+<!--											<exit>0</exit>-->
+											<time>10000</time>
+										</wait>
+										<dependsOn>
+											<container>mysql</container>
+										</dependsOn>
+									</run>
+								</image>
+								<image>
+									<name>mysql:8.0</name>
+									<alias>mysql</alias>
+<!--									<build>-->
+<!--										<cmd>&#45;&#45;default-authentication-plugin=mysql_native_password</cmd>-->
+<!--									</build>-->
+									<run>
+										<env>
+											<MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>
+											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
+										</env>
+										<network>
+											<mode>custom</mode>
+											<name>my-network</name>
+											<alias>mysql</alias>
+										</network>
+										<ports>
+											<port>3316:3306</port>
+										</ports>
+										<wait>
+											<log>waiting for connections on port 3316</log>
+											<time>80000</time>
 										</wait>
 									</run>
 								</image>
+
+<!--								<image>-->
+<!--									<alias>full-app</alias>-->
+<!--									<external>-->
+<!--										<type>compose</type>-->
+<!--										<basedir>${project.basedir}</basedir>-->
+<!--									</external>-->
+<!--									<run>-->
+<!--										<network>-->
+<!--											<mode>custom</mode>-->
+<!--											<name>dsm-network</name>-->
+<!--										</network>-->
+<!--&lt;!&ndash;										<ports>&ndash;&gt;-->
+<!--&lt;!&ndash;											<port>8888:8080</port>&ndash;&gt;-->
+<!--&lt;!&ndash;											<port>3316:3306</port>&ndash;&gt;-->
+<!--&lt;!&ndash;										</ports>&ndash;&gt;-->
+<!--										<wait>-->
+<!--											<time>1000000</time>-->
+<!--										</wait>-->
+<!--									</run>-->
+<!--								</image>-->
 							</images>
 						</configuration>
 						<executions>
@@ -147,140 +204,140 @@
 			</build>
 		</profile>
 
-		<profile>
-			<id>integration-tests</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>build-helper-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>add-test-source</id>
-								<phase>generate-test-sources</phase>
-								<goals>
-									<goal>add-test-source</goal>
-								</goals>
-								<configuration>
-									<sources>
-										<source>src/it/java</source>
-									</sources>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+<!--		<profile>-->
+<!--			<id>integration-tests</id>-->
+<!--			<activation>-->
+<!--				<activeByDefault>false</activeByDefault>-->
+<!--			</activation>-->
+<!--			<build>-->
+<!--				<plugins>-->
+<!--					<plugin>-->
+<!--						<groupId>org.codehaus.mojo</groupId>-->
+<!--						<artifactId>build-helper-maven-plugin</artifactId>-->
+<!--						<executions>-->
+<!--							<execution>-->
+<!--								<id>add-test-source</id>-->
+<!--								<phase>generate-test-sources</phase>-->
+<!--								<goals>-->
+<!--									<goal>add-test-source</goal>-->
+<!--								</goals>-->
+<!--								<configuration>-->
+<!--									<sources>-->
+<!--										<source>src/it/java</source>-->
+<!--									</sources>-->
+<!--								</configuration>-->
+<!--							</execution>-->
+<!--						</executions>-->
+<!--					</plugin>-->
+<!--					<plugin>-->
+<!--						<groupId>org.apache.maven.plugins</groupId>-->
+<!--						<artifactId>maven-failsafe-plugin</artifactId>-->
+<!--						<executions>-->
+<!--							<execution>-->
+<!--								<goals>-->
+<!--									<goal>integration-test</goal>-->
+<!--									<goal>verify</goal>-->
+<!--								</goals>-->
+<!--							</execution>-->
+<!--						</executions>-->
+<!--					</plugin>-->
+<!--				</plugins>-->
+<!--			</build>-->
+<!--		</profile>-->
 
-		<profile>
-			<id>e2e-tests</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<skip.unit-tests>true</skip.unit-tests>
-				<skip.integration-tests>true</skip.integration-tests>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>build-helper-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>add-test-source</id>
-								<phase>generate-test-sources</phase>
-								<goals>
-									<goal>add-test-source</goal>
-								</goals>
-								<configuration>
-									<sources>
-										<source>src/e2e/java</source>
-									</sources>
-								</configuration>
-							</execution>
-							<execution>
-								<id>reserve-tomcat-port</id>
-								<goals>
-									<goal>reserve-network-port</goal>
-								</goals>
-								<phase>process-resources</phase>
-								<configuration>
-									<portNames>
-										<portName>tomcat.http.port</portName>
-									</portNames>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>pre-integration-test</id>
-								<goals>
-									<goal>start</goal>
-								</goals>
-								<configuration>
-									<arguments>
-										<argument>--server.port=${tomcat.http.port}</argument>
-									</arguments>
-								</configuration>
-							</execution>
-							<execution>
-								<id>post-integration-test</id>
-								<goals>
-									<goal>stop</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>e2e-tests</id>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-								<configuration>
-									<excludes>
-										<exclude>**/*ITTest.java</exclude>
-									</excludes>
-									<includes>
-										<include>**/*E2E.java</include>
-									</includes>
-								</configuration>
-							</execution>
-						</executions>
-						<configuration>
-							<systemPropertyVariables>
-								<server.port>${tomcat.http.port}</server.port>
-							</systemPropertyVariables>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+<!--		<profile>-->
+<!--			<id>e2e-tests</id>-->
+<!--			<activation>-->
+<!--				<activeByDefault>false</activeByDefault>-->
+<!--			</activation>-->
+<!--			<properties>-->
+<!--				<skip.unit-tests>true</skip.unit-tests>-->
+<!--				<skip.integration-tests>true</skip.integration-tests>-->
+<!--			</properties>-->
+<!--			<build>-->
+<!--				<plugins>-->
+<!--					<plugin>-->
+<!--						<groupId>org.codehaus.mojo</groupId>-->
+<!--						<artifactId>build-helper-maven-plugin</artifactId>-->
+<!--						<executions>-->
+<!--							<execution>-->
+<!--								<id>add-test-source</id>-->
+<!--								<phase>generate-test-sources</phase>-->
+<!--								<goals>-->
+<!--									<goal>add-test-source</goal>-->
+<!--								</goals>-->
+<!--								<configuration>-->
+<!--									<sources>-->
+<!--										<source>src/e2e/java</source>-->
+<!--									</sources>-->
+<!--								</configuration>-->
+<!--							</execution>-->
+<!--							<execution>-->
+<!--								<id>reserve-tomcat-port</id>-->
+<!--								<goals>-->
+<!--									<goal>reserve-network-port</goal>-->
+<!--								</goals>-->
+<!--								<phase>process-resources</phase>-->
+<!--								<configuration>-->
+<!--									<portNames>-->
+<!--										<portName>tomcat.http.port</portName>-->
+<!--									</portNames>-->
+<!--								</configuration>-->
+<!--							</execution>-->
+<!--						</executions>-->
+<!--					</plugin>-->
+<!--					<plugin>-->
+<!--						<groupId>org.springframework.boot</groupId>-->
+<!--						<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--						<executions>-->
+<!--							<execution>-->
+<!--								<id>pre-integration-test</id>-->
+<!--								<goals>-->
+<!--									<goal>start</goal>-->
+<!--								</goals>-->
+<!--								<configuration>-->
+<!--									<arguments>-->
+<!--										<argument>&#45;&#45;server.port=${tomcat.http.port}</argument>-->
+<!--									</arguments>-->
+<!--								</configuration>-->
+<!--							</execution>-->
+<!--							<execution>-->
+<!--								<id>post-integration-test</id>-->
+<!--								<goals>-->
+<!--									<goal>stop</goal>-->
+<!--								</goals>-->
+<!--							</execution>-->
+<!--						</executions>-->
+<!--					</plugin>-->
+<!--					<plugin>-->
+<!--						<groupId>org.apache.maven.plugins</groupId>-->
+<!--						<artifactId>maven-failsafe-plugin</artifactId>-->
+<!--						<executions>-->
+<!--							<execution>-->
+<!--								<id>e2e-tests</id>-->
+<!--								<goals>-->
+<!--									<goal>integration-test</goal>-->
+<!--									<goal>verify</goal>-->
+<!--								</goals>-->
+<!--								<configuration>-->
+<!--									<excludes>-->
+<!--										<exclude>**/*ITTest.java</exclude>-->
+<!--									</excludes>-->
+<!--									<includes>-->
+<!--										<include>**/*E2E.java</include>-->
+<!--									</includes>-->
+<!--								</configuration>-->
+<!--							</execution>-->
+<!--						</executions>-->
+<!--						<configuration>-->
+<!--							<systemPropertyVariables>-->
+<!--								<server.port>${tomcat.http.port}</server.port>-->
+<!--							</systemPropertyVariables>-->
+<!--						</configuration>-->
+<!--					</plugin>-->
+<!--				</plugins>-->
+<!--			</build>-->
+<!--		</profile>-->
 
 	</profiles>
 
@@ -392,10 +449,14 @@
 	</dependencies>
 
 	<build>
+<!--		<sourceDirectory>src/main/java</sourceDirectory>-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<classifier>exec</classifier>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -407,6 +468,46 @@
 					</delimiters>
 					<useDefaultDelimiters>false</useDefaultDelimiters>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+<!--						<id>default-it</id>-->
+<!--						<configuration>-->
+<!--&lt;!&ndash;							<skipTests>${skip.integration-tests}</skipTests>&ndash;&gt;-->
+<!--							<includes>-->
+<!--&lt;!&ndash;								<include>**/*ApplicationTests.java</include>&ndash;&gt;-->
+<!--								<include>**/*IT.java</include>-->
+<!--							</includes>-->
+<!--						</configuration>-->
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
