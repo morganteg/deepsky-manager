@@ -20,7 +20,7 @@
 		<database.host>localhost</database.host>
 		<database.username>root</database.username>
 		<database.password>root</database.password>
-		<database.port>3316</database.port>
+		<database.port>3306</database.port>
 		<sonar.projectKey>morganteg_deepsky-manager</sonar.projectKey>
 		<sonar.organization>morganteg</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -119,9 +119,9 @@
 											<name>my-network</name>
 										</network>
 										<wait>
-											<log>Application started!</log>
+											<log>Started DeepskyAppApplication</log>
 <!--											<exit>0</exit>-->
-											<time>10000</time>
+											<time>40000</time>
 										</wait>
 										<dependsOn>
 											<container>mysql</container>
@@ -148,8 +148,8 @@
 											<port>3316:3306</port>
 										</ports>
 										<wait>
-											<log>waiting for connections on port 3316</log>
-											<time>80000</time>
+											<log>ready for connections</log>
+											<time>40000</time>
 										</wait>
 									</run>
 								</image>
@@ -451,13 +451,13 @@
 	<build>
 <!--		<sourceDirectory>src/main/java</sourceDirectory>-->
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<classifier>exec</classifier>
-				</configuration>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--				<configuration>-->
+<!--					<classifier>exec</classifier>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -513,6 +513,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
