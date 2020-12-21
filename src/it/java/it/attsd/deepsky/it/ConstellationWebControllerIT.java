@@ -36,7 +36,7 @@ public class ConstellationWebControllerIT {
 	private WebDriver driver;
 
 	private String baseUrl;
-	
+
 	String ORION = "orion";
 
 	@Before
@@ -58,14 +58,14 @@ public class ConstellationWebControllerIT {
 
 		List<WebElement> constellationRows = driver.findElement(By.id("constellations"))
 				.findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
-		
+
 		assertThat(constellationRows.size()).isEqualTo(1);
 		assertThat(constellationRows.get(0).findElement(By.className("constellation-id")).getText()).isEqualTo("1");
 		assertThat(constellationRows.get(0).findElement(By.className("constellation-name")).getText()).isEqualTo(ORION);
 		constellationRows.get(0).findElement(By.cssSelector("a[href*='constellation/modify/" + testConstellation.getId() + "']"));
 		constellationRows.get(0).findElement(By.cssSelector("a[href*='constellation/delete/" + testConstellation.getId() + "']"));
 	}
-	
+
 	@Test
 	public void testSaveConstellation() {
 		driver.get(baseUrl + "/constellation");
@@ -75,33 +75,33 @@ public class ConstellationWebControllerIT {
 
 		WebElement submitButtonElement = driver.findElement(By.id("submitButton"));
 		submitButtonElement.click();
-		
+
 		List<WebElement> constellationRows = driver.findElement(By.id("constellations"))
 				.findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
-		
+
 //		assertThat(constellationRows.size()).isEqualTo(1);
 
 		assertThat(constellationRows.get(0).findElement(By.className("constellation-id")).getText()).isEqualTo("1");
 		assertThat(constellationRows.get(0).findElement(By.className("constellation-name")).getText()).isEqualTo(ORION);
 	}
-	
+
 	@Test
 	public void testUpdateConstellationIfExists() {
 		Constellation testConstellation = constellationRepository.save(new Constellation(ORION));
-		
+
 		driver.get(baseUrl + "/constellation/modify/1");
-		
+
 		String nameChanged = ORION + " changed";
-		
+
 //		driver.findElement(By.id("constellationId")).sendKeys("1");
 		WebElement nameElement = driver.findElement(By.id("constellationName"));
 		nameElement.clear();
 		nameElement.sendKeys(nameChanged);
 		driver.findElement(By.id("submitButton")).click();
-		
+
 		List<WebElement> constellationRows = driver.findElement(By.id("constellations"))
 				.findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
-		
+
 //		assertThat(constellationRows.size()).isEqualTo(1);
 
 		assertThat(constellationRows.get(0).findElement(By.className("constellation-id")).getText()).isEqualTo(String.valueOf(testConstellation.getId()));
