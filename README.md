@@ -1,6 +1,9 @@
 # deepsky-manager
 DeepSky objects manager application for Advanced Techniques and Tools for Software Development exam, University of Florence, Cyber-Physical Systems of Systems course.
 
+## Run docker container
+mvn docker:start -Pdocker
+
 ## Run Unit tests
 mvn clean test
 
@@ -9,6 +12,8 @@ mvn clean test -Pmutation-tests
 
 ## Run Integration tests
 mvn clean verify -Pintegration-tests
+mvn verify -Pdocker
+mvn -Dit.test=DeepSkyObjectWebControllerIT verify -Pdocker
 
 # Docker
 docker-compose up --remove-orphans

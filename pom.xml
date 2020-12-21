@@ -127,50 +127,50 @@
 <!--										</dependsOn>-->
 <!--									</run>-->
 <!--								</image>-->
-<!--								<image>-->
-<!--									<name>mysql:8.0</name>-->
-<!--									<alias>mysql</alias>-->
-<!--									<run>-->
-<!--										<env>-->
-<!--											<MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>-->
-<!--											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>-->
-<!--										</env>-->
-<!--										<network>-->
-<!--											<mode>custom</mode>-->
-<!--											<name>my-network</name>-->
-<!--											<alias>mysql</alias>-->
-<!--										</network>-->
-<!--										<ports>-->
-<!--											<port>3316:3306</port>-->
-<!--										</ports>-->
-<!--										<wait>-->
-<!--											<log>ready for connections</log>-->
-<!--											<time>40000</time>-->
-<!--										</wait>-->
-<!--									</run>-->
-<!--								</image>-->
-
 								<image>
-									<name>deepsky-manager-image</name>
-									<alias>full-app</alias>
-									<external>
-										<type>compose</type>
-										<basedir>${project.basedir}</basedir>
-									</external>
+									<name>mysql:8.0</name>
+									<alias>mysql-service</alias>
 									<run>
+										<env>
+											<MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>
+											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
+										</env>
 										<network>
 											<mode>custom</mode>
 											<name>dsm-network</name>
+											<alias>mysql</alias>
 										</network>
-<!--										<ports>-->
-<!--											<port>8888:8080</port>-->
-<!--											<port>3316:3306</port>-->
-<!--										</ports>-->
+										<ports>
+											<port>3316:3306</port>
+										</ports>
 										<wait>
-											<time>1000000</time>
+											<log>ready for connections</log>
+											<time>40000</time>
 										</wait>
 									</run>
 								</image>
+
+<!--								<image>-->
+<!--									<name>deepsky-manager-image</name>-->
+<!--									<alias>full-app</alias>-->
+<!--									<external>-->
+<!--										<type>compose</type>-->
+<!--										<basedir>${project.basedir}</basedir>-->
+<!--									</external>-->
+<!--									<run>-->
+<!--										<network>-->
+<!--											<mode>custom</mode>-->
+<!--											<name>dsm-network</name>-->
+<!--										</network>-->
+<!--&lt;!&ndash;										<ports>&ndash;&gt;-->
+<!--&lt;!&ndash;											<port>8888:8080</port>&ndash;&gt;-->
+<!--&lt;!&ndash;											<port>3316:3306</port>&ndash;&gt;-->
+<!--&lt;!&ndash;										</ports>&ndash;&gt;-->
+<!--										<wait>-->
+<!--											<time>1000000</time>-->
+<!--										</wait>-->
+<!--									</run>-->
+<!--								</image>-->
 							</images>
 						</configuration>
 						<executions>
