@@ -93,10 +93,10 @@
 		<profile>
 			<id>docker</id>
 			<properties>
-				<database.host>localhost</database.host>
+				<database.host>mysql-service</database.host>
 				<database.username>root</database.username>
 				<database.password>root</database.password>
-				<database.port>3316</database.port>
+				<database.port>3306</database.port>
 			</properties>
 			<build>
 				<plugins>
@@ -108,72 +108,69 @@
 							<autoCreateCustomNetworks>true</autoCreateCustomNetworks>
 							<showLogs>true</showLogs>
 							<images>
-								<image>
-									<name>deepsky-manager-app</name>
-									<build>
-										<dockerFileDir>${project.basedir}</dockerFileDir>
-									</build>
-									<run>
-										<network>
-											<mode>custom</mode>
-											<name>my-network</name>
-										</network>
-										<wait>
-											<log>Started DeepskyAppApplication</log>
-<!--											<exit>0</exit>-->
-											<time>40000</time>
-										</wait>
-										<dependsOn>
-											<container>mysql</container>
-										</dependsOn>
-									</run>
-								</image>
-								<image>
-									<name>mysql:8.0</name>
-									<alias>mysql</alias>
-<!--									<build>-->
-<!--										<cmd>&#45;&#45;default-authentication-plugin=mysql_native_password</cmd>-->
-<!--									</build>-->
-									<run>
-										<env>
-											<MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>
-											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
-										</env>
-										<network>
-											<mode>custom</mode>
-											<name>my-network</name>
-											<alias>mysql</alias>
-										</network>
-										<ports>
-											<port>3316:3306</port>
-										</ports>
-										<wait>
-											<log>ready for connections</log>
-											<time>40000</time>
-										</wait>
-									</run>
-								</image>
-
 <!--								<image>-->
-<!--									<alias>full-app</alias>-->
-<!--									<external>-->
-<!--										<type>compose</type>-->
-<!--										<basedir>${project.basedir}</basedir>-->
-<!--									</external>-->
+<!--									<name>deepsky-manager-app</name>-->
+<!--									<build>-->
+<!--										<dockerFileDir>${project.basedir}</dockerFileDir>-->
+<!--									</build>-->
 <!--									<run>-->
 <!--										<network>-->
 <!--											<mode>custom</mode>-->
-<!--											<name>dsm-network</name>-->
+<!--											<name>my-network</name>-->
 <!--										</network>-->
-<!--&lt;!&ndash;										<ports>&ndash;&gt;-->
-<!--&lt;!&ndash;											<port>8888:8080</port>&ndash;&gt;-->
-<!--&lt;!&ndash;											<port>3316:3306</port>&ndash;&gt;-->
-<!--&lt;!&ndash;										</ports>&ndash;&gt;-->
 <!--										<wait>-->
-<!--											<time>1000000</time>-->
+<!--											<log>Started DeepskyAppApplication</log>-->
+<!--											<time>40000</time>-->
+<!--										</wait>-->
+<!--										<dependsOn>-->
+<!--											<container>mysql</container>-->
+<!--										</dependsOn>-->
+<!--									</run>-->
+<!--								</image>-->
+<!--								<image>-->
+<!--									<name>mysql:8.0</name>-->
+<!--									<alias>mysql</alias>-->
+<!--									<run>-->
+<!--										<env>-->
+<!--											<MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>-->
+<!--											<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>-->
+<!--										</env>-->
+<!--										<network>-->
+<!--											<mode>custom</mode>-->
+<!--											<name>my-network</name>-->
+<!--											<alias>mysql</alias>-->
+<!--										</network>-->
+<!--										<ports>-->
+<!--											<port>3316:3306</port>-->
+<!--										</ports>-->
+<!--										<wait>-->
+<!--											<log>ready for connections</log>-->
+<!--											<time>40000</time>-->
 <!--										</wait>-->
 <!--									</run>-->
 <!--								</image>-->
+
+								<image>
+									<name>deepsky-manager-image</name>
+									<alias>full-app</alias>
+									<external>
+										<type>compose</type>
+										<basedir>${project.basedir}</basedir>
+									</external>
+									<run>
+										<network>
+											<mode>custom</mode>
+											<name>dsm-network</name>
+										</network>
+<!--										<ports>-->
+<!--											<port>8888:8080</port>-->
+<!--											<port>3316:3306</port>-->
+<!--										</ports>-->
+										<wait>
+											<time>1000000</time>
+										</wait>
+									</run>
+								</image>
 							</images>
 						</configuration>
 						<executions>
@@ -451,13 +448,24 @@
 	<build>
 <!--		<sourceDirectory>src/main/java</sourceDirectory>-->
 		<plugins>
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 <!--				<configuration>-->
 <!--					<classifier>exec</classifier>-->
 <!--				</configuration>-->
-<!--			</plugin>-->
+				<configuration>
+					<mainClass>it.attsd.deepsky.DeepskyAppApplication</mainClass>
+				</configuration>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

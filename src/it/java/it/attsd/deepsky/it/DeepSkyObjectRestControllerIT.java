@@ -22,48 +22,48 @@ import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DeepSkyObjectRestControllerIT {
-	String ORION = "orion";
-	String M42 = "m42";
-
-	@Autowired
-	private ConstellationRepository constellationRepository;
-	
-	@Autowired
-	private DeepSkyObjectRepository deepSkyObjectRepository;
-
-	@LocalServerPort
-	private int port;
-
-	@Before
-	public void setup() {
-		RestAssured.port = port;
-	}
-
-	@Test
-	public void testSaveDeepSkyObject() throws Exception {
-		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
-		
-		Response response = given().contentType(MediaType.APPLICATION_JSON_VALUE).body(new DeepSkyObject(M42, orionSaved)).when()
-				.post("/api/deepskyobject");
-
-		DeepSkyObject m42Saved = response.getBody().as(DeepSkyObject.class);
-
-		assertThat(deepSkyObjectRepository.findById(m42Saved.getId()).get()).isEqualTo(m42Saved);
-	}
-
-	@Test
-	public void testUpdateDeepSkyObject() throws Exception {
-		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
-		DeepSkyObject m42Saved = deepSkyObjectRepository.save(new DeepSkyObject(M42, orionSaved));
-		
-		String nameChanged = M42 + " changed";
-		given().contentType(MediaType.APPLICATION_JSON_VALUE).body(new DeepSkyObject(nameChanged, orionSaved)).when()
-				.put("/api/deepskyobject/" + m42Saved.getId()).then().statusCode(200).body(
-						"id", equalTo(m42Saved.getId().intValue()), "name", equalTo(nameChanged), "constellation.id", equalTo(orionSaved.getId().intValue()));
-	}
+//	String ORION = "orion";
+//	String M42 = "m42";
+//
+//	@Autowired
+//	private ConstellationRepository constellationRepository;
+//
+//	@Autowired
+//	private DeepSkyObjectRepository deepSkyObjectRepository;
+//
+//	@LocalServerPort
+//	private int port;
+//
+//	@Before
+//	public void setup() {
+//		RestAssured.port = port;
+//	}
+//
+//	@Test
+//	public void testSaveDeepSkyObject() throws Exception {
+//		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
+//
+//		Response response = given().contentType(MediaType.APPLICATION_JSON_VALUE).body(new DeepSkyObject(M42, orionSaved)).when()
+//				.post("/api/deepskyobject");
+//
+//		DeepSkyObject m42Saved = response.getBody().as(DeepSkyObject.class);
+//
+//		assertThat(deepSkyObjectRepository.findById(m42Saved.getId()).get()).isEqualTo(m42Saved);
+//	}
+//
+//	@Test
+//	public void testUpdateDeepSkyObject() throws Exception {
+//		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
+//		DeepSkyObject m42Saved = deepSkyObjectRepository.save(new DeepSkyObject(M42, orionSaved));
+//
+//		String nameChanged = M42 + " changed";
+//		given().contentType(MediaType.APPLICATION_JSON_VALUE).body(new DeepSkyObject(nameChanged, orionSaved)).when()
+//				.put("/api/deepskyobject/" + m42Saved.getId()).then().statusCode(200).body(
+//						"id", equalTo(m42Saved.getId().intValue()), "name", equalTo(nameChanged), "constellation.id", equalTo(orionSaved.getId().intValue()));
+//	}
 
 }

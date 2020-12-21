@@ -10,6 +10,9 @@ mvn clean test -Pmutation-tests
 ## Run Integration tests
 mvn clean verify -Pintegration-tests
 
+# Docker
+docker-compose up --remove-orphans
+
 # Coverage
 [![Coverage Status](https://coveralls.io/repos/github/morganteg/deepsky-manager/badge.svg?branch=master)](https://coveralls.io/github/morganteg/deepsky-manager?branch=master)
 
