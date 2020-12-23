@@ -33,6 +33,11 @@ public class DeepSkyObjectRestController {
 		return deepSkyObjectService.findById(id);
 	}
 
+	@GetMapping(value = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody DeepSkyObject getByName(@PathVariable String name) {
+		return deepSkyObjectService.findByName(name);
+	}
+
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObject deepSkyObject) {
 		return deepSkyObjectService.save(deepSkyObject);

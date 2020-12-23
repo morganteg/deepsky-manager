@@ -14,9 +14,6 @@ import javax.persistence.Version;
 @Entity
 @Table(name = "deepskyobject")
 public class DeepSkyObject {
-	@Version
-    private int version;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

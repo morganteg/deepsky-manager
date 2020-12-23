@@ -34,6 +34,11 @@ public class ConstellationRestController {
 		return constellationService.findById(id);
 	}
 
+	@GetMapping(value = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Constellation getByName(@PathVariable String name) {
+		return constellationService.findByName(name);
+	}
+
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Constellation save(@RequestBody Constellation constellation) {
 		return constellationService.save(constellation);

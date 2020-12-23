@@ -1,7 +1,7 @@
 package it.attsd.deepsky.controller;
 
-import java.util.List;
-
+import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.service.ConstellationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.service.ConstellationService;
+import java.util.List;
 
 @Controller
 public class ConstellationWebController {
 	private static final String ATTRIBUTE_CONSTELLATION = "constellation";
 	private static final String ATTRIBUTE_CONSTELLATIONS = "constellations";
-//	private static final String ATTRIBUTE_MESSAGE = "message";
 	private static final String ATTRIBUTE_ERROR = "error";
 	private static final String TARGET_CONSTELLATION = "constellation/constellation";
 
