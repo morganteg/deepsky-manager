@@ -21,7 +21,7 @@ public class DeepSkyObject {
 	@Column(unique = true, nullable = false)
 	private String name;
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Constellation constellation;
 
 	public DeepSkyObject() {

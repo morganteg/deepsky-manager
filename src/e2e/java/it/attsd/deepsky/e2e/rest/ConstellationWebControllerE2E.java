@@ -114,7 +114,7 @@ public class ConstellationWebControllerE2E {
 
     private Constellation postConstellation(String name) throws JSONException {
         JSONObject body = new JSONObject();
-        body.put("name", ORION);
+        body.put("name", name);
         Constellation orionSaved = given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
                 .post("/api/constellation")
                 .getBody().as(Constellation.class);
