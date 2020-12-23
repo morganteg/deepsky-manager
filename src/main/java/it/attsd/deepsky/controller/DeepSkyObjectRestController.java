@@ -2,6 +2,7 @@ package it.attsd.deepsky.controller;
 
 import java.util.List;
 
+import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +40,7 @@ public class DeepSkyObjectRestController {
 	}
 
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObject deepSkyObject) {
+	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObject deepSkyObject) throws DeepSkyObjectAlreadyExistsException {
 		return deepSkyObjectService.save(deepSkyObject);
 	}
 

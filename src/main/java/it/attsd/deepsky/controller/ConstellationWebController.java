@@ -1,6 +1,7 @@
 package it.attsd.deepsky.controller;
 
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.service.ConstellationService;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +79,15 @@ public class ConstellationWebController {
 
 	@GetMapping(value = "/constellation/delete/{id}")
 	public String deleteConstellation(@PathVariable long id, Model model) {
-		constellationService.deleteById(id);
+		try {
+			constellationService.deleteById(id);
+		} catch (ConstellationIsStillUsedException e) {
+			model.addAttribute(ATTRIBUTE_ERROR, "The Constellation is used by a DeepSkyObject");
+			model.addAttribute(ATTRIBUTE_CONSTELLATION, new Constellation());
+			model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellationService.findAll());
+
+			return TARGET_CONSTELLATION;
+		}
 
 		return "redirect:/constellation";
 	}

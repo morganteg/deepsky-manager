@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
@@ -85,7 +86,7 @@ public class ConstellationServiceRepositoryIT {
 	}
 
 	@Test
-	public void testServiceCanDeleteByIdFromRepository() {
+	public void testServiceCanDeleteByIdFromRepository() throws ConstellationIsStillUsedException {
 		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
 
 		constellationService.deleteById(orionSaved.getId());

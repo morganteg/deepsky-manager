@@ -1,15 +1,17 @@
 package it.attsd.deepsky.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -89,9 +91,23 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 
 		assertThat(deepSkyObjectService.findByName(M42)).isNull();
 	}
+
+	@Test
+	public void testFindDeepSkyObjectsByConstellationWhenIsPresent() {
+		when(deepSkyObjectRepository.findByConstellation(orionSaved)).thenReturn(Arrays.asList(m42Saved, m43Saved));
+
+		assertThat(deepSkyObjectService.findByConstellation(orionSaved)).containsExactly(m42Saved, m43Saved);
+	}
+
+	@Test
+	public void testFindDeepSkyObjectsByConstellationWhenIsNotPresent() {
+		when(deepSkyObjectRepository.findByConstellation(orionSaved)).thenReturn(Arrays.asList());
+
+		assertThat(deepSkyObjectService.findByConstellation(orionSaved)).isEmpty();
+	}
 	
 	@Test
-	public void testSaveDeepSkyObject() {
+	public void testSaveDeepSkyObjectIfNotExists() throws DeepSkyObjectAlreadyExistsException {
 		DeepSkyObject m42ToSave = spy(new DeepSkyObject(100L, M42, orionSaved));
 
 		when(deepSkyObjectRepository.save(m42ToSave)).thenReturn(m42Saved);
@@ -102,6 +118,17 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 		InOrder inOrder = inOrder(m42ToSave, deepSkyObjectRepository);
 		inOrder.verify(m42ToSave).setId(null);
 		inOrder.verify(deepSkyObjectRepository).save(m42ToSave);
+	}
+
+	@Test
+	public void testSaveDeepSkyObjectIfAlreadyExists() {
+		when(deepSkyObjectRepository.findByName(M42)).thenReturn(m42Saved);
+
+		assertThrows(DeepSkyObjectAlreadyExistsException.class, () -> deepSkyObjectService.save(new DeepSkyObject(M42, orionSaved)));
+
+		InOrder inOrder = inOrder(deepSkyObjectRepository);
+		inOrder.verify(deepSkyObjectRepository).findByName(M42);
+		inOrder.verify(deepSkyObjectRepository, times(0)).save(new DeepSkyObject(M42, orionSaved));
 	}
 	
 	@Test
@@ -122,6 +149,8 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 	@Test
 	public void testDeleteDeepSkyObjectWhenExists() {
 		deepSkyObjectService.deleteById(1L);
+
+		verify(deepSkyObjectRepository).deleteById(1L);
 	}
 	
 //	@Test

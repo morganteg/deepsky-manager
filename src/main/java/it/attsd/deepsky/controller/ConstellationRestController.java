@@ -3,6 +3,7 @@ package it.attsd.deepsky.controller;
 import java.util.List;
 
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,7 +52,7 @@ public class ConstellationRestController {
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public void delete(@PathVariable long id) {
+	public void delete(@PathVariable long id) throws ConstellationIsStillUsedException {
 		constellationService.deleteById(id);
 	}
 

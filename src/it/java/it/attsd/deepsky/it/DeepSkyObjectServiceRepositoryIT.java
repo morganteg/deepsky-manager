@@ -1,5 +1,6 @@
 package it.attsd.deepsky.it;
 
+import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.repository.ConstellationRepository;
@@ -64,7 +65,7 @@ public class DeepSkyObjectServiceRepositoryIT {
 	}
 
 	@Test
-	public void testServiceCanSaveIntoRepository() {
+	public void testServiceCanSaveIntoRepository() throws DeepSkyObjectAlreadyExistsException {
 		Constellation orion = constellationRepository.save(new Constellation(ORION));
 		DeepSkyObject m42Saved = deepSkyObjectService.save(new DeepSkyObject(M42, orion));
 

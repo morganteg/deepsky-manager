@@ -1,5 +1,6 @@
 package it.attsd.deepsky.controller;
 
+import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,6 @@ public class DeepSkyObjectWebController {
 	private static final String ATTRIBUTE_DEEPSKYOBJECTS = "deepSkyObjects";
 	private static final String ATTRIBUTE_CONSTELLATIONS = "constellations";
 	private static final String TARGET_DEEPSKYOBJECT = "deepSkyObject/deepSkyObject";
-//	private static final String ATTRIBUTE_MESSAGE = "message";
 	private static final String ATTRIBUTE_ERROR = "error";
 
 	@Autowired
@@ -50,7 +50,16 @@ public class DeepSkyObjectWebController {
 		} else {
 			final Long id = deepSkyObject.getId();
 			if (id == null) {
-				deepSkyObjectService.save(deepSkyObject);
+				try {
+					deepSkyObjectService.save(deepSkyObject);
+				}catch(DeepSkyObjectAlreadyExistsException e){
+					model.addAttribute(ATTRIBUTE_ERROR, "A DeepSkyObject with the same name already exists");
+					model.addAttribute(ATTRIBUTE_DEEPSKYOBJECT, deepSkyObject);
+					model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTS, deepSkyObjectService.findAll());
+					model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellationService.findAll());
+
+					return TARGET_DEEPSKYOBJECT;
+				}
 			} else {
 				deepSkyObjectService.updateById(id, deepSkyObject);
 			}
