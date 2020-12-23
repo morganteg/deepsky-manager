@@ -28,6 +28,7 @@ import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 //@AutoConfigureTestDatabase
+@Deprecated
 public class ConstellationRestE2E {
 	@LocalServerPort
 	private int port;

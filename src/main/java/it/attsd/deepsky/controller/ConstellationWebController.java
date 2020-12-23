@@ -1,5 +1,6 @@
 package it.attsd.deepsky.controller;
 
+import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.service.ConstellationService;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +45,15 @@ public class ConstellationWebController {
 		} else {
 			final Long id = constellation.getId();
 			if (id == null) {
-				constellationService.save(constellation);
+				try {
+					constellationService.save(constellation);
+				} catch (ConstellationAlreadyExistsException e) {
+					model.addAttribute(ATTRIBUTE_ERROR, "A Constellation with the same name already exists");
+					model.addAttribute(ATTRIBUTE_CONSTELLATION, constellation);
+					model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellationService.findAll());
+
+					return TARGET_CONSTELLATION;
+				}
 			} else {
 				constellationService.updateById(id, constellation);
 			}

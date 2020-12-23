@@ -1,9 +1,13 @@
 package it.attsd.deepsky.it;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
+import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,10 +61,17 @@ public class ConstellationServiceRepositoryIT {
 	}
 
 	@Test
-	public void testServiceCanSaveIntoRepository() {
+	public void testServiceCanSaveIntoRepository() throws ConstellationAlreadyExistsException {
 		Constellation orionSaved = constellationService.save(new Constellation(ORION));
 
 		assertThat(constellationRepository.findById(orionSaved.getId())).isPresent();
+	}
+
+	@Test
+	public void testServiceCannotSaveIntoRepository() throws ConstellationAlreadyExistsException {
+		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
+
+		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(new Constellation(ORION)));
 	}
 
 	@Test

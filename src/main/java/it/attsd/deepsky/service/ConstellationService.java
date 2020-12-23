@@ -2,6 +2,7 @@ package it.attsd.deepsky.service;
 
 import java.util.List;
 
+import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.model.Constellation;
@@ -28,7 +29,11 @@ public class ConstellationService {
 		return constellationRepository.findByName(name);
 	}
 
-	public Constellation save(Constellation constellation) {
+	public Constellation save(Constellation constellation) throws ConstellationAlreadyExistsException {
+		Constellation existingConstellation = constellationRepository.findByName(constellation.getName());
+		if(existingConstellation != null){
+			throw new ConstellationAlreadyExistsException();
+		}
 		constellation.setId(null);
 		return constellationRepository.save(constellation);
 	}

@@ -2,6 +2,7 @@ package it.attsd.deepsky.controller;
 
 import java.util.List;
 
+import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,7 +41,7 @@ public class ConstellationRestController {
 	}
 
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Constellation save(@RequestBody Constellation constellation) {
+	public @ResponseBody Constellation save(@RequestBody Constellation constellation) throws ConstellationAlreadyExistsException {
 		return constellationService.save(constellation);
 	}
 

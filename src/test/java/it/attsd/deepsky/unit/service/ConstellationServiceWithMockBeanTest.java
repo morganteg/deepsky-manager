@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -83,7 +84,7 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
-	public void testSaveConstellation() {
+	public void testSaveConstellation() throws ConstellationAlreadyExistsException {
 		Constellation orionToSave = spy(new Constellation(100L, ORION));
 
 		when(constellationRepository.save(orionToSave)).thenReturn(orion);
