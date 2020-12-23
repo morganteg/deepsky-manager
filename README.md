@@ -1,6 +1,23 @@
 # deepsky-manager
 DeepSky objects manager application for Advanced Techniques and Tools for Software Development exam, University of Florence, Cyber-Physical Systems of Systems course.
 
+## Run docker container
+mvn docker:start -Pdocker
+
+## Run Unit tests
+mvn clean test
+
+## Run Mutation tests
+mvn clean test -Pmutation-tests
+
+## Run Integration tests
+mvn clean verify -Pintegration-tests
+mvn verify -Pdocker
+mvn -Dit.test=DeepSkyObjectWebControllerIT verify -Pdocker
+
+# Docker
+docker-compose up --remove-orphans
+
 # Coverage
 [![Coverage Status](https://coveralls.io/repos/github/morganteg/deepsky-manager/badge.svg?branch=master)](https://coveralls.io/github/morganteg/deepsky-manager?branch=master)
 
