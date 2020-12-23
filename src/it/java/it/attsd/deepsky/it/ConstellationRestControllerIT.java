@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,12 +31,17 @@ public class ConstellationRestControllerIT {
     @Autowired
     private ConstellationRepository constellationRepository;
 
+    @Autowired
+    private DeepSkyObjectRepository deepSkyObjectRepository;
+
     @LocalServerPort
     private int port;
 
     @Before
     public void setup() {
         RestAssured.port = port;
+        deepSkyObjectRepository.deleteAll();
+        deepSkyObjectRepository.flush();
         constellationRepository.deleteAll();
         constellationRepository.flush();
     }

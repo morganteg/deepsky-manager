@@ -2,6 +2,7 @@ package it.attsd.deepsky.it;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +30,9 @@ public class ConstellationWebControllerIT {
     @Autowired
     private ConstellationRepository constellationRepository;
 
+    @Autowired
+    private DeepSkyObjectRepository deepSkyObjectRepository;
+
     @LocalServerPort
     private int port;
 
@@ -42,6 +46,8 @@ public class ConstellationWebControllerIT {
     public void setup() {
         baseUrl = "http://localhost:" + port;
         driver = new HtmlUnitDriver();
+        deepSkyObjectRepository.deleteAll();
+        deepSkyObjectRepository.flush();
         constellationRepository.deleteAll();
         constellationRepository.flush();
     }
