@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -19,7 +18,6 @@ import org.springframework.http.MediaType;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
 
 public class DeepSkyObjectWebControllerE2E {
     private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
@@ -29,7 +27,7 @@ public class DeepSkyObjectWebControllerE2E {
     private final String ORION = "orion";
 
     String M42 = "m42";
-    String M43 = "m43";
+//    String M43 = "m43";
 
     @BeforeClass
     public static void setupClass() {
@@ -57,15 +55,17 @@ public class DeepSkyObjectWebControllerE2E {
     public void testCreateNewDeepSkyObjectWhenNotExists() throws JSONException {
         driver.get(baseUrl);
 
-        postConstellation(ORION);
+        String constellationName = generateConstellationName();
+        String deepSkyObjectName = generateDeepSkyObjectName();
+        postConstellation(constellationName);
 
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
 
-        driver.findElement(By.id("deepSkyObjectName")).sendKeys(M42);
-        new Select(driver.findElement(By.id("constellationId"))).selectByVisibleText(ORION);
+        driver.findElement(By.id("deepSkyObjectName")).sendKeys(deepSkyObjectName);
+        new Select(driver.findElement(By.id("constellationId"))).selectByVisibleText(constellationName);
         driver.findElement(By.id("submitButton")).click();
 
-        assertThat(driver.findElement(By.id("deepSkyObjects")).getText()).contains(M42);
+        assertThat(driver.findElement(By.id("deepSkyObjects")).getText()).contains(deepSkyObjectName);
     }
 
     @Test
@@ -73,13 +73,15 @@ public class DeepSkyObjectWebControllerE2E {
         driver.get(baseUrl);
 
         // Create DeepSkyObject through REST
-        Constellation constellationSaved = postConstellation(ORION);
-        postDeepSkyObject(M42, constellationSaved);
+        String constellationName = generateConstellationName();
+        String deepSkyObjectName = generateDeepSkyObjectName();
+        Constellation constellationSaved = postConstellation(constellationName);
+        postDeepSkyObject(deepSkyObjectName, constellationSaved);
 
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
 
-        driver.findElement(By.id("deepSkyObjectName")).sendKeys(M42);
-        new Select(driver.findElement(By.id("constellationId"))).selectByVisibleText(ORION);
+        driver.findElement(By.id("deepSkyObjectName")).sendKeys(deepSkyObjectName);
+        new Select(driver.findElement(By.id("constellationId"))).selectByVisibleText(constellationName);
         driver.findElement(By.id("submitButton")).click();
 
         assertThat(driver.findElement(By.id("errorMessage")).getText()).isEqualTo("A DeepSkyObject with the same name already exists");
@@ -88,8 +90,10 @@ public class DeepSkyObjectWebControllerE2E {
     @Test
     public void testUpdateDeepSkyObject() throws JSONException {
         // Create Constellation through REST
-        Constellation constellationSaved = postConstellation(ORION);
-        DeepSkyObject deepSkyObjectSaved = postDeepSkyObject(M42, constellationSaved);
+        String constellationName = generateConstellationName();
+        String deepSkyObjectName = generateDeepSkyObjectName();
+        Constellation constellationSaved = postConstellation(constellationName);
+        DeepSkyObject deepSkyObjectSaved = postDeepSkyObject(deepSkyObjectName, constellationSaved);
 
         driver.get(baseUrl);
 
@@ -99,11 +103,11 @@ public class DeepSkyObjectWebControllerE2E {
         // Go to /deepskyobject/modify/<id> page
         driver.findElement(By.cssSelector("a[href*='/deepskyobject/modify/" + deepSkyObjectSaved.getId())).click();
 
-        String nameChanged = M42 + " changed";
+        String nameChanged = deepSkyObjectName + " changed";
 
         WebElement constellationNameElement = driver.findElement(By.id("deepSkyObjectName"));
         constellationNameElement.clear();
-        new Select(driver.findElement(By.id("constellationId"))).selectByVisibleText(ORION);
+        new Select(driver.findElement(By.id("constellationId"))).selectByVisibleText(constellationName);
         constellationNameElement.sendKeys(nameChanged);
 
         driver.findElement(By.id("submitButton")).click();
@@ -116,13 +120,23 @@ public class DeepSkyObjectWebControllerE2E {
         driver.get(baseUrl);
 
         // Create DeepSkyObject through REST
-        Constellation constellationSaved = postConstellation(ORION);
-        DeepSkyObject deepSkyObjectSaved = postDeepSkyObject(M42, constellationSaved);
+        String constellationName = generateConstellationName();
+        String deepSkyObjectName = generateDeepSkyObjectName();
+        Constellation constellationSaved = postConstellation(constellationName);
+        DeepSkyObject deepSkyObjectSaved = postDeepSkyObject(deepSkyObjectName, constellationSaved);
 
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
         driver.findElement(By.cssSelector("a[href*='/deepskyobject/delete/" + deepSkyObjectSaved.getId())).click();
 
-        assertThrows(NoSuchElementException.class, () -> driver.findElement(By.id("deepSkyObjects")));
+        assertThat(driver.findElement(By.id("deepSkyObjects")).getText()).doesNotContain(deepSkyObjectName);
+    }
+
+    private String generateConstellationName() {
+        return ORION + "-" + Math.random();
+    }
+
+    private String generateDeepSkyObjectName() {
+        return M42 + "-" + Math.random();
     }
 
     private Constellation postConstellation(String name) throws JSONException {

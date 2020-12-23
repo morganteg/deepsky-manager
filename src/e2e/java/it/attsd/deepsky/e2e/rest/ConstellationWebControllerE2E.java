@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,7 +16,6 @@ import org.springframework.http.MediaType;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
 
 public class ConstellationWebControllerE2E {
     private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
@@ -54,10 +52,11 @@ public class ConstellationWebControllerE2E {
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
 
-        driver.findElement(By.id("constellationName")).sendKeys(ORION);
+        String name = generateName();
+        driver.findElement(By.id("constellationName")).sendKeys(name);
         driver.findElement(By.id("submitButton")).click();
 
-        assertThat(driver.findElement(By.id("constellations")).getText()).contains(ORION);
+        assertThat(driver.findElement(By.id("constellations")).getText()).contains(name);
     }
 
     @Test
@@ -65,11 +64,12 @@ public class ConstellationWebControllerE2E {
         driver.get(baseUrl);
 
         // Create Constellation through REST
-        postConstellation(ORION);
+        String name = generateName();
+        postConstellation(name);
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
 
-        driver.findElement(By.id("constellationName")).sendKeys(ORION);
+        driver.findElement(By.id("constellationName")).sendKeys(name);
         driver.findElement(By.id("submitButton")).click();
 
         assertThat(driver.findElement(By.id("errorMessage")).getText()).isEqualTo("A Constellation with the same name already exists");
@@ -78,7 +78,8 @@ public class ConstellationWebControllerE2E {
     @Test
     public void testUpdateConstellation() throws JSONException {
         // Create Constellation through REST
-        Constellation constellation = postConstellation(ORION);
+        String name = generateName();
+        Constellation constellation = postConstellation(name);
 
         driver.get(baseUrl);
 
@@ -88,7 +89,7 @@ public class ConstellationWebControllerE2E {
         // Go to /constellation/modify/<id> page
         driver.findElement(By.cssSelector("a[href*='/constellation/modify/" + constellation.getId())).click();
 
-        String nameChanged = ORION + " changed";
+        String nameChanged = name + " changed";
 
         WebElement constellationNameElement = driver.findElement(By.id("constellationName"));
         constellationNameElement.clear();
@@ -104,12 +105,17 @@ public class ConstellationWebControllerE2E {
         driver.get(baseUrl);
 
         // Create Constellation through REST
-        Constellation constellation = postConstellation(ORION);
+        String name = generateName();
+        Constellation constellation = postConstellation(name);
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
         driver.findElement(By.cssSelector("a[href*='/constellation/delete/" + constellation.getId())).click();
 
-        assertThrows(NoSuchElementException.class, () -> driver.findElement(By.id("constellations")));
+        assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(name);
+    }
+
+    private String generateName() {
+        return ORION + "-" + Math.random();
     }
 
     private Constellation postConstellation(String name) throws JSONException {
