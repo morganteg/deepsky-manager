@@ -27,7 +27,6 @@ public class DeepSkyObjectWebControllerE2E {
     private final String ORION = "orion";
 
     String M42 = "m42";
-//    String M43 = "m43";
 
     @BeforeClass
     public static void setupClass() {
@@ -75,8 +74,8 @@ public class DeepSkyObjectWebControllerE2E {
         // Create DeepSkyObject through REST
         String constellationName = generateRandomConstellationName();
         String deepSkyObjectName = generateRandomDeepSkyObjectName();
-        int constellationSavedId = postConstellation(constellationName);
-        postDeepSkyObject(deepSkyObjectName, constellationSavedId);
+        Integer constellationSavedId = postConstellation(constellationName);
+        postDeepSkyObject(deepSkyObjectName, constellationSavedId.intValue());
 
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
 
@@ -92,8 +91,8 @@ public class DeepSkyObjectWebControllerE2E {
         // Create Constellation through REST
         String constellationName = generateRandomConstellationName();
         String deepSkyObjectName = generateRandomDeepSkyObjectName();
-        int constellationSavedId = postConstellation(constellationName);
-        int deepSkyObjectSavedId = postDeepSkyObject(deepSkyObjectName, constellationSavedId);
+        Integer constellationSavedId = postConstellation(constellationName);
+        Integer deepSkyObjectSavedId = postDeepSkyObject(deepSkyObjectName, constellationSavedId.intValue());
 
         driver.get(baseUrl);
 
@@ -101,7 +100,7 @@ public class DeepSkyObjectWebControllerE2E {
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
 
         // Go to /deepskyobject/modify/<id> page
-        driver.findElement(By.cssSelector("a[href*='/deepskyobject/modify/" + deepSkyObjectSavedId)).click();
+        driver.findElement(By.cssSelector("a[href*='/deepskyobject/modify/" + deepSkyObjectSavedId.intValue())).click();
 
         String nameChanged = deepSkyObjectName + " changed";
 
@@ -122,11 +121,11 @@ public class DeepSkyObjectWebControllerE2E {
         // Create DeepSkyObject through REST
         String constellationName = generateRandomConstellationName();
         String deepSkyObjectName = generateRandomDeepSkyObjectName();
-        int constellationSavedId = postConstellation(constellationName);
-        int deepSkyObjectSavedId = postDeepSkyObject(deepSkyObjectName, constellationSavedId);
+        Integer constellationSavedId = postConstellation(constellationName);
+        Integer deepSkyObjectSavedId = postDeepSkyObject(deepSkyObjectName, constellationSavedId.intValue());
 
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
-        driver.findElement(By.cssSelector("a[href*='/deepskyobject/delete/" + deepSkyObjectSavedId)).click();
+        driver.findElement(By.cssSelector("a[href*='/deepskyobject/delete/" + deepSkyObjectSavedId.intValue())).click();
 
         assertThat(driver.findElement(By.id("deepSkyObjects")).getText()).doesNotContain(deepSkyObjectName);
     }

@@ -78,7 +78,7 @@ public class ConstellationWebControllerE2E {
     public void testUpdateConstellation() throws JSONException {
         // Create Constellation through REST
         String name = generateConstellationName();
-        int constellationId = postConstellation(name);
+        Integer constellationId = postConstellation(name);
 
         driver.get(baseUrl);
 
@@ -86,7 +86,7 @@ public class ConstellationWebControllerE2E {
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
 
         // Go to /constellation/modify/<id> page
-        driver.findElement(By.cssSelector("a[href*='/constellation/modify/" + constellationId)).click();
+        driver.findElement(By.cssSelector("a[href*='/constellation/modify/" + constellationId.intValue())).click();
 
         String nameChanged = name + " changed";
 
@@ -105,10 +105,10 @@ public class ConstellationWebControllerE2E {
 
         // Create Constellation through REST
         String name = generateConstellationName();
-        int constellationId = postConstellation(name);
+        Integer constellationId = postConstellation(name);
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
-        driver.findElement(By.cssSelector("a[href*='/constellation/delete/" + constellationId)).click();
+        driver.findElement(By.cssSelector("a[href*='/constellation/delete/" + constellationId.intValue())).click();
 
         assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(name);
     }
