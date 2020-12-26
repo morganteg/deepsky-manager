@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.controller;
+package it.attsd.deepsky.controller;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import it.attsd.deepsky.dto.ConstellationDto;
 import it.attsd.deepsky.dto.DeepSkyObjectDto;
 import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.service.DeepSkyObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.unit.service.DeepSkyObjectService;
 
 @RestController()
 @RequestMapping("/api/deepskyobject")

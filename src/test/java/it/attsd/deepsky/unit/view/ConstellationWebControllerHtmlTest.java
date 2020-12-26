@@ -19,9 +19,9 @@ import com.gargoylesoftware.htmlunit.html.HtmlHeading1;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
 
-import it.attsd.deepsky.unit.controller.ConstellationWebController;
+import it.attsd.deepsky.controller.ConstellationWebController;
 import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.unit.service.ConstellationService;
+import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = ConstellationWebController.class)

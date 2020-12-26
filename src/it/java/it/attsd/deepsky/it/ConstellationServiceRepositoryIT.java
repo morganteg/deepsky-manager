@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.unit.repository.ConstellationRepository;
-import it.attsd.deepsky.unit.service.ConstellationService;
+import it.attsd.deepsky.repository.ConstellationRepository;
+import it.attsd.deepsky.service.ConstellationService;
 
 import java.util.Arrays;
 import java.util.List;

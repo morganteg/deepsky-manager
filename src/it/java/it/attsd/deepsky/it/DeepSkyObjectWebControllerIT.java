@@ -2,8 +2,8 @@ package it.attsd.deepsky.it;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.unit.repository.ConstellationRepository;
-import it.attsd.deepsky.unit.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

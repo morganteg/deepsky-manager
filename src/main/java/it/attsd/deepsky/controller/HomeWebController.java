@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.controller;
+package it.attsd.deepsky.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

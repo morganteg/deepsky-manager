@@ -1,15 +1,15 @@
-package it.attsd.deepsky.unit.service;
+package it.attsd.deepsky.service;
 
 import java.util.List;
 
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.unit.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import org.springframework.stereotype.Service;
 
 import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.unit.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.ConstellationRepository;
 
 @Service
 public class ConstellationService {

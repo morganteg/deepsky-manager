@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 
+import it.attsd.deepsky.controller.ConstellationRestController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.google.gson.Gson;
 
 import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.unit.service.ConstellationService;
+import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = ConstellationRestController.class)

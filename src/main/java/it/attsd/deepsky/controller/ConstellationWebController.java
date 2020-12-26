@@ -1,10 +1,10 @@
-package it.attsd.deepsky.unit.controller;
+package it.attsd.deepsky.controller;
 
 import it.attsd.deepsky.dto.ConstellationDto;
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.unit.service.ConstellationService;
+import it.attsd.deepsky.service.ConstellationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

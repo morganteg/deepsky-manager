@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.repository;
+package it.attsd.deepsky.repository;
 
 import it.attsd.deepsky.model.Constellation;
 import org.springframework.data.jpa.repository.JpaRepository;

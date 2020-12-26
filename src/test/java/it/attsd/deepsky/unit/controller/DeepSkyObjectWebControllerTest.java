@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.List;
 
+import it.attsd.deepsky.controller.DeepSkyObjectWebController;
 import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -23,8 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.unit.service.ConstellationService;
-import it.attsd.deepsky.unit.service.DeepSkyObjectService;
+import it.attsd.deepsky.service.ConstellationService;
+import it.attsd.deepsky.service.DeepSkyObjectService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = {DeepSkyObjectWebController.class})

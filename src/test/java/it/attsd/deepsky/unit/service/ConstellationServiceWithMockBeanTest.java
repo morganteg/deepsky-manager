@@ -13,7 +13,8 @@ import java.util.Optional;
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.unit.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.service.ConstellationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -22,7 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.unit.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.ConstellationRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConstellationServiceWithMockBeanTest {

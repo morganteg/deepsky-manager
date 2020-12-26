@@ -1,9 +1,10 @@
 package it.attsd.deepsky.unit.controller;
 
 import com.google.gson.Gson;
+import it.attsd.deepsky.controller.DeepSkyObjectRestController;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.unit.service.DeepSkyObjectService;
+import it.attsd.deepsky.service.DeepSkyObjectService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

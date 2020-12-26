@@ -1,11 +1,12 @@
 package it.attsd.deepsky.unit.controller;
 
+import it.attsd.deepsky.controller.ConstellationWebController;
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.unit.service.ConstellationService;
-import it.attsd.deepsky.unit.service.DeepSkyObjectService;
+import it.attsd.deepsky.service.ConstellationService;
+import it.attsd.deepsky.service.DeepSkyObjectService;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;

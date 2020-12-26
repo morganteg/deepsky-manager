@@ -2,6 +2,7 @@ package it.attsd.deepsky.unit.repository;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

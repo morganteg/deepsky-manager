@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
+import it.attsd.deepsky.service.DeepSkyObjectService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -20,7 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.unit.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeepSkyObjectServiceWithMockBeanTest {

@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.controller;
+package it.attsd.deepsky.controller;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.unit.service.ConstellationService;
+import it.attsd.deepsky.service.ConstellationService;
 
 @RestController()
 @RequestMapping("/api/constellation")

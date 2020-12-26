@@ -2,6 +2,7 @@ package it.attsd.deepsky.unit.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import it.attsd.deepsky.controller.HomeWebController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

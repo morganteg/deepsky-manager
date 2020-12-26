@@ -20,8 +20,8 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.unit.repository.ConstellationRepository;
-import it.attsd.deepsky.unit.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 
 import java.util.Arrays;
 import java.util.List;

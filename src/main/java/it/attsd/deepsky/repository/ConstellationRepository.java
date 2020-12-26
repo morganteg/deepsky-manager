@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.repository;
+package it.attsd.deepsky.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
