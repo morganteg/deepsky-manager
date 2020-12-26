@@ -13,6 +13,6 @@ cache:
 matrix:
   include:
     - jdk: openjdk8
-    - jdk: openjdk11
+    - jdk: openjdk9
 script:
   - mvn clean verify -Pjacoco coveralls:report sonar:sonar
