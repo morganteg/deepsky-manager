@@ -5,6 +5,7 @@ import it.attsd.deepsky.controller.DeepSkyObjectRestController;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.service.DeepSkyObjectService;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class DeepSkyObjectRestControllerTest {
     private final List<DeepSkyObject> deepSkyObjects = Arrays.asList(new DeepSkyObject(1L, M42, orion),
             new DeepSkyObject(2L, M43, orion));
 
-    private Gson gson = new Gson();
+//    private Gson gson = new Gson();
 
     @Test
     public void testAllDeepSkyObjectsEmpty() throws Exception {
@@ -112,10 +113,20 @@ public class DeepSkyObjectRestControllerTest {
 
         when(deepSkyObjectService.save(new DeepSkyObject(M42, orion))).thenReturn(m42);
 
-        this.mvc.perform(post(BASE_URL).content(gson.toJson(new DeepSkyObject(M42, orion)))
+        JSONObject constellationJson = new JSONObject();
+        constellationJson.put("id", orion.getId());
+        constellationJson.put("name", orion.getName());
+
+        JSONObject body = new JSONObject();
+        body.put("name", M42);
+        body.put("constellation", constellationJson);
+
+        this.mvc.perform(post(BASE_URL).content(body.toString())
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(1))).andExpect(jsonPath("name", is(M42)))
-                .andExpect(jsonPath("constellation.id", is(1))).andExpect(jsonPath("constellation.name", is(ORION)));
+                .andExpect(jsonPath("id", is(1)))
+                .andExpect(jsonPath("name", is(M42)))
+                .andExpect(jsonPath("constellation.id", is(1)))
+                .andExpect(jsonPath("constellation.name", is(ORION)));
 
     }
 
@@ -126,10 +137,21 @@ public class DeepSkyObjectRestControllerTest {
 
         when(deepSkyObjectService.updateById(1L, new DeepSkyObject(m42NameUpdated, orion))).thenReturn(m42Updated);
 
-        this.mvc.perform(put(BASE_URL + "/1").content(gson.toJson(new DeepSkyObject(m42NameUpdated, orion)))
-                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(1))).andExpect(jsonPath("name", is(m42NameUpdated)))
-                .andExpect(jsonPath("constellation.id", is(1))).andExpect(jsonPath("constellation.name", is(ORION)));
+        JSONObject constellationJson = new JSONObject();
+        constellationJson.put("id", orion.getId());
+        constellationJson.put("name", orion.getName());
+
+        JSONObject body = new JSONObject();
+        body.put("name", m42NameUpdated);
+        body.put("constellation", constellationJson);
+
+        this.mvc.perform(put(BASE_URL + "/1").content(body.toString())
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id", is(1)))
+                .andExpect(jsonPath("name", is(m42NameUpdated)))
+                .andExpect(jsonPath("constellation.id", is(1)))
+                .andExpect(jsonPath("constellation.name", is(ORION)));
 
     }
 

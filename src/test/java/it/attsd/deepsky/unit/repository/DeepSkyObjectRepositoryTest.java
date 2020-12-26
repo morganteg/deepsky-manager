@@ -3,6 +3,7 @@ package it.attsd.deepsky.unit.repository;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 @DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringRunner.class)
 public class DeepSkyObjectRepositoryTest {
 
@@ -27,7 +28,11 @@ public class DeepSkyObjectRepositoryTest {
 
     private final String ORION = "orion";
     private final String M42 = "m42";
-    private final String M43 = "m43";
+
+//    @Before
+//    public void setUp() {
+//        deepSkyObjectRepository.deleteAll();
+//    }
 
     @Test
     public void testJpaMapping() {
