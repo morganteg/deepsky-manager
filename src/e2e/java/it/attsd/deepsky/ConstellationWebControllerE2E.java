@@ -42,7 +42,9 @@ public class ConstellationWebControllerE2E {
     @Test
     public void testHomePage() {
         driver.get(baseUrl);
-        driver.findElement(By.cssSelector("a[href*='/constellation"));
+        WebElement urlElement = driver.findElement(By.cssSelector("a[href*='/constellation"));
+
+        assertThat(urlElement).isNotNull();
     }
 
     @Test

@@ -80,7 +80,8 @@ public class DeepSkyObjectServiceRepositoryIT {
 		String nameChanged = m42Saved.getName() + " changed";
 		DeepSkyObject m42Modified = deepSkyObjectService.updateById(m42Saved.getId(), new DeepSkyObject(nameChanged, orion));
 
-		assertThat(deepSkyObjectRepository.findById(m42Saved.getId()).get()).isEqualTo(m42Modified);
+		DeepSkyObject m42Found = deepSkyObjectRepository.findById(m42Saved.getId()).get();
+		assertThat(m42Found).isEqualTo(m42Modified);
 	}
 
 	@Test

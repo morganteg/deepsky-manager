@@ -1,8 +1,6 @@
 package it.attsd.deepsky.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
-
+import it.attsd.deepsky.model.Constellation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import it.attsd.deepsky.model.Constellation;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -26,12 +25,6 @@ public class ConstellationRepositoryTest {
 
 	private final String ORION = "orion";
 	private final String SCORPIUS = "scorpius";
-	
-//	@Before
-//	public void setup() {
-//		constellationRepository.deleteAll();
-//		constellationRepository.flush();
-//	}
 
 	@Test
 	public void testJpaMapping() {
@@ -67,8 +60,9 @@ public class ConstellationRepositoryTest {
 	@Test
 	public void testEqualsWithNull() {
 		Constellation orion1 = new Constellation(1L, ORION);
-		
-		assertNotNull(orion1);
+
+		assertThat(orion1).isNotEqualTo(null);
+//		assertFalse(orion1.equals(null));
 	}
 	
 	@Test

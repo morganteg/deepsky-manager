@@ -19,8 +19,9 @@ public class DeepSkyObjectRestControllerE2E {
         Integer constellationId = postConstellation(generateRandomConstellationName());
         Integer deepSkyObjectId = postDeepSkyObject(generateRandomDeepSkyObjectName(), constellationId.intValue());
 
-        assertThat(deepSkyObjectId).isNotNull();
-        assertThat(deepSkyObjectId).isPositive();
+        assertThat(deepSkyObjectId)
+                .isNotNull()
+                .isPositive();
     }
 
     @Test

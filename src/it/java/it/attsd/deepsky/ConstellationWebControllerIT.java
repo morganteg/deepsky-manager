@@ -108,7 +108,8 @@ public class ConstellationWebControllerIT {
 
         driver.get(baseUrl + "/constellation/delete/" + testConstellation.getId());
 
-        assertThrows(NoSuchElementException.class, () -> driver.findElement(By.id("constellations")));
+        By byConstellations = By.id("constellations");
+        assertThrows(NoSuchElementException.class, () -> driver.findElement(byConstellations));
     }
 
 }

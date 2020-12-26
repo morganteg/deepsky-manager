@@ -130,7 +130,8 @@ public class DeepSkyObjectWebControllerIT {
 
         driver.get(baseUrl + "/deepskyobject/delete/" + testM42.getId());
 
-        assertThrows(NoSuchElementException.class, () -> driver.findElement(By.id("deepSkyObjects")));
+        By byDeepSkyObjects = By.id("deepSkyObjects");
+        assertThrows(NoSuchElementException.class, () -> driver.findElement(byDeepSkyObjects));
     }
 
 }

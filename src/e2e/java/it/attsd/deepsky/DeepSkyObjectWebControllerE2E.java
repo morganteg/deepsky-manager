@@ -47,7 +47,9 @@ public class DeepSkyObjectWebControllerE2E {
     @Test
     public void testHomePage() {
         driver.get(baseUrl);
-        driver.findElement(By.cssSelector("a[href*='/deepskyobject"));
+        WebElement urlElement = driver.findElement(By.cssSelector("a[href*='/deepskyobject"));
+
+        assertThat(urlElement).isNotNull();
     }
 
     @Test

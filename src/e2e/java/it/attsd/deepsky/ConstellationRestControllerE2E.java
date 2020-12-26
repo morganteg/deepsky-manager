@@ -16,8 +16,9 @@ public class ConstellationRestControllerE2E {
     public void testCreateNewConstellationWhenNotExists() throws JSONException {
         Integer constellationId = postConstellation(generateRandomConstellationName());
 
-        assertThat(constellationId).isNotNull();
-        assertThat(constellationId).isPositive();
+        assertThat(constellationId)
+                .isNotNull()
+                .isPositive();
     }
 
     @Test

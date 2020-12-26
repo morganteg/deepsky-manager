@@ -1,6 +1,5 @@
 package it.attsd.deepsky.controller;
 
-import it.attsd.deepsky.dto.ConstellationDto;
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.Constellation;
@@ -60,22 +59,11 @@ public class ConstellationWebControllerTest {
                 .andExpect(model().attribute("constellations", constellations));
     }
 
-//	@Test
-//	public void test_ConstellationView_NoConstellations() throws Exception {
-//		List<Constellation> constellations = Arrays.asList(new Constellation(1L, ORION),
-//				new Constellation(2L, SCORPIUS));
-//
-//		when(constellationService.findAll()).thenReturn(constellations);
-//
-//		mvc.perform(get("/constellation")).andExpect(view().name("constellation/constellation"))
-//				.andExpect(model().attribute("constellations", constellations));
-//	}
-
     @Test
     public void test_PostConstellationWithoutId_ShouldSaveNewConstellation() throws Exception {
         Constellation orion = new Constellation(ORION);
 
-        mvc.perform(post(BASE_URL).param("name", ORION).flashAttr("constellation", orion))
+        mvc.perform(post(BASE_URL).param("name", ORION))
                 .andExpect(view().name("redirect:/constellation"));
 
         verify(constellationService).save(orion);
@@ -87,9 +75,7 @@ public class ConstellationWebControllerTest {
 
         Constellation orion = new Constellation(null);
 
-        mvc.perform(post(BASE_URL)
-        //        .flashAttr("constellation", orion)
-        )
+        mvc.perform(post(BASE_URL))
                 .andExpect(view().name("constellation/constellation"))
                 .andExpect(model().attribute("error", "Please, fill all mandatory attributes"))
                 .andExpect(model().attribute("constellations", constellations));
@@ -103,9 +89,7 @@ public class ConstellationWebControllerTest {
 
         when(constellationService.save(orion)).thenThrow(ConstellationAlreadyExistsException.class);
 
-        mvc.perform(post(BASE_URL).param("name", ORION)
-                //.flashAttr("constellation", orionDto)
-                )
+        mvc.perform(post(BASE_URL).param("name", ORION))
                 .andExpect(view().name("constellation/constellation"))
                 .andExpect(model().attribute("error", Matchers.equalToIgnoringCase("A Constellation with the same name already exists")));
 
@@ -116,9 +100,9 @@ public class ConstellationWebControllerTest {
     public void test_PostConstellationWithId_ShouldUpdateConstellation() throws Exception {
         Constellation orion = new Constellation(1L, ORION);
 
-        mvc.perform(post(BASE_URL).param("id", "1").param("name", ORION)
-        //        .flashAttr("constellation", orion)
-        )
+        mvc.perform(post(BASE_URL)
+                .param("id", "1")
+                .param("name", ORION))
                 .andExpect(view().name("redirect:/constellation"));
 
         verify(constellationService).updateById(1L, orion);
@@ -131,10 +115,10 @@ public class ConstellationWebControllerTest {
         when(constellationService.findById(1L)).thenReturn(orion);
         when(constellationService.findAll()).thenReturn(constellations);
 
-        mvc.perform(get(BASE_URL + "/modify/1")).andExpect(view().name("constellation/constellation"))
+        mvc.perform(get(BASE_URL + "/modify/1"))
+                .andExpect(view().name("constellation/constellation"))
                 .andExpect(model().attribute("constellation", orion))
                 .andExpect(model().attribute("constellations", constellations));
-//				.andExpect(model().attribute("message", ""));
     }
 
     @Test

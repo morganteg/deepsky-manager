@@ -87,7 +87,8 @@ public class ConstellationRestControllerIT {
 
         Constellation orionSaved = response.getBody().as(Constellation.class);
 
-        assertThat(constellationRepository.findById(orionSaved.getId()).get()).isEqualTo(orionSaved);
+        Constellation orionFound = constellationRepository.findById(orionSaved.getId()).get();
+        assertThat(orionFound).isEqualTo(orionSaved);
     }
 
     @Test

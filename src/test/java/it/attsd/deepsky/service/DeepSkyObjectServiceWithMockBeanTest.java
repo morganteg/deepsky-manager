@@ -111,7 +111,7 @@ public class DeepSkyObjectServiceWithMockBeanTest {
 		when(deepSkyObjectRepository.save(m42ToSave)).thenReturn(m42Saved);
 
 		DeepSkyObject m42Saved = deepSkyObjectService.save(m42ToSave);
-		assertThat(m42Saved).isSameAs(m42Saved);
+		assertThat(m42Saved).isSameAs(this.m42Saved);
 
 		InOrder inOrder = inOrder(m42ToSave, deepSkyObjectRepository);
 		inOrder.verify(m42ToSave).setId(null);

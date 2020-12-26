@@ -102,7 +102,8 @@ public class DeepSkyObjectRestControllerIT {
 
         DeepSkyObject m42Saved = response.getBody().as(DeepSkyObject.class);
 
-        assertThat(deepSkyObjectRepository.findById(m42Saved.getId()).get()).isEqualTo(m42Saved);
+        DeepSkyObject m42Found = deepSkyObjectRepository.findById(m42Saved.getId()).get();
+        assertThat(m42Found).isEqualTo(m42Saved);
     }
 
     @Test

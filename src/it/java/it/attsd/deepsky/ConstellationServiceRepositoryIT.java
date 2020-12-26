@@ -82,7 +82,8 @@ public class ConstellationServiceRepositoryIT {
 		String nameChanged = orionSaved.getName() + " changed";
 		Constellation orionModified = constellationService.updateById(orionSaved.getId(), new Constellation(orionSaved.getId(), nameChanged));
 
-		assertThat(constellationRepository.findById(orionSaved.getId()).get()).isEqualTo(orionModified);
+		Constellation orionFound = constellationRepository.findById(orionSaved.getId()).get();
+		assertThat(orionFound).isEqualTo(orionModified);
 	}
 
 	@Test
