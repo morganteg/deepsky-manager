@@ -66,7 +66,7 @@ public class DeepSkyObjectRepositoryTest {
     public void testEqualsWithNull() {
         DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
 
-        assertThat(dso1).isNotNull();
+        assertNotEquals(dso1, null);
     }
 
     @Test

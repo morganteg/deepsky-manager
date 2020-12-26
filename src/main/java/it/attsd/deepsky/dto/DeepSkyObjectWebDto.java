@@ -3,21 +3,21 @@ package it.attsd.deepsky.dto;
 public class DeepSkyObjectWebDto {
     private Long id;
     private String name;
-    private Long constellationId;
+    private Long constellation;
 
     public DeepSkyObjectWebDto() {
 
     }
 
-    public DeepSkyObjectWebDto(String name, Long constellationId) {
+    public DeepSkyObjectWebDto(String name, Long constellation) {
         this.name = name;
-        this.constellationId = constellationId;
+        this.constellation = constellation;
     }
 
-    public DeepSkyObjectWebDto(Long id, String name, Long constellationId) {
+    public DeepSkyObjectWebDto(Long id, String name, Long constellation) {
         this.id = id;
         this.name = name;
-        this.constellationId = constellationId;
+        this.constellation = constellation;
     }
 
     public Long getId() {
@@ -36,11 +36,11 @@ public class DeepSkyObjectWebDto {
         this.name = name;
     }
 
-    public Long getConstellationId() {
-        return constellationId;
+    public Long getConstellation() {
+        return constellation;
     }
 
-    public void setConstellationId(Long constellationId) {
-        this.constellationId = constellationId;
+    public void setConstellation(Long constellation) {
+        this.constellation = constellation;
     }
 }

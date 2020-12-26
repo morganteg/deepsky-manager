@@ -33,8 +33,12 @@ public class DeepSkyObjectRestControllerE2E {
         postDeepSkyObject(deepSkyObjectName, constellationSavedId.intValue());
 
         // Add a DeepSkyObject with the same name
+        JSONObject constellationJson = new JSONObject();
+        constellationJson.put("id", constellationSavedId.intValue());
+
         JSONObject body = new JSONObject();
         body.put("name", deepSkyObjectName);
+        body.put("constellation", constellationJson);
         String message = given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
                 .post("/api/deepskyobject")
                 .then()

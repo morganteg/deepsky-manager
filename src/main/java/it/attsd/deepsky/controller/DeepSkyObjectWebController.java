@@ -95,7 +95,7 @@ public class DeepSkyObjectWebController {
         return new DeepSkyObject(
                 deepSkyObjectWebDto.getId(),
                 deepSkyObjectWebDto.getName(),
-                new Constellation(deepSkyObjectWebDto.getConstellationId(), null)
+                new Constellation(deepSkyObjectWebDto.getConstellation(), null)
         );
     }
 

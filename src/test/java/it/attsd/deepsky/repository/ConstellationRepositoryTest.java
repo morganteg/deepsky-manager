@@ -61,8 +61,7 @@ public class ConstellationRepositoryTest {
 	public void testEqualsWithNull() {
 		Constellation orion1 = new Constellation(1L, ORION);
 
-		assertThat(orion1).isNotEqualTo(null);
-//		assertFalse(orion1.equals(null));
+		assertNotEquals(orion1, null);
 	}
 	
 	@Test
