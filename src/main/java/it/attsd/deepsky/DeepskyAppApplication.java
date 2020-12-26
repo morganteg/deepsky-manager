@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class DeepskyAppApplication {
-    private Logger logger = LoggerFactory.getLogger(DeepskyAppApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(DeepskyAppApplication.class, args);

@@ -1,5 +1,8 @@
 package it.attsd.deepsky.controller;
 
+import it.attsd.deepsky.dto.ConstellationDto;
+import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
+import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.service.ConstellationService;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +37,8 @@ public class ConstellationWebController {
 	}
 
 	@PostMapping("/constellation")
-	public String saveConstellation(@ModelAttribute("constellation") Constellation constellation, Model model) {
+	public String saveConstellation(@ModelAttribute("constellation") ConstellationDto constellationDto, Model model) {
+		Constellation constellation = dtoToConstellation(constellationDto);
 		if (StringUtils.isEmpty(constellation.getName())) {
 			model.addAttribute(ATTRIBUTE_ERROR, "Please, fill all mandatory attributes");
 			model.addAttribute(ATTRIBUTE_CONSTELLATION, constellation);
@@ -44,7 +48,15 @@ public class ConstellationWebController {
 		} else {
 			final Long id = constellation.getId();
 			if (id == null) {
-				constellationService.save(constellation);
+				try {
+					constellationService.save(constellation);
+				} catch (ConstellationAlreadyExistsException e) {
+					model.addAttribute(ATTRIBUTE_ERROR, "A Constellation with the same name already exists");
+					model.addAttribute(ATTRIBUTE_CONSTELLATION, constellation);
+					model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellationService.findAll());
+
+					return TARGET_CONSTELLATION;
+				}
 			} else {
 				constellationService.updateById(id, constellation);
 			}
@@ -69,9 +81,24 @@ public class ConstellationWebController {
 
 	@GetMapping(value = "/constellation/delete/{id}")
 	public String deleteConstellation(@PathVariable long id, Model model) {
-		constellationService.deleteById(id);
+		try {
+			constellationService.deleteById(id);
+		} catch (ConstellationIsStillUsedException e) {
+			model.addAttribute(ATTRIBUTE_ERROR, "The Constellation is used by a DeepSkyObject");
+			model.addAttribute(ATTRIBUTE_CONSTELLATION, new Constellation());
+			model.addAttribute(ATTRIBUTE_CONSTELLATIONS, constellationService.findAll());
+
+			return TARGET_CONSTELLATION;
+		}
 
 		return "redirect:/constellation";
+	}
+
+	private Constellation dtoToConstellation(ConstellationDto constellationDto) {
+		return new Constellation(
+				constellationDto.getId(),
+				constellationDto.getName()
+		);
 	}
 
 }

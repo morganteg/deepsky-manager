@@ -2,6 +2,10 @@ package it.attsd.deepsky.controller;
 
 import java.util.List;
 
+import it.attsd.deepsky.dto.ConstellationDto;
+import it.attsd.deepsky.dto.DeepSkyObjectDto;
+import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
+import it.attsd.deepsky.model.Constellation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,18 +43,37 @@ public class DeepSkyObjectRestController {
 	}
 
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObject deepSkyObject) {
+	public @ResponseBody DeepSkyObject save(@RequestBody DeepSkyObjectDto deepSkyObjectDto) throws DeepSkyObjectAlreadyExistsException {
+		DeepSkyObject deepSkyObject = dtoToDeepSkyObject(deepSkyObjectDto);
+
 		return deepSkyObjectService.save(deepSkyObject);
 	}
 
 	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody DeepSkyObject update(@PathVariable long id, @RequestBody DeepSkyObject deepSkyObject) {
+	public @ResponseBody DeepSkyObject update(@PathVariable long id, @RequestBody DeepSkyObjectDto deepSkyObjectDto) {
+		DeepSkyObject deepSkyObject = dtoToDeepSkyObject(deepSkyObjectDto);
+
 		return deepSkyObjectService.updateById(id, deepSkyObject);
 	}
 
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	public void delete(@PathVariable long id) {
 		deepSkyObjectService.deleteById(id);
+	}
+
+	private Constellation dtoToConstellation(ConstellationDto constellationDto) {
+		return new Constellation(
+				constellationDto.getId(),
+				constellationDto.getName()
+		);
+	}
+
+	private DeepSkyObject dtoToDeepSkyObject(DeepSkyObjectDto deepSkyObjectDto) {
+		return new DeepSkyObject(
+				deepSkyObjectDto.getId(),
+				deepSkyObjectDto.getName(),
+				dtoToConstellation(deepSkyObjectDto.getConstellation())
+		);
 	}
 
 }
