@@ -55,8 +55,8 @@ public class DeepSkyObjectWebControllerE2E {
     public void testCreateNewDeepSkyObjectWhenNotExists() throws JSONException {
         driver.get(baseUrl);
 
-        String constellationName = generateConstellationName();
-        String deepSkyObjectName = generateDeepSkyObjectName();
+        String constellationName = generateRandomConstellationName();
+        String deepSkyObjectName = generateRandomDeepSkyObjectName();
         postConstellation(constellationName);
 
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
@@ -73,10 +73,10 @@ public class DeepSkyObjectWebControllerE2E {
         driver.get(baseUrl);
 
         // Create DeepSkyObject through REST
-        String constellationName = generateConstellationName();
-        String deepSkyObjectName = generateDeepSkyObjectName();
-        Constellation constellationSaved = postConstellation(constellationName);
-        postDeepSkyObject(deepSkyObjectName, constellationSaved);
+        String constellationName = generateRandomConstellationName();
+        String deepSkyObjectName = generateRandomDeepSkyObjectName();
+        int constellationSavedId = postConstellation(constellationName);
+        postDeepSkyObject(deepSkyObjectName, constellationSavedId);
 
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
 
@@ -90,10 +90,10 @@ public class DeepSkyObjectWebControllerE2E {
     @Test
     public void testUpdateDeepSkyObject() throws JSONException {
         // Create Constellation through REST
-        String constellationName = generateConstellationName();
-        String deepSkyObjectName = generateDeepSkyObjectName();
-        Constellation constellationSaved = postConstellation(constellationName);
-        DeepSkyObject deepSkyObjectSaved = postDeepSkyObject(deepSkyObjectName, constellationSaved);
+        String constellationName = generateRandomConstellationName();
+        String deepSkyObjectName = generateRandomDeepSkyObjectName();
+        int constellationSavedId = postConstellation(constellationName);
+        int deepSkyObjectSavedId = postDeepSkyObject(deepSkyObjectName, constellationSavedId);
 
         driver.get(baseUrl);
 
@@ -101,7 +101,7 @@ public class DeepSkyObjectWebControllerE2E {
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
 
         // Go to /deepskyobject/modify/<id> page
-        driver.findElement(By.cssSelector("a[href*='/deepskyobject/modify/" + deepSkyObjectSaved.getId())).click();
+        driver.findElement(By.cssSelector("a[href*='/deepskyobject/modify/" + deepSkyObjectSavedId)).click();
 
         String nameChanged = deepSkyObjectName + " changed";
 
@@ -120,49 +120,52 @@ public class DeepSkyObjectWebControllerE2E {
         driver.get(baseUrl);
 
         // Create DeepSkyObject through REST
-        String constellationName = generateConstellationName();
-        String deepSkyObjectName = generateDeepSkyObjectName();
-        Constellation constellationSaved = postConstellation(constellationName);
-        DeepSkyObject deepSkyObjectSaved = postDeepSkyObject(deepSkyObjectName, constellationSaved);
+        String constellationName = generateRandomConstellationName();
+        String deepSkyObjectName = generateRandomDeepSkyObjectName();
+        int constellationSavedId = postConstellation(constellationName);
+        int deepSkyObjectSavedId = postDeepSkyObject(deepSkyObjectName, constellationSavedId);
 
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
-        driver.findElement(By.cssSelector("a[href*='/deepskyobject/delete/" + deepSkyObjectSaved.getId())).click();
+        driver.findElement(By.cssSelector("a[href*='/deepskyobject/delete/" + deepSkyObjectSavedId)).click();
 
         assertThat(driver.findElement(By.id("deepSkyObjects")).getText()).doesNotContain(deepSkyObjectName);
     }
 
-    private String generateConstellationName() {
+    private String generateRandomConstellationName() {
         return ORION + "-" + Math.random();
     }
 
-    private String generateDeepSkyObjectName() {
+    private String generateRandomDeepSkyObjectName() {
         return M42 + "-" + Math.random();
     }
 
-    private Constellation postConstellation(String name) throws JSONException {
+    private Integer postConstellation(String name) throws JSONException {
         JSONObject body = new JSONObject();
         body.put("name", name);
-        Constellation orionSaved = given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
-                .post("/api/constellation")
-                .getBody().as(Constellation.class);
 
-        return orionSaved;
+        return given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
+                .post("/api/constellation")
+                .then()
+                .statusCode(200)
+                .extract().path("id");
     }
 
-    private DeepSkyObject postDeepSkyObject(String name, Constellation constellation) throws JSONException {
+    private Integer postDeepSkyObject(String name, int constellationId) throws JSONException {
         JSONObject constellationBody = new JSONObject();
-        constellationBody.put("id", constellation.getId());
-        constellationBody.put("name", constellation.getName());
+        constellationBody.put("id", constellationId);
+//        constellationBody.put("name", constellation.getName());
 
         JSONObject deepSkyObjectBody = new JSONObject();
         deepSkyObjectBody.put("name", name);
         deepSkyObjectBody.put("constellation", constellationBody);
-        DeepSkyObject deepSkyObjectSaved = given().contentType(MediaType.APPLICATION_JSON_VALUE)
+
+        return given().contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(deepSkyObjectBody.toString())
                 .when()
-                .post("/api/deepskyobject").getBody().as(DeepSkyObject.class);
-
-        return deepSkyObjectSaved;
+                .post("/api/deepskyobject")
+                .then()
+                .statusCode(200)
+                .extract().path("id");
     }
 
 }

@@ -1,7 +1,6 @@
 package it.attsd.deepsky.e2e.rest;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import it.attsd.deepsky.model.Constellation;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -52,7 +51,7 @@ public class ConstellationWebControllerE2E {
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
 
-        String name = generateName();
+        String name = generateConstellationName();
         driver.findElement(By.id("constellationName")).sendKeys(name);
         driver.findElement(By.id("submitButton")).click();
 
@@ -64,7 +63,7 @@ public class ConstellationWebControllerE2E {
         driver.get(baseUrl);
 
         // Create Constellation through REST
-        String name = generateName();
+        String name = generateConstellationName();
         postConstellation(name);
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
@@ -78,8 +77,8 @@ public class ConstellationWebControllerE2E {
     @Test
     public void testUpdateConstellation() throws JSONException {
         // Create Constellation through REST
-        String name = generateName();
-        Constellation constellation = postConstellation(name);
+        String name = generateConstellationName();
+        int constellationId = postConstellation(name);
 
         driver.get(baseUrl);
 
@@ -87,7 +86,7 @@ public class ConstellationWebControllerE2E {
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
 
         // Go to /constellation/modify/<id> page
-        driver.findElement(By.cssSelector("a[href*='/constellation/modify/" + constellation.getId())).click();
+        driver.findElement(By.cssSelector("a[href*='/constellation/modify/" + constellationId)).click();
 
         String nameChanged = name + " changed";
 
@@ -105,27 +104,28 @@ public class ConstellationWebControllerE2E {
         driver.get(baseUrl);
 
         // Create Constellation through REST
-        String name = generateName();
-        Constellation constellation = postConstellation(name);
+        String name = generateConstellationName();
+        int constellationId = postConstellation(name);
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
-        driver.findElement(By.cssSelector("a[href*='/constellation/delete/" + constellation.getId())).click();
+        driver.findElement(By.cssSelector("a[href*='/constellation/delete/" + constellationId)).click();
 
         assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(name);
     }
 
-    private String generateName() {
+    private String generateConstellationName() {
         return ORION + "-" + Math.random();
     }
 
-    private Constellation postConstellation(String name) throws JSONException {
+    private Integer postConstellation(String name) throws JSONException {
         JSONObject body = new JSONObject();
         body.put("name", name);
-        Constellation orionSaved = given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
-                .post("/api/constellation")
-                .getBody().as(Constellation.class);
 
-        return orionSaved;
+        return given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
+                .post("/api/constellation")
+                .then()
+                .statusCode(200)
+                .extract().path("id");
     }
 
 }

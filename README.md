@@ -15,6 +15,9 @@ mvn clean verify -Pintegration-tests
 mvn verify -Pdocker
 mvn -Dit.test=DeepSkyObjectWebControllerIT verify -Pdocker
 
+## Run E2E tests
+mvn clean test -Pe2e-tests
+
 # Docker
 docker-compose up --remove-orphans
 
