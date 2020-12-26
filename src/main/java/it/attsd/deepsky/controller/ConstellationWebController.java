@@ -1,5 +1,6 @@
 package it.attsd.deepsky.controller;
 
+import it.attsd.deepsky.dto.ConstellationDto;
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.Constellation;
@@ -36,7 +37,8 @@ public class ConstellationWebController {
 	}
 
 	@PostMapping("/constellation")
-	public String saveConstellation(@ModelAttribute("constellation") Constellation constellation, Model model) {
+	public String saveConstellation(@ModelAttribute("constellation") ConstellationDto constellationDto, Model model) {
+		Constellation constellation = dtoToConstellation(constellationDto);
 		if (StringUtils.isEmpty(constellation.getName())) {
 			model.addAttribute(ATTRIBUTE_ERROR, "Please, fill all mandatory attributes");
 			model.addAttribute(ATTRIBUTE_CONSTELLATION, constellation);
@@ -90,6 +92,13 @@ public class ConstellationWebController {
 		}
 
 		return "redirect:/constellation";
+	}
+
+	private Constellation dtoToConstellation(ConstellationDto constellationDto) {
+		return new Constellation(
+				constellationDto.getId(),
+				constellationDto.getName()
+		);
 	}
 
 }

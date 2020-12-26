@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.service;
+package it.attsd.deepsky.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +21,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
-import it.attsd.deepsky.service.DeepSkyObjectService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeepSkyObjectServiceWithMockBeanTest {

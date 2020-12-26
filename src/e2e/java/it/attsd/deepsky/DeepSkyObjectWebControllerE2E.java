@@ -1,4 +1,4 @@
-package it.attsd.deepsky.e2e.rest;
+package it.attsd.deepsky;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import it.attsd.deepsky.model.Constellation;

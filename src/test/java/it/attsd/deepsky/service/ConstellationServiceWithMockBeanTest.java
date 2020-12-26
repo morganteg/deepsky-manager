@@ -1,4 +1,4 @@
-package it.attsd.deepsky.unit.service;
+package it.attsd.deepsky.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -23,7 +23,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.repository.ConstellationRepository;
-import it.attsd.deepsky.service.ConstellationService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConstellationServiceWithMockBeanTest {

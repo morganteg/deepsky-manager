@@ -1,4 +1,4 @@
-package it.attsd.deepsky.e2e.rest;
+package it.attsd.deepsky;
 
 import org.json.JSONException;
 import org.json.JSONObject;

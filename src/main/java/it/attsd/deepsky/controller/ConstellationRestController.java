@@ -2,6 +2,7 @@ package it.attsd.deepsky.controller;
 
 import java.util.List;
 
+import it.attsd.deepsky.dto.ConstellationDto;
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,18 +43,29 @@ public class ConstellationRestController {
 	}
 
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Constellation save(@RequestBody Constellation constellation) throws ConstellationAlreadyExistsException {
+	public @ResponseBody Constellation save(@RequestBody ConstellationDto constellationDto) throws ConstellationAlreadyExistsException {
+		Constellation constellation = dtoToConstellation(constellationDto);
+
 		return constellationService.save(constellation);
 	}
 
 	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Constellation update(@PathVariable long id, @RequestBody Constellation constellation) {
+	public @ResponseBody Constellation update(@PathVariable long id, @RequestBody ConstellationDto constellationDto) {
+		Constellation constellation = dtoToConstellation(constellationDto);
+
 		return constellationService.updateById(id, constellation);
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void delete(@PathVariable long id) throws ConstellationIsStillUsedException {
 		constellationService.deleteById(id);
+	}
+
+	private Constellation dtoToConstellation(ConstellationDto constellationDto) {
+		return new Constellation(
+				constellationDto.getId(),
+				constellationDto.getName()
+		);
 	}
 
 }

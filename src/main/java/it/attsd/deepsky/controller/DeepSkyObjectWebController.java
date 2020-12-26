@@ -1,6 +1,8 @@
 package it.attsd.deepsky.controller;
 
+import it.attsd.deepsky.dto.DeepSkyObjectWebDto;
 import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
+import it.attsd.deepsky.model.Constellation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,8 +40,8 @@ public class DeepSkyObjectWebController {
 	}
 
 	@PostMapping("/deepskyobject")
-	public String saveDeepSkyObject(@ModelAttribute("deepskyobject") DeepSkyObject deepSkyObject, Model model)
-			throws Exception {
+	public String saveDeepSkyObject(@ModelAttribute("deepskyobject") DeepSkyObjectWebDto deepSkyObjectDto, Model model) {
+		DeepSkyObject deepSkyObject = dtoToDeepSkyObject(deepSkyObjectDto);
 		if (StringUtils.isEmpty(deepSkyObject.getName()) || deepSkyObject.getConstellation() == null) {
 			model.addAttribute(ATTRIBUTE_ERROR, "Please, fill all mandatory attributes");
 			model.addAttribute(ATTRIBUTE_DEEPSKYOBJECT, deepSkyObject);
@@ -88,6 +90,21 @@ public class DeepSkyObjectWebController {
 		deepSkyObjectService.deleteById(id);
 
 		return "redirect:/deepskyobject";
+	}
+
+//	private Constellation dtoToConstellation(ConstellationDto constellationDto) {
+//		return new Constellation(
+//				constellationDto.getId(),
+//				constellationDto.getName()
+//		);
+//	}
+
+	private DeepSkyObject dtoToDeepSkyObject(DeepSkyObjectWebDto deepSkyObjectWebDto) {
+		return new DeepSkyObject(
+				deepSkyObjectWebDto.getId(),
+				deepSkyObjectWebDto.getName(),
+				new Constellation(deepSkyObjectWebDto.getConstellationId(), null)
+		);
 	}
 
 }
