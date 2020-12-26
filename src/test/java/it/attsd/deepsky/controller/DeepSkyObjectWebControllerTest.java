@@ -65,24 +65,13 @@ public class DeepSkyObjectWebControllerTest {
                 .andExpect(model().attribute("constellations", constellations));
     }
 
-//	@Test
-//	public void test_ConstellationView_NoConstellations() throws Exception {
-//		List<Constellation> constellations = Arrays.asList(new Constellation(1L, ORION),
-//				new Constellation(2L, SCORPIUS));
-//
-//		when(constellationService.findAll()).thenReturn(constellations);
-//
-//		mvc.perform(get("/constellation")).andExpect(view().name("constellation/constellation"))
-//				.andExpect(model().attribute("constellations", constellations));
-//	}
-
     @Test
     public void test_PostDeepSkyObjectWithoutId_ShouldSaveNewConstellation() throws Exception {
         DeepSkyObject m42 = new DeepSkyObject(M42, new Constellation(orion.getId(), null));
 
         mvc.perform(post(BASE_URL)
                 .param("name", M42)
-                .param("constellationId", String.valueOf(orion.getId())))
+                .param("constellation", String.valueOf(orion.getId())))
                 .andExpect(view().name("redirect:/deepskyobject"));
 
         verify(deepSkyObjectService).save(m42);
@@ -96,7 +85,7 @@ public class DeepSkyObjectWebControllerTest {
 
         mvc.perform(post(BASE_URL)
                 .param("name", M42)
-                .param("constellationId", String.valueOf(orion.getId())))
+                .param("constellation", String.valueOf(orion.getId())))
                 .andExpect(view().name("deepSkyObject/deepSkyObject"))
                 .andExpect(model().attribute("error", Matchers.equalToIgnoringCase("A DeepSkyObject with the same name already exists")));
 
@@ -110,7 +99,8 @@ public class DeepSkyObjectWebControllerTest {
 
         DeepSkyObject m42 = new DeepSkyObject(null, new Constellation(orion.getId(), null));
 
-        mvc.perform(post(BASE_URL).param("constellationId", String.valueOf(orion.getId())))
+        mvc.perform(post(BASE_URL)
+                .param("constellation", String.valueOf(orion.getId())))
                 .andExpect(view().name("deepSkyObject/deepSkyObject"))
                 .andExpect(model().attribute("error", "Please, fill all mandatory attributes"))
                 .andExpect(model().attribute("deepSkyObject", m42))
@@ -127,7 +117,7 @@ public class DeepSkyObjectWebControllerTest {
         mvc.perform(post(BASE_URL)
                 .param("id", "1")
                 .param("name", M42)
-                .param("constellationId", String.valueOf(orion.getId())))
+                .param("constellation", String.valueOf(orion.getId())))
                 .andExpect(view().name("redirect:/deepskyobject"));
 
         verify(deepSkyObjectService).updateById(1L, m42);

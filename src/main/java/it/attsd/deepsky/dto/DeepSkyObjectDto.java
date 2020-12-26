@@ -5,10 +5,6 @@ public class DeepSkyObjectDto {
     private String name;
     private ConstellationDto constellation;
 
-    public DeepSkyObjectDto() {
-
-    }
-
     public DeepSkyObjectDto(String name, ConstellationDto constellation) {
         this.name = name;
         this.constellation = constellation;

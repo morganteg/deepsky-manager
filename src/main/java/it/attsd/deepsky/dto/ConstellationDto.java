@@ -4,10 +4,6 @@ public class ConstellationDto {
     private Long id;
     private String name;
 
-    public ConstellationDto() {
-
-    }
-
     public ConstellationDto(Long id, String name) {
         this.id = id;
         this.name = name;
