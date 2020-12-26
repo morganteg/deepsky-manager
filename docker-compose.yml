@@ -14,7 +14,7 @@ services:
     image: tomcat:latest
     #    restart: always
     ports:
-      - 8888:8080
+      - 8080:8080
     volumes:
       - ./target/deepsky-manager-0.0.1-SNAPSHOT.jar:/app/app.jar
     command: java -jar /app/app.jar

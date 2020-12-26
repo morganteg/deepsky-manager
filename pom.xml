@@ -220,9 +220,6 @@
 							<execution>
 								<id>e2e-tests</id>
 								<configuration>
-									<!--									<excludes>-->
-									<!--										<exclude>**/*ITTest.java</exclude>-->
-									<!--									</excludes>-->
 									<includes>
 										<include>**/*E2E.java</include>
 									</includes>

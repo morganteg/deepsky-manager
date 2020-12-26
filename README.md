@@ -1,8 +1,8 @@
 # deepsky-manager
 DeepSky objects manager application for Advanced Techniques and Tools for Software Development exam, University of Florence, Cyber-Physical Systems of Systems course.
 
-## Run docker container
-mvn docker:start -Pdocker
+## Package the app without executing unit tests or integration tests
+mvn clean package -DskipTests,skipITs
 
 ## Run Unit tests
 mvn clean test
@@ -12,14 +12,24 @@ mvn clean test -Pmutation-tests
 
 ## Run Integration tests
 mvn clean verify -Pintegration-tests
-mvn verify -Pdocker
+
+### Run Integration tests starting Docker container for MySql
+mvn clean verify -Pdocker
+
+# Run Integration tests on a specific test class
 mvn -Dit.test=DeepSkyObjectWebControllerIT verify -Pdocker
 
 ## Run E2E tests
 mvn clean test -Pe2e-tests
 
 # Docker
-docker-compose up --remove-orphans
+
+## Run docker container pom.xml configuration (doesn't leave the container running)
+mvn docker:start -Pdocker
+
+## Run docker container using docker-compose.yml configuration
+mvn clean package -Pdocker,e2e-tests
+docker-compose up && docker-compose rm -fsv
 
 # Coverage
 [![Coverage Status](https://coveralls.io/repos/github/morganteg/deepsky-manager/badge.svg?branch=master)](https://coveralls.io/github/morganteg/deepsky-manager?branch=master)
