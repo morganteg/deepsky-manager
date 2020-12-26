@@ -13,7 +13,6 @@ cache:
 matrix:
   include:
     - jdk: openjdk8
-#      env: ADDITIONAL_MAVEN_ARGS="-Pjacoco coveralls:report sonar:sonar"
+    - jdk: openjdk11
 script:
   - mvn clean verify -Pjacoco coveralls:report sonar:sonar
-  - mvn clean verify -Pdocker
