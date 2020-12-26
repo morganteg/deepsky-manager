@@ -34,18 +34,6 @@
 			<id>jacoco</id>
 			<build>
 				<plugins>
-<!--					<plugin>-->
-<!--						<groupId>org.apache.maven.plugins</groupId>-->
-<!--						<artifactId>maven-failsafe-plugin</artifactId>-->
-<!--						<executions>-->
-<!--							<execution>-->
-<!--								<goals>-->
-<!--									<goal>integration-test</goal>-->
-<!--									<goal>verify</goal>-->
-<!--								</goals>-->
-<!--							</execution>-->
-<!--						</executions>-->
-<!--					</plugin>-->
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
@@ -73,7 +61,6 @@
 						<version>1.6.1</version>
 						<configuration>
 							<targetClasses>
-								<!-- excludes testing.example.bank.app.Main -->
 								<param>it.attsd.deepsky.*</param>
 							</targetClasses>
 							<targetTests>
@@ -110,25 +97,6 @@
 							<autoCreateCustomNetworks>true</autoCreateCustomNetworks>
 							<showLogs>true</showLogs>
 							<images>
-<!--								<image>-->
-<!--									<name>deepsky-manager-app</name>-->
-<!--									<build>-->
-<!--										<dockerFileDir>${project.basedir}</dockerFileDir>-->
-<!--									</build>-->
-<!--									<run>-->
-<!--										<network>-->
-<!--											<mode>custom</mode>-->
-<!--											<name>my-network</name>-->
-<!--										</network>-->
-<!--										<wait>-->
-<!--											<log>Started DeepskyAppApplication</log>-->
-<!--											<time>40000</time>-->
-<!--										</wait>-->
-<!--										<dependsOn>-->
-<!--											<container>mysql</container>-->
-<!--										</dependsOn>-->
-<!--									</run>-->
-<!--								</image>-->
 								<image>
 									<name>mysql:8.0</name>
 									<alias>mysql-service</alias>
@@ -151,28 +119,6 @@
 										</wait>
 									</run>
 								</image>
-
-<!--								<image>-->
-<!--									<name>deepsky-manager-image</name>-->
-<!--									<alias>full-app</alias>-->
-<!--									<external>-->
-<!--										<type>compose</type>-->
-<!--										<basedir>${project.basedir}</basedir>-->
-<!--									</external>-->
-<!--									<run>-->
-<!--										<network>-->
-<!--											<mode>custom</mode>-->
-<!--											<name>dsm-network</name>-->
-<!--										</network>-->
-<!--&lt;!&ndash;										<ports>&ndash;&gt;-->
-<!--&lt;!&ndash;											<port>8888:8080</port>&ndash;&gt;-->
-<!--&lt;!&ndash;											<port>3316:3306</port>&ndash;&gt;-->
-<!--&lt;!&ndash;										</ports>&ndash;&gt;-->
-<!--										<wait>-->
-<!--											<time>1000000</time>-->
-<!--										</wait>-->
-<!--									</run>-->
-<!--								</image>-->
 							</images>
 						</configuration>
 						<executions>
@@ -202,47 +148,6 @@
 				</plugins>
 			</build>
 		</profile>
-
-<!--		<profile>-->
-<!--			<id>integration-tests</id>-->
-<!--			<activation>-->
-<!--				<activeByDefault>false</activeByDefault>-->
-<!--			</activation>-->
-<!--			<build>-->
-<!--				<plugins>-->
-<!--					<plugin>-->
-<!--						<groupId>org.codehaus.mojo</groupId>-->
-<!--						<artifactId>build-helper-maven-plugin</artifactId>-->
-<!--						<executions>-->
-<!--							<execution>-->
-<!--								<id>add-test-source</id>-->
-<!--								<phase>generate-test-sources</phase>-->
-<!--								<goals>-->
-<!--									<goal>add-test-source</goal>-->
-<!--								</goals>-->
-<!--								<configuration>-->
-<!--									<sources>-->
-<!--										<source>src/it/java</source>-->
-<!--									</sources>-->
-<!--								</configuration>-->
-<!--							</execution>-->
-<!--						</executions>-->
-<!--					</plugin>-->
-<!--					<plugin>-->
-<!--						<groupId>org.apache.maven.plugins</groupId>-->
-<!--						<artifactId>maven-failsafe-plugin</artifactId>-->
-<!--						<executions>-->
-<!--							<execution>-->
-<!--								<goals>-->
-<!--									<goal>integration-test</goal>-->
-<!--									<goal>verify</goal>-->
-<!--								</goals>-->
-<!--							</execution>-->
-<!--						</executions>-->
-<!--					</plugin>-->
-<!--				</plugins>-->
-<!--			</build>-->
-<!--		</profile>-->
 
 		<profile>
 			<id>e2e-tests</id>
@@ -448,14 +353,10 @@
 	</dependencies>
 
 	<build>
-<!--		<sourceDirectory>src/main/java</sourceDirectory>-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-<!--				<configuration>-->
-<!--					<classifier>exec</classifier>-->
-<!--				</configuration>-->
 				<configuration>
 					<mainClass>it.attsd.deepsky.DeepskyAppApplication</mainClass>
 				</configuration>
@@ -515,14 +416,6 @@
 				</configuration>
 				<executions>
 					<execution>
-<!--						<id>default-it</id>-->
-<!--						<configuration>-->
-<!--&lt;!&ndash;							<skipTests>${skip.integration-tests}</skipTests>&ndash;&gt;-->
-<!--							<includes>-->
-<!--&lt;!&ndash;								<include>**/*ApplicationTests.java</include>&ndash;&gt;-->
-<!--								<include>**/*IT.java</include>-->
-<!--							</includes>-->
-<!--						</configuration>-->
 						<goals>
 							<goal>integration-test</goal>
 							<goal>verify</goal>
