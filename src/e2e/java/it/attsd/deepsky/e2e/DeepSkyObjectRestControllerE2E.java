@@ -1,7 +1,9 @@
 package it.attsd.deepsky.e2e;
 
+import io.restassured.RestAssured;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
@@ -10,9 +12,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class DeepSkyObjectRestControllerE2E {
-    private final String ORION = "orion";
+    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
 
+    private final String ORION = "orion";
     private final String M42 = "m42";
+
+    @Before
+    public void setup() {
+        RestAssured.port = port;
+    }
 
     @Test
     public void testCreateNewDeepSkyObjectWhenNotExists() throws JSONException {
