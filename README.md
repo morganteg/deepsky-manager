@@ -20,7 +20,7 @@ mvn clean verify -Pdocker
 mvn -Dit.test=DeepSkyObjectWebControllerIT verify -Pdocker
 
 ## Run E2E tests
-mvn clean test -Pe2e-tests
+mvn clean verify -Pe2e-tests
 
 # Docker
 
