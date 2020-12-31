@@ -1,5 +1,5 @@
-# deepsky-manager
-DeepSky objects manager application for Advanced Techniques and Tools for Software Development exam, University of Florence, Cyber-Physical Systems of Systems course.
+# Overview
+"DeepSky Manager" is an application developed for Advanced Techniques and Tools for Software Development exam, University of Florence, Cyber-Physical Systems of Systems course.
 
 ## Package the app without executing unit tests or integration tests
 mvn clean package -DskipTests,skipITs
