@@ -7,11 +7,11 @@ mvn clean package -DskipTests,skipITs
 ## Run Unit tests
 mvn clean test
 
+## Run Unit tests with Jacoco
+mvn clean verify -Pjacoco
+
 ## Run Mutation tests
 mvn clean test -Pmutation-tests
-
-## Run Integration tests
-mvn clean verify -Pintegration-tests
 
 ### Run Integration tests starting Docker container for MySql
 mvn clean verify -Pdocker
