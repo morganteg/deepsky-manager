@@ -70,7 +70,6 @@ public class DeepSkyObjectRestController {
 
 	private DeepSkyObject dtoToDeepSkyObject(DeepSkyObjectDto deepSkyObjectDto) {
 		return new DeepSkyObject(
-				deepSkyObjectDto.getId(),
 				deepSkyObjectDto.getName(),
 				dtoToConstellation(deepSkyObjectDto.getConstellation())
 		);

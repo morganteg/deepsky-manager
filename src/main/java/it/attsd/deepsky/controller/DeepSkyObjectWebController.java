@@ -64,9 +64,9 @@ public class DeepSkyObjectWebController {
             } else {
                 deepSkyObjectService.updateById(id, deepSkyObject);
             }
-        }
 
-        return "redirect:/deepskyobject";
+            return "redirect:/deepskyobject";
+        }
     }
 
     @GetMapping(value = "/deepskyobject/modify/{id}")
