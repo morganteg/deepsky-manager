@@ -1,4 +1,4 @@
-package it.attsd.deepsky;
+package it.attsd.deepsky.unit;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

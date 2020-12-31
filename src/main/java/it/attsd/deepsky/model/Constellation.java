@@ -42,10 +42,6 @@ public class Constellation {
 		return this.name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, name);

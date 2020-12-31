@@ -1,17 +1,9 @@
-package it.attsd.deepsky.controller;
+package it.attsd.deepsky.unit.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Arrays;
-
+import it.attsd.deepsky.controller.ConstellationRestController;
+import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.service.ConstellationService;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.google.gson.Gson;
+import java.util.Arrays;
 
-import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.service.ConstellationService;
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = ConstellationRestController.class)
@@ -37,8 +31,6 @@ public class ConstellationRestControllerTest {
 
     private final String ORION = "orion";
     private final String SCORPIUS = "scorpius";
-
-    private Gson gson = new Gson();
 
     @Test
     public void testAllConstellationsEmpty() throws Exception {
@@ -103,7 +95,9 @@ public class ConstellationRestControllerTest {
 
         when(constellationService.save(new Constellation(ORION))).thenReturn(orionSaved);
 
-        this.mvc.perform(post("/api/constellation").content(gson.toJson(new Constellation(ORION)))
+        JSONObject body = new JSONObject();
+        body.put("name", ORION);
+        this.mvc.perform(post("/api/constellation").content(body.toString())
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("id", is(1))).andExpect(jsonPath("name", is(ORION)));
     }
@@ -115,7 +109,9 @@ public class ConstellationRestControllerTest {
 
         when(constellationService.updateById(1L, new Constellation(orionNameUpdated))).thenReturn(orionUpdated);
 
-        this.mvc.perform(put("/api/constellation/1").content(gson.toJson(new Constellation(orionNameUpdated)))
+        JSONObject body = new JSONObject();
+        body.put("name", orionNameUpdated);
+        this.mvc.perform(put("/api/constellation/1").content(body.toString())
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("id", is(1))).andExpect(jsonPath("name", is(orionNameUpdated)));
 

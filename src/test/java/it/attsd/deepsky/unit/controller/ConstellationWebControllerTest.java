@@ -1,5 +1,6 @@
-package it.attsd.deepsky.controller;
+package it.attsd.deepsky.unit.controller;
 
+import it.attsd.deepsky.controller.ConstellationWebController;
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.Constellation;

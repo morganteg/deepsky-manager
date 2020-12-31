@@ -1,4 +1,4 @@
-package it.attsd.deepsky;
+package it.attsd.deepsky.it;
 
 import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
 import it.attsd.deepsky.model.Constellation;

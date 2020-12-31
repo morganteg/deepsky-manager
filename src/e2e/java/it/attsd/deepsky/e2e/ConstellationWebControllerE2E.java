@@ -1,4 +1,4 @@
-package it.attsd.deepsky;
+package it.attsd.deepsky.e2e;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.json.JSONException;

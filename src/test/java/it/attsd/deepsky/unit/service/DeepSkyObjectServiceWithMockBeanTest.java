@@ -1,4 +1,4 @@
-package it.attsd.deepsky.service;
+package it.attsd.deepsky.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import it.attsd.deepsky.exceptions.DeepSkyObjectAlreadyExistsException;
+import it.attsd.deepsky.service.DeepSkyObjectService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;

@@ -1,4 +1,4 @@
-package it.attsd.deepsky.service;
+package it.attsd.deepsky.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -14,6 +14,7 @@ import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
 import it.attsd.deepsky.model.DeepSkyObject;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
+import it.attsd.deepsky.service.ConstellationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -147,6 +148,17 @@ public class ConstellationServiceWithMockBeanTest {
 		InOrder inOrder = inOrder(constellationRepository);
 		inOrder.verify(constellationRepository).findById(orionSaved.getId());
 		inOrder.verify(constellationRepository).deleteById(orionSaved.getId());
+	}
+
+	@Test
+	public void testDeleteConstellationWhenNotExists() throws ConstellationIsStillUsedException {
+		when(constellationRepository.findById(orionSaved.getId())).thenReturn(Optional.empty());
+
+		constellationService.deleteById(orionSaved.getId());
+
+		InOrder inOrder = inOrder(constellationRepository);
+		inOrder.verify(constellationRepository).findById(orionSaved.getId());
+		inOrder.verify(constellationRepository, times(0)).deleteById(orionSaved.getId());
 	}
 
 	@Test

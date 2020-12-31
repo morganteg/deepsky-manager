@@ -39,9 +39,11 @@ public class DeepSkyObjectWebController {
     }
 
     @PostMapping("/deepskyobject")
-    public String saveDeepSkyObject(@ModelAttribute("deepskyobject") DeepSkyObjectWebDto deepSkyObjectDto, Model model) {
-        DeepSkyObject deepSkyObject = dtoToDeepSkyObject(deepSkyObjectDto);
-        if (StringUtils.isEmpty(deepSkyObject.getName()) || deepSkyObject.getConstellation() == null) {
+    public String saveDeepSkyObject(@ModelAttribute("deepskyobject") DeepSkyObjectWebDto deepSkyObjectWebDto, Model model) {
+        DeepSkyObject deepSkyObject = dtoToDeepSkyObject(deepSkyObjectWebDto);
+        if (StringUtils.isEmpty(deepSkyObjectWebDto.getName())
+                || deepSkyObjectWebDto.getConstellation() == null
+                || deepSkyObjectWebDto.getConstellation() == 0) {
             model.addAttribute(ATTRIBUTE_ERROR, "Please, fill all mandatory attributes");
             model.addAttribute(ATTRIBUTE_DEEPSKYOBJECT, deepSkyObject);
             model.addAttribute(ATTRIBUTE_DEEPSKYOBJECTS, deepSkyObjectService.findAll());
@@ -64,9 +66,9 @@ public class DeepSkyObjectWebController {
             } else {
                 deepSkyObjectService.updateById(id, deepSkyObject);
             }
-        }
 
-        return "redirect:/deepskyobject";
+            return "redirect:/deepskyobject";
+        }
     }
 
     @GetMapping(value = "/deepskyobject/modify/{id}")

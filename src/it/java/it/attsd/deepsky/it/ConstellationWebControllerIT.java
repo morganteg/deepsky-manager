@@ -1,4 +1,4 @@
-package it.attsd.deepsky;
+package it.attsd.deepsky.it;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.repository.ConstellationRepository;

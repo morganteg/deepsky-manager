@@ -43,16 +43,8 @@ public class DeepSkyObject {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public Constellation getConstellation() {
 		return constellation;
-	}
-
-	public void setConstellation(Constellation constellation) {
-		this.constellation = constellation;
 	}
 
 	@Override

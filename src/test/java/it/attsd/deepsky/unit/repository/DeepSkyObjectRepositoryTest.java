@@ -1,20 +1,19 @@
-package it.attsd.deepsky.repository;
+package it.attsd.deepsky.unit.repository;
 
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 @DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringRunner.class)
 public class DeepSkyObjectRepositoryTest {
 
@@ -25,6 +24,7 @@ public class DeepSkyObjectRepositoryTest {
     private TestEntityManager entityManager;
 
     private final String ORION = "orion";
+    private final String SCORPIUS = "scorpius";
     private final String M42 = "m42";
     private final String M43 = "m43";
 
@@ -48,9 +48,25 @@ public class DeepSkyObjectRepositoryTest {
     }
 
     @Test
-    public void testEqualsObjectsAreDifferent() {
+    public void testEqualsObjectsAreDifferentById() {
         DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
         DeepSkyObject dso2 = new DeepSkyObject(2L, M42, new Constellation(1L, ORION));
+
+        assertNotEquals(dso1, dso2);
+    }
+
+    @Test
+    public void testEqualsObjectsAreDifferentByName() {
+        DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+        DeepSkyObject dso2 = new DeepSkyObject(1L, M43, new Constellation(1L, ORION));
+
+        assertNotEquals(dso1, dso2);
+    }
+
+    @Test
+    public void testEqualsObjectsAreDifferentByConstellation() {
+        DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+        DeepSkyObject dso2 = new DeepSkyObject(1L, M42, new Constellation(2L, SCORPIUS));
 
         assertNotEquals(dso1, dso2);
     }

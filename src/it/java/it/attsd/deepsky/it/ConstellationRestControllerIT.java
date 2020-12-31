@@ -1,4 +1,4 @@
-package it.attsd.deepsky;
+package it.attsd.deepsky.it;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
