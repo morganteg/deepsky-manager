@@ -67,7 +67,7 @@ public class DeepSkyObjectWebControllerTest {
     }
 
     @Test
-    public void test_PostDeepSkyObjectWithoutId_ShouldSaveNewConstellation() throws Exception {
+    public void test_PostDeepSkyObjectWithoutId_ShouldSaveNewDeepSkyObject() throws Exception {
         DeepSkyObject m42 = new DeepSkyObject(M42, new Constellation(orion.getId(), null));
 
         mvc.perform(post(BASE_URL)
@@ -94,7 +94,7 @@ public class DeepSkyObjectWebControllerTest {
     }
 
     @Test
-    public void test_PostDeepSkyObjectWithoutIdAndName_ShouldNotSaveNewConstellation() throws Exception {
+    public void test_PostDeepSkyObjectWithoutIdAndName_ShouldNotSaveNewDeepSkyObject() throws Exception {
         when(constellationService.findAll()).thenReturn(constellations);
         when(deepSkyObjectService.findAll()).thenReturn(deepSkyObjects);
 
