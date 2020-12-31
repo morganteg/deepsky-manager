@@ -67,7 +67,7 @@ public class DeepSkyObjectWebControllerTest {
     }
 
     @Test
-    public void test_PostDeepSkyObjectWithoutId_ShouldSaveNewDeepSkyObject() throws Exception {
+    public void test_PostDeepSkyObjectWithoutId_ShouldSave() throws Exception {
         DeepSkyObject m42 = new DeepSkyObject(M42, new Constellation(orion.getId(), null));
 
         mvc.perform(post(BASE_URL)
@@ -76,6 +76,78 @@ public class DeepSkyObjectWebControllerTest {
                 .andExpect(view().name("redirect:/deepskyobject"));
 
         verify(deepSkyObjectService).save(m42);
+    }
+
+    @Test
+    public void test_PostDeepSkyObjectWithoutName_ShouldNotSave() throws Exception {
+        when(constellationService.findAll()).thenReturn(constellations);
+        when(deepSkyObjectService.findAll()).thenReturn(deepSkyObjects);
+
+        DeepSkyObject m42 = new DeepSkyObject(null, new Constellation(orion.getId(), null));
+
+        mvc.perform(post(BASE_URL)
+                .param("constellation", String.valueOf(orion.getId())))
+                .andExpect(model().attribute("error", Matchers.equalToIgnoringCase("Please, fill all mandatory attributes")))
+                .andExpect(model().attribute("deepSkyObject", m42))
+                .andExpect(model().attribute("deepSkyObjects", deepSkyObjects))
+                .andExpect(model().attribute("constellations", constellations))
+                .andExpect(view().name("deepSkyObject/deepSkyObject"));
+
+        verify(deepSkyObjectService, times(0)).save(m42);
+    }
+
+    @Test
+    public void test_PostDeepSkyObjectWithoutConstellation_ShouldNotSave() throws Exception {
+        when(constellationService.findAll()).thenReturn(constellations);
+        when(deepSkyObjectService.findAll()).thenReturn(deepSkyObjects);
+
+        DeepSkyObject m42 = new DeepSkyObject(M42, new Constellation());
+
+        mvc.perform(post(BASE_URL)
+                .param("name", M42))
+                .andExpect(model().attribute("error", Matchers.equalToIgnoringCase("Please, fill all mandatory attributes")))
+                .andExpect(model().attribute("deepSkyObject", m42))
+                .andExpect(model().attribute("deepSkyObjects", deepSkyObjects))
+                .andExpect(model().attribute("constellations", constellations))
+                .andExpect(view().name("deepSkyObject/deepSkyObject"));
+
+        verify(deepSkyObjectService, times(0)).save(m42);
+    }
+
+    @Test
+    public void test_PostDeepSkyObjectWithConstellationIdZero_ShouldNotSave() throws Exception {
+        when(constellationService.findAll()).thenReturn(constellations);
+        when(deepSkyObjectService.findAll()).thenReturn(deepSkyObjects);
+
+        DeepSkyObject m42 = new DeepSkyObject(M42, new Constellation(0L, null));
+
+        mvc.perform(post(BASE_URL)
+                .param("constellation", "0")
+                .param("name", M42))
+                .andExpect(model().attribute("error", Matchers.equalToIgnoringCase("Please, fill all mandatory attributes")))
+                .andExpect(model().attribute("deepSkyObject", m42))
+                .andExpect(model().attribute("deepSkyObjects", deepSkyObjects))
+                .andExpect(model().attribute("constellations", constellations))
+                .andExpect(view().name("deepSkyObject/deepSkyObject"));
+
+        verify(deepSkyObjectService, times(0)).save(m42);
+    }
+
+    @Test
+    public void test_PostDeepSkyObjectWithoutNameAndConstellation_ShouldNotSave() throws Exception {
+        when(constellationService.findAll()).thenReturn(constellations);
+        when(deepSkyObjectService.findAll()).thenReturn(deepSkyObjects);
+
+        DeepSkyObject m42 = new DeepSkyObject(null, new Constellation());
+
+        mvc.perform(post(BASE_URL))
+                .andExpect(model().attribute("error", Matchers.equalToIgnoringCase("Please, fill all mandatory attributes")))
+                .andExpect(model().attribute("deepSkyObject", m42))
+                .andExpect(model().attribute("deepSkyObjects", deepSkyObjects))
+                .andExpect(model().attribute("constellations", constellations))
+                .andExpect(view().name("deepSkyObject/deepSkyObject"));
+
+        verify(deepSkyObjectService, times(0)).save(m42);
     }
 
     @Test

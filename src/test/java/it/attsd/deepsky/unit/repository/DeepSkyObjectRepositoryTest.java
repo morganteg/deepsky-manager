@@ -24,7 +24,9 @@ public class DeepSkyObjectRepositoryTest {
     private TestEntityManager entityManager;
 
     private final String ORION = "orion";
+    private final String SCORPIUS = "scorpius";
     private final String M42 = "m42";
+    private final String M43 = "m43";
 
     @Test
     public void testJpaMapping() {
@@ -46,9 +48,25 @@ public class DeepSkyObjectRepositoryTest {
     }
 
     @Test
-    public void testEqualsObjectsAreDifferent() {
+    public void testEqualsObjectsAreDifferentById() {
         DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
         DeepSkyObject dso2 = new DeepSkyObject(2L, M42, new Constellation(1L, ORION));
+
+        assertNotEquals(dso1, dso2);
+    }
+
+    @Test
+    public void testEqualsObjectsAreDifferentByName() {
+        DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+        DeepSkyObject dso2 = new DeepSkyObject(1L, M43, new Constellation(1L, ORION));
+
+        assertNotEquals(dso1, dso2);
+    }
+
+    @Test
+    public void testEqualsObjectsAreDifferentByConstellation() {
+        DeepSkyObject dso1 = new DeepSkyObject(1L, M42, new Constellation(1L, ORION));
+        DeepSkyObject dso2 = new DeepSkyObject(1L, M42, new Constellation(2L, SCORPIUS));
 
         assertNotEquals(dso1, dso2);
     }

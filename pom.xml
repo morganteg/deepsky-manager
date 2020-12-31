@@ -32,6 +32,9 @@
 
 		<profile>
 			<id>jacoco</id>
+			<properties>
+				<skip.integration-tests>true</skip.integration-tests>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>

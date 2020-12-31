@@ -102,13 +102,17 @@ public class DeepSkyObjectWebControllerHtmlTest {
 		Constellation orion = new Constellation(1L, ORION);
 		DeepSkyObject m42 = new DeepSkyObject(1L, M42, orion);
 
+		when(constellationService.findAll()).thenReturn(Arrays.asList(
+				orion
+		));
 		when(deepSkyObjectService.findById(1L)).thenReturn(m42);
 
 		HtmlPage page = webClient.getPage("/deepskyobject/modify/1");
-		final HtmlForm constellationForm = page.getFormByName("deepSkyObjectForm");
+		final HtmlForm deepSkyObjectForm = page.getFormByName("deepSkyObjectForm");
 
-		constellationForm.getInputByValue(M42).setValueAttribute(M42 + " changed");
-		constellationForm.getButtonByName("submitButton").click();
+		deepSkyObjectForm.getInputByValue(M42).setValueAttribute(M42 + " changed");
+		deepSkyObjectForm.getSelectByName("constellation").setSelectedAttribute("1", true);
+		deepSkyObjectForm.getButtonByName("submitButton").click();
 
 		InOrder inOrder = inOrder(constellationService, deepSkyObjectService);
 		inOrder.verify(deepSkyObjectService).findAll();

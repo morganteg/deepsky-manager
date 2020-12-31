@@ -151,6 +151,17 @@ public class ConstellationServiceWithMockBeanTest {
 	}
 
 	@Test
+	public void testDeleteConstellationWhenNotExists() throws ConstellationIsStillUsedException {
+		when(constellationRepository.findById(orionSaved.getId())).thenReturn(Optional.empty());
+
+		constellationService.deleteById(orionSaved.getId());
+
+		InOrder inOrder = inOrder(constellationRepository);
+		inOrder.verify(constellationRepository).findById(orionSaved.getId());
+		inOrder.verify(constellationRepository, times(0)).deleteById(orionSaved.getId());
+	}
+
+	@Test
 	public void testDeleteConstellationWhenExistsAndUsed() {
 		when(constellationRepository.findById(orionSaved.getId())).thenReturn(Optional.of(orionSaved));
 		when(deepSkyObjectRepository.findByConstellation(orionSaved)).thenReturn(Arrays.asList(deepSkyObjectSaved));
