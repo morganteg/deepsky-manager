@@ -1,6 +1,5 @@
 package it.attsd.deepsky.unit.controller;
 
-import com.google.gson.Gson;
 import it.attsd.deepsky.controller.DeepSkyObjectRestController;
 import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
