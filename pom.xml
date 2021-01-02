@@ -26,6 +26,7 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.exclusions>
             **/model/*.*,
+            **/dto/*.*,
             **/SchoolSwingApp.*
         </sonar.coverage.exclusions>
         <skip.unit-tests>false</skip.unit-tests>
@@ -273,6 +274,7 @@
                             <excludes>
                                 <exclude>**/*Application.*</exclude>
                                 <exclude>**/model/*</exclude>
+                                <exclude>**/dto/*</exclude>
                             </excludes>
                         </configuration>
                         <executions>
