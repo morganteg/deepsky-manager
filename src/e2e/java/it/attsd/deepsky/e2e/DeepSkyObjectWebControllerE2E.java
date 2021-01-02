@@ -1,8 +1,8 @@
 package it.attsd.deepsky.e2e;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.model.DeepSkyObject;
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -16,8 +16,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.http.MediaType;
 
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DeepSkyObjectWebControllerE2E {
     private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));

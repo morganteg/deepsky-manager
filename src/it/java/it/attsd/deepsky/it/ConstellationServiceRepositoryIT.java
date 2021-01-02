@@ -65,8 +65,8 @@ public class ConstellationServiceRepositoryIT {
 	}
 
 	@Test
-	public void testServiceCannotSaveIntoRepository() throws ConstellationAlreadyExistsException {
-		Constellation orionSaved = constellationRepository.save(new Constellation(ORION));
+	public void testServiceCannotSaveIntoRepository() {
+		constellationRepository.save(new Constellation(ORION));
 
 		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(new Constellation(ORION)));
 	}
