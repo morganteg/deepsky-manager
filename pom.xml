@@ -24,6 +24,10 @@
         <sonar.projectKey>morganteg_deepsky-manager</sonar.projectKey>
         <sonar.organization>morganteg</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.coverage.exclusions>
+            **/model/*.*,
+            **/SchoolSwingApp.*
+        </sonar.coverage.exclusions>
         <skip.unit-tests>false</skip.unit-tests>
         <skip.integration-tests>false</skip.integration-tests>
     </properties>
@@ -244,6 +248,12 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.7.0.1746</version>
             </plugin>
 
         </plugins>

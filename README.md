@@ -4,37 +4,46 @@
 ## Package the app without executing unit tests or integration tests
 mvn clean package -DskipTests,skipITs
 
-## Run Unit tests
+## Unit tests
+
+### Run Unit tests
 mvn clean test
 
-## Run Unit tests with Jacoco
+### Run Unit tests with Jacoco
 mvn clean verify -Pjacoco
 
-## Run Mutation tests
+### Run Unit tests with Sonar
+mvn clean test -Pjacoco sonar:sonar
+
+### Run Mutation tests
 mvn clean test -Pmutation-tests
+
+## Integration tests
 
 ### Run Integration tests starting Docker container for MySql
 mvn clean verify -Pdocker
 
-# Run Integration tests on a specific test class
+### Run Integration tests on a specific test class
 mvn -Dit.test=DeepSkyObjectWebControllerIT verify -Pdocker
+
+## E2E tests
 
 ## Run E2E tests
 mvn clean verify -Pe2e-tests
 
-# Docker
+## Docker
 
-## Run docker container pom.xml configuration (doesn't leave the container running)
+### Run docker container pom.xml configuration (doesn't leave the container running)
 mvn docker:start -Pdocker
 
-## Run docker container using docker-compose.yml configuration
+### Run docker container using docker-compose.yml configuration
 mvn clean package -Pdocker,e2e-tests
 docker-compose up && docker-compose rm -fsv
 
-# Coverage
+## Coverage
 [![Coverage Status](https://coveralls.io/repos/github/morganteg/deepsky-manager/badge.svg?branch=master)](https://coveralls.io/github/morganteg/deepsky-manager?branch=master)
 
-# SonarCloud
+## SonarCloud
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=morganteg_deepsky-manager&metric=bugs)](https://sonarcloud.io/dashboard?id=morganteg_deepsky-manager)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=morganteg_deepsky-manager&metric=code_smells)](https://sonarcloud.io/dashboard?id=morganteg_deepsky-manager)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=morganteg_deepsky-manager&metric=coverage)](https://sonarcloud.io/dashboard?id=morganteg_deepsky-manager)
