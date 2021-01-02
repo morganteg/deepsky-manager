@@ -208,7 +208,6 @@
                         <configuration>
                             <skipTests>${skip.integration-tests}</skipTests>
                             <includes>
-                                <include>**/*ApplicationTest.java</include>
                                 <include>**/*IT.java</include>
                             </includes>
                         </configuration>
