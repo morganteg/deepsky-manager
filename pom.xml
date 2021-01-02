@@ -27,7 +27,7 @@
         <sonar.coverage.exclusions>
             **/model/*.*,
             **/dto/*.*,
-            **/SchoolSwingApp.*
+            **/DeepskyAppApplication.*
         </sonar.coverage.exclusions>
         <skip.unit-tests>false</skip.unit-tests>
         <skip.integration-tests>false</skip.integration-tests>
