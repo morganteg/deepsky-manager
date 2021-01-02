@@ -33,6 +33,13 @@ public class ConstellationRepositoryTest {
     }
 
     @Test
+    public void testConstructor() {
+        Constellation orion = new Constellation(1L, ORION);
+
+        assertThat(orion.getId()).isEqualTo(1L);
+    }
+
+    @Test
     public void testEqualsObjectsAreEquals() {
         Constellation orion1 = new Constellation(1L, ORION);
         Constellation orion2 = new Constellation(1L, ORION);
