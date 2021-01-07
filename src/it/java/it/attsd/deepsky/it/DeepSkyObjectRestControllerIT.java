@@ -1,12 +1,15 @@
 package it.attsd.deepsky.it;
 
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import it.attsd.deepsky.dto.ConstellationDto;
 import it.attsd.deepsky.dto.DeepSkyObjectDto;
+import it.attsd.deepsky.model.Constellation;
+import it.attsd.deepsky.model.DeepSkyObject;
+import it.attsd.deepsky.repository.ConstellationRepository;
+import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +17,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.model.DeepSkyObject;
-import it.attsd.deepsky.repository.ConstellationRepository;
-import it.attsd.deepsky.repository.DeepSkyObjectRepository;
+import org.testcontainers.containers.MySQLContainer;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class DeepSkyObjectRestControllerIT {
+    @ClassRule
+    public static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
+            .withExposedPorts(3316);
+
     String ORION = "orion";
 
     String M42 = "m42";
@@ -42,6 +49,15 @@ public class DeepSkyObjectRestControllerIT {
 
     @LocalServerPort
     private int port;
+
+    @DynamicPropertySource
+    static void databaseProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
+        registry.add("spring.jpa.database-platform", () -> "org.hibernate.dialect.MySQL8Dialect");
+        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", mySQLContainer::getUsername);
+        registry.add("spring.datasource.password", mySQLContainer::getPassword);
+    }
 
     @Before
     public void setup() {

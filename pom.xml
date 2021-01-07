@@ -435,10 +435,10 @@
             <properties>
                 <skip.unit-tests>true</skip.unit-tests>
                 <skip.integration-tests>true</skip.integration-tests>
-                <database.host>mysql-service</database.host>
-                <database.username>root</database.username>
-                <database.password>root</database.password>
-                <database.port>3306</database.port>
+<!--                <database.host>mysql-service</database.host>-->
+<!--                <database.username>root</database.username>-->
+<!--                <database.password>root</database.password>-->
+<!--                <database.port>3306</database.port>-->
             </properties>
             <build>
                 <plugins>

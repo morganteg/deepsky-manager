@@ -1,22 +1,21 @@
 package it.attsd.deepsky.e2e;
 
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MySQLContainer;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeepSkyObjectWebControllerE2E {
     private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
@@ -26,6 +25,19 @@ public class DeepSkyObjectWebControllerE2E {
     private final String ORION = "orion";
 
     String M42 = "m42";
+
+    @ClassRule
+    public static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
+            .withExposedPorts(3316);
+
+    @DynamicPropertySource
+    static void databaseProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
+        registry.add("spring.jpa.database-platform", () -> "org.hibernate.dialect.MySQL8Dialect");
+        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", mySQLContainer::getUsername);
+        registry.add("spring.datasource.password", mySQLContainer::getPassword);
+    }
 
     @BeforeClass
     public static void setupClass() {

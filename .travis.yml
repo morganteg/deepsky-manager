@@ -14,4 +14,6 @@ matrix:
   include:
     - jdk: openjdk8
 script:
-  - mvn clean verify -Pjacoco coveralls:report sonar:sonar
+  - mvn clean verify -Pjacoco
+  - mvn clean verify -Pe2e-tests
+  - mvn coveralls:report sonar:sonar
