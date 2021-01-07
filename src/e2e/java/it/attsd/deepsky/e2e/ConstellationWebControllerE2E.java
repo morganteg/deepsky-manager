@@ -3,24 +3,22 @@ package it.attsd.deepsky.e2e;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MySQLContainer;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConstellationWebControllerE2E {
-
-
     private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
-    private static String baseUrl = "http://localhost:" + port;
+    private static String baseUrl;
     private WebDriver driver;
 
     private final String ORION = "orion";
@@ -45,6 +43,7 @@ public class ConstellationWebControllerE2E {
 
     @Before
     public void setup() {
+//        System.out.println("mySQLContainer.getJdbcUrl: " + mySQLContainer.getJdbcUrl());
         baseUrl = "http://localhost:" + port;
         driver = new ChromeDriver();
     }

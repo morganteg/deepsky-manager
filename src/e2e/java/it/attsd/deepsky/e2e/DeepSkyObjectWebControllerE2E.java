@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeepSkyObjectWebControllerE2E {
     private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
-    private static String baseUrl = "http://localhost:" + port;
+    private static String baseUrl;
     private WebDriver driver;
 
     private final String ORION = "orion";
