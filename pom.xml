@@ -435,10 +435,10 @@
             <properties>
                 <skip.unit-tests>true</skip.unit-tests>
                 <skip.integration-tests>true</skip.integration-tests>
-<!--                <database.host>mysql-service</database.host>-->
+                <database.host>mysql-service</database.host>
 <!--                <database.username>root</database.username>-->
 <!--                <database.password>root</database.password>-->
-<!--                <database.port>3306</database.port>-->
+                <database.port>3316</database.port>
             </properties>
             <build>
                 <plugins>
@@ -460,62 +460,62 @@
                             </execution>
                         </executions>
                     </plugin>
-<!--                    <plugin>-->
-<!--                        <groupId>io.fabric8</groupId>-->
-<!--                        <artifactId>docker-maven-plugin</artifactId>-->
-<!--                        <version>0.27.2</version>-->
-<!--                        <configuration>-->
-<!--                            <autoCreateCustomNetworks>true</autoCreateCustomNetworks>-->
-<!--                            <showLogs>true</showLogs>-->
-<!--                            <images>-->
-<!--                                <image>-->
-<!--                                    <name>mysql:8.0</name>-->
-<!--                                    <alias>mysql-service</alias>-->
-<!--                                    <run>-->
-<!--                                        <env>-->
-<!--                                            <MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>-->
-<!--                                            <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>-->
-<!--                                        </env>-->
-<!--                                        <network>-->
-<!--                                            <mode>custom</mode>-->
-<!--                                            <name>dsm-network</name>-->
-<!--                                            <alias>mysql</alias>-->
-<!--                                        </network>-->
-<!--                                        <ports>-->
-<!--                                            <port>3316:3306</port>-->
-<!--                                        </ports>-->
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.27.2</version>
+                        <configuration>
+                            <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
+                            <showLogs>true</showLogs>
+                            <images>
+                                <image>
+                                    <name>mysql:8.0</name>
+                                    <alias>mysql-service</alias>
+                                    <run>
+                                        <env>
+                                            <MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>
+                                            <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
+                                        </env>
+                                        <network>
+                                            <mode>custom</mode>
+                                            <name>dsm-network</name>
+                                            <alias>mysql</alias>
+                                        </network>
+                                        <ports>
+                                            <port>3316:3306</port>
+                                        </ports>
 <!--                                        <wait>-->
 <!--                                            <log>ready for connections</log>-->
 <!--                                            <time>40000</time>-->
 <!--                                        </wait>-->
-<!--                                    </run>-->
-<!--                                </image>-->
-<!--                            </images>-->
-<!--                        </configuration>-->
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <id>docker:build</id>-->
-<!--                                <phase>package</phase>-->
-<!--                                <goals>-->
-<!--                                    <goal>build</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                            <execution>-->
-<!--                                <id>docker:start</id>-->
-<!--                                <phase>pre-integration-test</phase>-->
-<!--                                <goals>-->
-<!--                                    <goal>start</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                            <execution>-->
-<!--                                <id>docker:stop</id>-->
-<!--                                <phase>post-integration-test</phase>-->
-<!--                                <goals>-->
-<!--                                    <goal>stop</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
-<!--                    </plugin>-->
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>docker:build</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>docker:start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>docker:stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
