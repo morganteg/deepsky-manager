@@ -17,11 +17,26 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConstellationWebControllerE2E {
+
+
     private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
     private static String baseUrl = "http://localhost:" + port;
     private WebDriver driver;
 
     private final String ORION = "orion";
+
+//    @ClassRule
+//    public static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
+//            .withExposedPorts(3316);
+//
+//    @DynamicPropertySource
+//    static void databaseProperties(DynamicPropertyRegistry registry) {
+//        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
+//        registry.add("spring.jpa.database-platform", () -> "org.hibernate.dialect.MySQL8Dialect");
+//        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
+//        registry.add("spring.datasource.username", mySQLContainer::getUsername);
+//        registry.add("spring.datasource.password", mySQLContainer::getPassword);
+//    }
 
     @BeforeClass
     public static void setupClass() {
