@@ -147,7 +147,7 @@ public class ConstellationWebControllerE2E {
         body.put("name", name);
 
         return given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
-                .post("/api/constellation")
+                .post(baseUrl + "/api/constellation")
                 .then()
                 .statusCode(200)
                 .extract().path("id");
