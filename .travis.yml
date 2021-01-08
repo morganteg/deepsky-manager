@@ -3,9 +3,13 @@ install: true
 services:
   - docker
 addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
   sonarcloud:
     organization: morganteg
-  chrome: stable
 cache:
   directories:
     - $HOME/.m2
