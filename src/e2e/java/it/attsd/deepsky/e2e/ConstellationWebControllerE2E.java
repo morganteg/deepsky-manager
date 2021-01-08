@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -21,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -141,7 +143,9 @@ public class ConstellationWebControllerE2E {
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
         driver.findElement(By.cssSelector("a[href*='/constellation/delete/" + constellationId.intValue())).click();
 
-        assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(name);
+//        assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(name);
+        By byConstellations = By.id("constellations");
+        assertThrows(NoSuchElementException.class, () -> driver.findElement(byConstellations));
     }
 
     private String generateConstellationName() {
