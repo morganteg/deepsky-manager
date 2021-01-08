@@ -1,22 +1,27 @@
 language: java
+
 install: true
+
 services:
+  - xvfb
   - docker
+
 addons:
   apt:
-    sources:
-      - google-chrome
     packages:
       - google-chrome-stable
   sonarcloud:
     organization: morganteg
+
 cache:
   directories:
     - $HOME/.m2
     - $HOME/.sonar/cache
+
 matrix:
   include:
     - jdk: openjdk8
+
 script:
   - mvn clean verify -Pjacoco
   - mvn verify -Pe2e-tests
