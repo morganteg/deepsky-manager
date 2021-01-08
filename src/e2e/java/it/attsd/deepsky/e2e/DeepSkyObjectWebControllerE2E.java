@@ -164,7 +164,7 @@ public class DeepSkyObjectWebControllerE2E {
         body.put("name", name);
 
         return given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
-                .post("/api/constellation")
+                .post(baseUrl + "/api/constellation")
                 .then()
                 .statusCode(200)
                 .extract().path("id");
@@ -182,7 +182,7 @@ public class DeepSkyObjectWebControllerE2E {
         return given().contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(deepSkyObjectBody.toString())
                 .when()
-                .post("/api/deepskyobject")
+                .post(baseUrl + "/api/deepskyobject")
                 .then()
                 .statusCode(200)
                 .extract().path("id");

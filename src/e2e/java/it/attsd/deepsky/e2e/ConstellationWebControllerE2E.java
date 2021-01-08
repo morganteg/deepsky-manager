@@ -12,6 +12,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
@@ -23,10 +25,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ConstellationWebControllerE2E {
+    Logger logger = LoggerFactory.getLogger(ConstellationWebControllerE2E.class);
+
     @LocalServerPort
     private int port;
 
-//    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
+    //    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
     private static String baseUrl;
     private WebDriver driver;
 
@@ -126,11 +130,13 @@ public class ConstellationWebControllerE2E {
 
     @Test
     public void testDeleteConstellation() throws JSONException {
+        logger.info("testDeleteConstellation");
         driver.get(baseUrl);
 
         // Create Constellation through REST
         String name = generateConstellationName();
         Integer constellationId = postConstellation(name);
+        logger.info("constellationId: " + constellationId);
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
         driver.findElement(By.cssSelector("a[href*='/constellation/delete/" + constellationId.intValue())).click();
