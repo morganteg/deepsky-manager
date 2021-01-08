@@ -7,11 +7,9 @@ services:
   - docker
 
 addons:
-  apt:
-    packages:
-      - google-chrome-stable
   sonarcloud:
     organization: morganteg
+  chrome: stable
 
 cache:
   directories:
