@@ -47,8 +47,8 @@ public class DeepSkyObjectWebControllerHtmlTest {
     public void testNoDeepSkyObjects() throws Exception {
         HtmlPage page = webClient.getPage("/deepskyobject");
 
-        HtmlDivision emptyMessage = page.getHtmlElementById("emptyMessage");
-        assertThat(emptyMessage.getTextContent().trim()).isEqualTo("No deep-sky objects");
+		HtmlTable deepSkyObjectsTable = page.getHtmlElementById("deepSkyObjects");
+		assertThat(deepSkyObjectsTable.getBodies().get(0).getTextContent().trim()).isEmpty();
     }
 
     @Test

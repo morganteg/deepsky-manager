@@ -1,6 +1,13 @@
 # Overview
 "DeepSky Manager" is an application developed for Advanced Techniques and Tools for Software Development exam, University of Florence, Cyber-Physical Systems of Systems course.
 
+### Run the application
+```
+docker build -t dsm-database .
+docker run --rm -p 3316:3306 dsm-database
+```
+Run DeepskyAppApplication.java class
+
 ## Package the app without executing unit tests or integration tests
 mvn clean package -DskipTests,skipITs
 

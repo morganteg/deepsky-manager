@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.4.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.example</groupId>
     <artifactId>deepsky-manager</artifactId>
@@ -20,7 +20,9 @@
         <database.host>localhost</database.host>
         <database.username>root</database.username>
         <database.password>root</database.password>
-        <database.port>3306</database.port>
+        <database.port>3316</database.port>
+        <database.ddlauto>update</database.ddlauto>
+        <database.platform>org.hibernate.dialect.MySQL8Dialect</database.platform>
         <sonar.projectKey>morganteg_deepsky-manager</sonar.projectKey>
         <sonar.organization>morganteg</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -138,6 +140,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>1.15.1</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -215,29 +224,6 @@
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                            <archive>
-                                <manifest>
-                                    <mainClass>it.attsd.deepsky.DeepskyAppApplication</mainClass>
-                                </manifest>
-                            </archive>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -345,76 +331,6 @@
         </profile>
 
         <profile>
-            <id>docker</id>
-            <properties>
-                <database.host>mysql-service</database.host>
-                <database.username>root</database.username>
-                <database.password>root</database.password>
-                <database.port>3306</database.port>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>io.fabric8</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.27.2</version>
-                        <configuration>
-                            <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
-                            <showLogs>true</showLogs>
-                            <images>
-                                <image>
-                                    <name>mysql:8.0</name>
-                                    <alias>mysql-service</alias>
-                                    <run>
-                                        <env>
-                                            <MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>
-                                            <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
-                                        </env>
-                                        <network>
-                                            <mode>custom</mode>
-                                            <name>dsm-network</name>
-                                            <alias>mysql</alias>
-                                        </network>
-                                        <ports>
-                                            <port>3316:3306</port>
-                                        </ports>
-                                        <wait>
-                                            <log>ready for connections</log>
-                                            <time>40000</time>
-                                        </wait>
-                                    </run>
-                                </image>
-                            </images>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>docker:build</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>docker:start</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>docker:stop</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
             <id>e2e-tests</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -422,6 +338,8 @@
             <properties>
                 <skip.unit-tests>true</skip.unit-tests>
                 <skip.integration-tests>true</skip.integration-tests>
+                <database.ddlauto>create</database.ddlauto>
+                <docker.restartPolicy.name>always</docker.restartPolicy.name>
             </properties>
             <build>
                 <plugins>
@@ -444,22 +362,49 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.27.2</version>
+                        <configuration>
+                            <showLogs>true</showLogs>
+                            <images>
+                                <image>
+                                    <name>dsm-database</name>
+                                    <build>
+                                        <dockerFileDir>${project.basedir}</dockerFileDir>
+                                    </build>
+                                    <run>
+                                        <ports>
+                                            <port>3316:3306</port>
+                                        </ports>
+                                        <wait>
+                                            <log>/usr/sbin/mysqld: ready for connections.</log>
+                                            <time>80000</time>
+                                        </wait>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
                         <executions>
                             <execution>
-                                <id>pre-integration-test</id>
+                                <id>docker:build</id>
+                                <phase>package</phase>
                                 <goals>
-                                    <goal>start</goal>
+                                    <goal>remove</goal>
+                                    <goal>build</goal>
                                 </goals>
-                                <configuration>
-                                    <arguments>
-                                        <argument>--server.port=${tomcat.http.port}</argument>
-                                    </arguments>
-                                </configuration>
                             </execution>
                             <execution>
-                                <id>post-integration-test</id>
+                                <id>docker:start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>docker:stop</id>
+                                <phase>post-integration-test</phase>
                                 <goals>
                                     <goal>stop</goal>
                                 </goals>
@@ -489,6 +434,7 @@
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>
