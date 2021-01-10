@@ -16,7 +16,9 @@
     <description>Deep sky application</description>
 
     <properties>
-        <java.version>8</java.version>
+<!--        <java.version>8</java.version>-->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <database.host>localhost</database.host>
         <database.username>root</database.username>
         <database.password>root</database.password>
@@ -339,7 +341,7 @@
                 <skip.unit-tests>true</skip.unit-tests>
                 <skip.integration-tests>true</skip.integration-tests>
                 <database.ddlauto>create</database.ddlauto>
-                <docker.restartPolicy.name>always</docker.restartPolicy.name>
+                <docker.cleanup>remove</docker.cleanup>
             </properties>
             <build>
                 <plugins>
