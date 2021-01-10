@@ -27,8 +27,6 @@ import static org.junit.Assert.assertThrows;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ConstellationWebControllerE2E {
-    Logger logger = LoggerFactory.getLogger(ConstellationWebControllerE2E.class);
-
     @LocalServerPort
     private int port;
 
@@ -58,7 +56,6 @@ public class ConstellationWebControllerE2E {
 
     @Before
     public void setup() {
-//        System.out.println("mySQLContainer.getJdbcUrl: " + mySQLContainer.getJdbcUrl());
         baseUrl = "http://localhost:" + port;
         driver = new ChromeDriver();
     }
@@ -91,11 +88,11 @@ public class ConstellationWebControllerE2E {
 
     @Test
     public void testCreateNewConstellationWhenAlreadyExists() throws JSONException {
-        driver.get(baseUrl);
-
         // Create Constellation through REST
         String name = generateConstellationName();
         postConstellation(name);
+
+        driver.get(baseUrl);
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
 
@@ -132,20 +129,17 @@ public class ConstellationWebControllerE2E {
 
     @Test
     public void testDeleteConstellation() throws JSONException {
-        logger.info("testDeleteConstellation");
-        driver.get(baseUrl);
-
         // Create Constellation through REST
         String name = generateConstellationName();
         Integer constellationId = postConstellation(name);
-        logger.info("constellationId: " + constellationId);
 
+        driver.get(baseUrl);
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
         driver.findElement(By.cssSelector("a[href*='/constellation/delete/" + constellationId.intValue())).click();
 
-//        assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(name);
-        By byConstellations = By.id("constellations");
-        assertThrows(NoSuchElementException.class, () -> driver.findElement(byConstellations));
+        assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(name);
+//        By byConstellations = By.id("constellations");
+//        assertThrows(NoSuchElementException.class, () -> driver.findElement(byConstellations));
     }
 
     private String generateConstellationName() {

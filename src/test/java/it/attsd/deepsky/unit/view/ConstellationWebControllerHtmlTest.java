@@ -5,6 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.gargoylesoftware.htmlunit.html.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlHeading1;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
 
 import it.attsd.deepsky.controller.ConstellationWebController;
 import it.attsd.deepsky.model.Constellation;
@@ -46,8 +42,8 @@ public class ConstellationWebControllerHtmlTest {
 	public void testNoConstellations() throws Exception {
 		HtmlPage page = webClient.getPage("/constellation");
 
-		HtmlDivision emptyMessage = page.getHtmlElementById("emptyMessage");
-		assertThat(emptyMessage.getTextContent().trim()).isEqualTo("No constellations");
+		HtmlTable constellationsTable = page.getHtmlElementById("constellations");
+		assertThat(constellationsTable.getBodies().get(0).getTextContent().trim()).isEmpty();
 	}
 
 	@Test

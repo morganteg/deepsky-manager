@@ -129,8 +129,9 @@ public class ConstellationWebControllerIT {
 
         driver.get(baseUrl + "/constellation/delete/" + testConstellation.getId());
 
-        By byConstellations = By.id("constellations");
-        assertThrows(NoSuchElementException.class, () -> driver.findElement(byConstellations));
+//        By byConstellations = By.id("constellations");
+//        assertThrows(NoSuchElementException.class, () -> driver.findElement(byConstellations));
+        assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(ORION);
     }
 
 }

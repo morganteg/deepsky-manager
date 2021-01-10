@@ -24,11 +24,7 @@
     </form>
 </div>
 
-<div id="emptyMessage" th:unless="${!deepSkyObjects.empty}">
-    No deep-sky objects
-</div>
-
-<table id="deepSkyObjects" class="table" th:unless="${deepSkyObjects.empty}">
+<table id="deepSkyObjects" class="table">
     <thead>
     <tr>
         <th style="width: 2%;">&nbsp;</th>
