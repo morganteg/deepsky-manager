@@ -7,18 +7,28 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DeepSkyObjectWebControllerE2E {
-    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
+    //    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
+    @LocalServerPort
+    private int port;
     private static String baseUrl;
     private WebDriver driver;
 
@@ -140,7 +150,9 @@ public class DeepSkyObjectWebControllerE2E {
         driver.findElement(By.cssSelector("a[href*='/deepskyobject")).click();
         driver.findElement(By.cssSelector("a[href*='/deepskyobject/delete/" + deepSkyObjectSavedId.intValue())).click();
 
-        assertThat(driver.findElement(By.id("deepSkyObjects")).getText()).doesNotContain(deepSkyObjectName);
+//        assertThat(driver.findElement(By.id("deepSkyObjects")).getText()).doesNotContain(deepSkyObjectName);
+        By byDeepSkyObjects = By.id("deepSkyObjects");
+        assertThrows(NoSuchElementException.class, () -> driver.findElement(byDeepSkyObjects));
     }
 
     private String generateRandomConstellationName() {
@@ -156,7 +168,7 @@ public class DeepSkyObjectWebControllerE2E {
         body.put("name", name);
 
         return given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
-                .post("/api/constellation")
+                .post(baseUrl + "/api/constellation")
                 .then()
                 .statusCode(200)
                 .extract().path("id");
@@ -174,7 +186,7 @@ public class DeepSkyObjectWebControllerE2E {
         return given().contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(deepSkyObjectBody.toString())
                 .when()
-                .post("/api/deepskyobject")
+                .post(baseUrl + "/api/deepskyobject")
                 .then()
                 .statusCode(200)
                 .extract().path("id");

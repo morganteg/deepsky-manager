@@ -3,21 +3,36 @@ package it.attsd.deepsky.e2e;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MySQLContainer;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ConstellationWebControllerE2E {
-    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
+    Logger logger = LoggerFactory.getLogger(ConstellationWebControllerE2E.class);
+
+    @LocalServerPort
+    private int port;
+
+    //    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
     private static String baseUrl;
     private WebDriver driver;
 
@@ -117,16 +132,20 @@ public class ConstellationWebControllerE2E {
 
     @Test
     public void testDeleteConstellation() throws JSONException {
+        logger.info("testDeleteConstellation");
         driver.get(baseUrl);
 
         // Create Constellation through REST
         String name = generateConstellationName();
         Integer constellationId = postConstellation(name);
+        logger.info("constellationId: " + constellationId);
 
         driver.findElement(By.cssSelector("a[href*='/constellation")).click();
         driver.findElement(By.cssSelector("a[href*='/constellation/delete/" + constellationId.intValue())).click();
 
-        assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(name);
+//        assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(name);
+        By byConstellations = By.id("constellations");
+        assertThrows(NoSuchElementException.class, () -> driver.findElement(byConstellations));
     }
 
     private String generateConstellationName() {
@@ -138,7 +157,7 @@ public class ConstellationWebControllerE2E {
         body.put("name", name);
 
         return given().contentType(MediaType.APPLICATION_JSON_VALUE).body(body.toString()).when()
-                .post("/api/constellation")
+                .post(baseUrl + "/api/constellation")
                 .then()
                 .statusCode(200)
                 .extract().path("id");
