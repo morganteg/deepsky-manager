@@ -10,7 +10,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -27,7 +26,6 @@ import org.testcontainers.containers.MySQLContainer;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -145,8 +143,7 @@ public class DeepSkyObjectWebControllerIT {
 
         driver.get(baseUrl + "/deepskyobject/delete/" + testM42.getId());
 
-        By byDeepSkyObjects = By.id("deepSkyObjects");
-        assertThrows(NoSuchElementException.class, () -> driver.findElement(byDeepSkyObjects));
+        assertThat(driver.findElement(By.id("deepSkyObjects")).getText()).doesNotContain(ORION);
     }
 
 }

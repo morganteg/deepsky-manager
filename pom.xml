@@ -140,12 +140,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>org.testcontainers</groupId>-->
-        <!--            <artifactId>testcontainers</artifactId>-->
-        <!--            <version>1.10.5</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mysql</artifactId>
@@ -233,29 +227,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-assembly-plugin</artifactId>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <phase>package</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>single</goal>-->
-            <!--                        </goals>-->
-            <!--                        <configuration>-->
-            <!--                            <descriptorRefs>-->
-            <!--                                <descriptorRef>jar-with-dependencies</descriptorRef>-->
-            <!--                            </descriptorRefs>-->
-            <!--                            <archive>-->
-            <!--                                <manifest>-->
-            <!--                                    <mainClass>it.attsd.deepsky.DeepskyAppApplication</mainClass>-->
-            <!--                                </manifest>-->
-            <!--                            </archive>-->
-            <!--                        </configuration>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
 
             <!-- For Java code coverage submitting to Coveralls cloud platform -->
             <plugin>
@@ -359,75 +330,75 @@
             </build>
         </profile>
 
-        <profile>
-            <id>docker</id>
-            <properties>
-                <database.host>mysql-service</database.host>
-                <database.username>root</database.username>
-                <database.password>root</database.password>
-                <database.port>3306</database.port>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>io.fabric8</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.27.2</version>
-                        <configuration>
-                            <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
-                            <showLogs>true</showLogs>
-                            <images>
-                                <image>
-                                    <name>mysql:8.0</name>
-                                    <alias>mysql-service</alias>
-                                    <run>
-                                        <env>
-                                            <MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>
-                                            <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
-                                        </env>
-                                        <network>
-                                            <mode>custom</mode>
-                                            <name>dsm-network</name>
-                                            <alias>mysql</alias>
-                                        </network>
-                                        <ports>
-                                            <port>3316:3306</port>
-                                        </ports>
-                                        <wait>
-                                            <log>ready for connections</log>
-                                            <time>40000</time>
-                                        </wait>
-                                    </run>
-                                </image>
-                            </images>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>docker:build</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>docker:start</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>docker:stop</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+<!--        <profile>-->
+<!--            <id>docker</id>-->
+<!--            <properties>-->
+<!--                <database.host>mysql-service</database.host>-->
+<!--                <database.username>root</database.username>-->
+<!--                <database.password>root</database.password>-->
+<!--                <database.port>3306</database.port>-->
+<!--            </properties>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>io.fabric8</groupId>-->
+<!--                        <artifactId>docker-maven-plugin</artifactId>-->
+<!--                        <version>0.27.2</version>-->
+<!--                        <configuration>-->
+<!--                            <autoCreateCustomNetworks>true</autoCreateCustomNetworks>-->
+<!--                            <showLogs>true</showLogs>-->
+<!--                            <images>-->
+<!--                                <image>-->
+<!--                                    <name>mysql:8.0</name>-->
+<!--                                    <alias>mysql-service</alias>-->
+<!--                                    <run>-->
+<!--                                        <env>-->
+<!--                                            <MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>-->
+<!--                                            <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>-->
+<!--                                        </env>-->
+<!--                                        <network>-->
+<!--                                            <mode>custom</mode>-->
+<!--                                            <name>dsm-network</name>-->
+<!--                                            <alias>mysql</alias>-->
+<!--                                        </network>-->
+<!--                                        <ports>-->
+<!--                                            <port>3316:3306</port>-->
+<!--                                        </ports>-->
+<!--                                        <wait>-->
+<!--                                            <log>ready for connections</log>-->
+<!--                                            <time>40000</time>-->
+<!--                                        </wait>-->
+<!--                                    </run>-->
+<!--                                </image>-->
+<!--                            </images>-->
+<!--                        </configuration>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>docker:build</id>-->
+<!--                                <phase>package</phase>-->
+<!--                                <goals>-->
+<!--                                    <goal>build</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>docker:start</id>-->
+<!--                                <phase>pre-integration-test</phase>-->
+<!--                                <goals>-->
+<!--                                    <goal>start</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>docker:stop</id>-->
+<!--                                <phase>post-integration-test</phase>-->
+<!--                                <goals>-->
+<!--                                    <goal>stop</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
 
         <profile>
             <id>e2e-tests</id>
@@ -437,10 +408,6 @@
             <properties>
                 <skip.unit-tests>true</skip.unit-tests>
                 <skip.integration-tests>true</skip.integration-tests>
-                <!--                <database.host>mysql-service</database.host>-->
-                <database.username>root</database.username>
-                <database.password>root</database.password>
-                <database.port>3316</database.port>
                 <database.ddlauto>create</database.ddlauto>
                 <docker.restartPolicy.name>always</docker.restartPolicy.name>
             </properties>
@@ -469,42 +436,20 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.27.2</version>
                         <configuration>
-                            <!--                            <autoCreateCustomNetworks>true</autoCreateCustomNetworks>-->
                             <showLogs>true</showLogs>
                             <images>
                                 <image>
                                     <name>dsm-database</name>
-                                    <!--                                    <alias>mysql-service</alias>-->
                                     <build>
                                         <dockerFileDir>${project.basedir}</dockerFileDir>
-<!--                                        <ports>-->
-<!--                                            <port>33060</port>-->
-<!--                                        </ports>-->
                                     </build>
                                     <run>
-
-<!--                                        <env>-->
-<!--                                            <MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>-->
-<!--                                            <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>-->
-<!--                                        </env>-->
-<!--                                        <network>-->
-<!--                                            <mode>custom</mode>-->
-<!--                                            <name>dsm-network</name>-->
-<!--                                            <alias>mysql</alias>-->
-<!--                                        </network>-->
                                         <ports>
                                             <port>3316:3306</port>
                                         </ports>
                                         <wait>
                                             <log>/usr/sbin/mysqld: ready for connections.</log>
                                             <time>80000</time>
-<!--                                            <tcp>-->
-<!--&lt;!&ndash;                                                <host>localhost</host>&ndash;&gt;-->
-<!--                                                <ports>-->
-<!--                                                    <port>3306</port>-->
-<!--                                                </ports>-->
-<!--                                            </tcp>-->
-<!--                                            <time>100000</time>-->
                                         </wait>
                                     </run>
                                 </image>
@@ -522,7 +467,6 @@
                             <execution>
                                 <id>docker:start</id>
                                 <phase>pre-integration-test</phase>
-<!--                                <phase>verify</phase>-->
                                 <goals>
                                     <goal>stop</goal>
                                     <goal>start</goal>
@@ -537,31 +481,6 @@
                             </execution>
                         </executions>
                     </plugin>
-<!--                    <plugin>-->
-<!--                        <groupId>org.springframework.boot</groupId>-->
-<!--                        <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <id>pre-integration-test</id>-->
-<!--                                <phase>pre-integration-test</phase>-->
-<!--                                <goals>-->
-<!--                                    <goal>start</goal>-->
-<!--                                </goals>-->
-<!--                                <configuration>-->
-<!--                                    <arguments>-->
-<!--                                        <argument>&#45;&#45;server.port=${tomcat.http.port}</argument>-->
-<!--                                    </arguments>-->
-<!--                                </configuration>-->
-<!--                            </execution>-->
-<!--                            <execution>-->
-<!--                                <id>post-integration-test</id>-->
-<!--                                <phase>post-integration-test</phase>-->
-<!--                                <goals>-->
-<!--                                    <goal>stop</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
-<!--                    </plugin>-->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>

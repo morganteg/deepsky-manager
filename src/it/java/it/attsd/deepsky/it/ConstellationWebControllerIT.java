@@ -9,26 +9,21 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -64,7 +59,6 @@ public class ConstellationWebControllerIT {
 
     @Before
     public void setup() {
-//        assertTrue(mySQLContainer.isRunning());
         baseUrl = "http://localhost:" + port;
         driver = new HtmlUnitDriver();
         deepSkyObjectRepository.deleteAll();
@@ -129,8 +123,6 @@ public class ConstellationWebControllerIT {
 
         driver.get(baseUrl + "/constellation/delete/" + testConstellation.getId());
 
-//        By byConstellations = By.id("constellations");
-//        assertThrows(NoSuchElementException.class, () -> driver.findElement(byConstellations));
         assertThat(driver.findElement(By.id("constellations")).getText()).doesNotContain(ORION);
     }
 

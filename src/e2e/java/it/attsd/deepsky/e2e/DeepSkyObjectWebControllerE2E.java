@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -21,7 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -34,19 +32,6 @@ public class DeepSkyObjectWebControllerE2E {
     private final String ORION = "orion";
 
     String M42 = "m42";
-
-//    @ClassRule
-//    public static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
-//            .withExposedPorts(3316);
-//
-//    @DynamicPropertySource
-//    static void databaseProperties(DynamicPropertyRegistry registry) {
-//        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
-//        registry.add("spring.jpa.database-platform", () -> "org.hibernate.dialect.MySQL8Dialect");
-//        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
-//        registry.add("spring.datasource.username", mySQLContainer::getUsername);
-//        registry.add("spring.datasource.password", mySQLContainer::getPassword);
-//    }
 
     @BeforeClass
     public static void setupClass() {
@@ -150,8 +135,6 @@ public class DeepSkyObjectWebControllerE2E {
         driver.findElement(By.cssSelector("a[href*='/deepskyobject/delete/" + deepSkyObjectSavedId.intValue())).click();
 
         assertThat(driver.findElement(By.id("deepSkyObjects")).getText()).doesNotContain(deepSkyObjectName);
-//        By byDeepSkyObjects = By.id("deepSkyObjects");
-//        assertThrows(NoSuchElementException.class, () -> driver.findElement(byDeepSkyObjects));
     }
 
     private String generateRandomConstellationName() {
