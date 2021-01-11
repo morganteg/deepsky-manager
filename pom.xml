@@ -20,7 +20,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <database.host>localhost</database.host>
-        <database.port>3306</database.port>
+        <database.port>3316</database.port>
         <database.username>root</database.username>
         <database.password>root</database.password>
         <database.ddlauto>update</database.ddlauto>
@@ -340,9 +340,10 @@
             <properties>
                 <skip.unit-tests>true</skip.unit-tests>
                 <skip.integration-tests>true</skip.integration-tests>
-                <database.host>localhost</database.host>
-                <database.port>3316</database.port>
-                <database.ddlauto>create</database.ddlauto>
+<!--                <database.host>localhost</database.host>-->
+<!--                <database.port>3316</database.port>-->
+<!--                <database.ddlauto>update</database.ddlauto>-->
+<!--                <docker.host>tcp://localhost:2375</docker.host>-->
                 <docker.cleanup>remove</docker.cleanup>
             </properties>
             <build>
@@ -363,21 +364,19 @@
                                     </sources>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>reserve-tomcat-port</id>
+                                <goals>
+                                    <goal>reserve-network-port</goal>
+                                </goals>
+                                <phase>process-resources</phase>
+                                <configuration>
+                                    <portNames>
+                                        <portName>tomcat.http.port</portName>
+                                    </portNames>
+                                </configuration>
+                            </execution>
                         </executions>
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <id>reserve-tomcat-port</id>-->
-<!--                                <goals>-->
-<!--                                    <goal>reserve-network-port</goal>-->
-<!--                                </goals>-->
-<!--                                <phase>process-resources</phase>-->
-<!--                                <configuration>-->
-<!--                                    <portNames>-->
-<!--                                        <portName>tomcat.http.port</portName>-->
-<!--                                    </portNames>-->
-<!--                                </configuration>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
                     </plugin>
                     <plugin>
                         <groupId>io.fabric8</groupId>
@@ -387,45 +386,55 @@
                             <verbose>true</verbose>
                             <showLogs>true</showLogs>
                             <images>
-                                <image>
-                                    <alias>mysql-service</alias>
-<!--                                    <name>dsm-image:latest</name>-->
-
-                                    <external>
-                                        <type>compose</type>
-                                        <basedir>${project.basedir}</basedir>
-<!--                                        <composeFile>docker-compose.yml</composeFile>-->
-                                    </external>
-
-                                    <run>
-                                        <wait>
-<!--                                            <log>Application started!</log>-->
-<!--                                            <time>1000000</time>-->
-                                            <tcp>
-                                                <host>localhost</host>
-                                                <ports>
-                                                    <port>3306</port>
-                                                </ports>
-                                            </tcp>
-<!--                                            <healthy>true</healthy>-->
-                                        </wait>
-                                    </run>
-                                </image>
 <!--                                <image>-->
-<!--                                    <name>dsm-database</name>-->
-<!--                                    <build>-->
-<!--                                        <dockerFileDir>${project.basedir}</dockerFileDir>-->
-<!--                                    </build>-->
+<!--                                    <alias>mysql-service</alias>-->
+<!--&lt;!&ndash;                                    <name>dsm-image:latest</name>&ndash;&gt;-->
+
+<!--                                    <external>-->
+<!--                                        <type>compose</type>-->
+<!--                                        <basedir>${project.basedir}</basedir>-->
+<!--&lt;!&ndash;                                        <composeFile>docker-compose.yml</composeFile>&ndash;&gt;-->
+<!--                                    </external>-->
+
 <!--                                    <run>-->
-<!--                                        <ports>-->
-<!--                                            <port>3316:3306</port>-->
-<!--                                        </ports>-->
 <!--                                        <wait>-->
-<!--                                            <log>/usr/sbin/mysqld: ready for connections.</log>-->
-<!--                                            <time>80000</time>-->
+<!--&lt;!&ndash;                                            <log>Application started!</log>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <time>1000000</time>&ndash;&gt;-->
+<!--                                            <tcp>-->
+<!--                                                <host>localhost</host>-->
+<!--                                                <ports>-->
+<!--                                                    <port>3306</port>-->
+<!--                                                </ports>-->
+<!--                                            </tcp>-->
+<!--&lt;!&ndash;                                            <healthy>true</healthy>&ndash;&gt;-->
 <!--                                        </wait>-->
 <!--                                    </run>-->
 <!--                                </image>-->
+                                <image>
+                                    <alias>mysql-service</alias>
+                                    <name>dsm-database</name>
+                                    <external>
+                                        <type>compose</type>
+                                        <basedir>${project.basedir}</basedir>
+                                        <composeFile>docker-compose.yml</composeFile>
+                                    </external>
+<!--                                    <build>-->
+<!--                                        <dockerFileDir>${project.basedir}</dockerFileDir>-->
+<!--                                    </build>-->
+                                    <run>
+<!--                                        <env>-->
+<!--                                            <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>-->
+<!--                                            <MYSQL_DATABASE>deepskymanager</MYSQL_DATABASE>-->
+<!--                                        </env>-->
+<!--                                        <ports>-->
+<!--                                            <port>3316:3306</port>-->
+<!--                                        </ports>-->
+                                        <wait>
+                                            <log>/usr/sbin/mysqld: ready for connections.</log>
+                                            <time>50000</time>
+                                        </wait>
+                                    </run>
+                                </image>
                             </images>
                         </configuration>
                         <executions>
@@ -455,6 +464,32 @@
                         </executions>
                     </plugin>
                     <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>pre-integration-test</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>
+                                        <argument>--server.port=${tomcat.http.port}</argument>
+<!--                                        <argument>&#45;&#45;database.host=${docker.host.address}</argument>-->
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>post-integration-test</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <executions>
@@ -473,6 +508,8 @@
                         </executions>
                         <configuration>
                             <systemPropertyVariables>
+<!--                                <spring.datasource.url>jdbc:mysql://${docker.host.address}:/deepskymanager</spring.datasource.url>-->
+<!--                                <database.host>${docker.host.address}</database.host>-->
                                 <server.port>${tomcat.http.port}</server.port>
                             </systemPropertyVariables>
                         </configuration>
