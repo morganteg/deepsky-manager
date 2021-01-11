@@ -8,19 +8,32 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: deepskymanager
+#    healthcheck:
+#      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+#      interval: 1s
+#      timeout: 3s
+#      retries: 30
     networks:
       - dsm-network
   app-server:
-    image: tomcat:latest
+    image: openjdk:8
+#    restart: always
     ports:
       - 8080:8080
     volumes:
       - ./target/deepsky-manager-0.0.1-SNAPSHOT.jar:/app/app.jar
     command: java -jar /app/app.jar
+#    healthcheck:
+#      test: [ "CMD", "telnet" ,"mysql-service", "3306" ]
+#      interval: 1s
+#      timeout: 3s
+#      retries: 30
     networks:
       - dsm-network
     depends_on:
       - mysql-service
+#      mysql-service:
+#        condition: service_healthy
 networks:
   dsm-network:
     driver: bridge

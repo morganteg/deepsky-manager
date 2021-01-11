@@ -5,22 +5,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DeepSkyObjectRestControllerE2E {
-//    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
-    @LocalServerPort
-    private int port;
+    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
+//    @LocalServerPort
+//    private int port;
+
     private final String ORION = "orion";
     private final String M42 = "m42";
 

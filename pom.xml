@@ -20,9 +20,9 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <database.host>localhost</database.host>
+        <database.port>3306</database.port>
         <database.username>root</database.username>
         <database.password>root</database.password>
-        <database.port>3316</database.port>
         <database.ddlauto>update</database.ddlauto>
         <database.platform>org.hibernate.dialect.MySQL8Dialect</database.platform>
         <sonar.projectKey>morganteg_deepsky-manager</sonar.projectKey>
@@ -193,7 +193,7 @@
                         <configuration>
                             <sources>
                                 <source>src/it/java</source>
-                                <source>src/e2e/java</source>
+<!--                                <source>src/e2e/java</source>-->
                             </sources>
                         </configuration>
                     </execution>
@@ -340,6 +340,8 @@
             <properties>
                 <skip.unit-tests>true</skip.unit-tests>
                 <skip.integration-tests>true</skip.integration-tests>
+                <database.host>localhost</database.host>
+                <database.port>3316</database.port>
                 <database.ddlauto>create</database.ddlauto>
                 <docker.cleanup>remove</docker.cleanup>
             </properties>
@@ -350,41 +352,80 @@
                         <artifactId>build-helper-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>reserve-tomcat-port</id>
+                                <id>add-test-source</id>
+                                <phase>generate-test-sources</phase>
                                 <goals>
-                                    <goal>reserve-network-port</goal>
+                                    <goal>add-test-source</goal>
                                 </goals>
-                                <phase>process-resources</phase>
                                 <configuration>
-                                    <portNames>
-                                        <portName>tomcat.http.port</portName>
-                                    </portNames>
+                                    <sources>
+                                        <source>src/e2e/java</source>
+                                    </sources>
                                 </configuration>
                             </execution>
                         </executions>
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>reserve-tomcat-port</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>reserve-network-port</goal>-->
+<!--                                </goals>-->
+<!--                                <phase>process-resources</phase>-->
+<!--                                <configuration>-->
+<!--                                    <portNames>-->
+<!--                                        <portName>tomcat.http.port</portName>-->
+<!--                                    </portNames>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
                     </plugin>
                     <plugin>
                         <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.27.2</version>
                         <configuration>
+                            <verbose>true</verbose>
                             <showLogs>true</showLogs>
                             <images>
                                 <image>
-                                    <name>dsm-database</name>
-                                    <build>
-                                        <dockerFileDir>${project.basedir}</dockerFileDir>
-                                    </build>
+                                    <alias>mysql-service</alias>
+<!--                                    <name>dsm-image:latest</name>-->
+
+                                    <external>
+                                        <type>compose</type>
+                                        <basedir>${project.basedir}</basedir>
+<!--                                        <composeFile>docker-compose.yml</composeFile>-->
+                                    </external>
+
                                     <run>
-                                        <ports>
-                                            <port>3316:3306</port>
-                                        </ports>
                                         <wait>
-                                            <log>/usr/sbin/mysqld: ready for connections.</log>
-                                            <time>80000</time>
+<!--                                            <log>Application started!</log>-->
+<!--                                            <time>1000000</time>-->
+                                            <tcp>
+                                                <host>localhost</host>
+                                                <ports>
+                                                    <port>3306</port>
+                                                </ports>
+                                            </tcp>
+<!--                                            <healthy>true</healthy>-->
                                         </wait>
                                     </run>
                                 </image>
+<!--                                <image>-->
+<!--                                    <name>dsm-database</name>-->
+<!--                                    <build>-->
+<!--                                        <dockerFileDir>${project.basedir}</dockerFileDir>-->
+<!--                                    </build>-->
+<!--                                    <run>-->
+<!--                                        <ports>-->
+<!--                                            <port>3316:3306</port>-->
+<!--                                        </ports>-->
+<!--                                        <wait>-->
+<!--                                            <log>/usr/sbin/mysqld: ready for connections.</log>-->
+<!--                                            <time>80000</time>-->
+<!--                                        </wait>-->
+<!--                                    </run>-->
+<!--                                </image>-->
                             </images>
                         </configuration>
                         <executions>
@@ -392,7 +433,7 @@
                                 <id>docker:build</id>
                                 <phase>package</phase>
                                 <goals>
-                                    <goal>remove</goal>
+<!--                                    <goal>remove</goal>-->
                                     <goal>build</goal>
                                 </goals>
                             </execution>
@@ -437,6 +478,107 @@
                         </configuration>
                     </plugin>
 
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>docker</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <skip.unit-tests>true</skip.unit-tests>
+                <skip.integration-tests>true</skip.integration-tests>
+                <database.host>mysql-service</database.host>
+                <database.port>3306</database.port>
+                <database.ddlauto>create</database.ddlauto>
+                <docker.cleanup>remove</docker.cleanup>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.27.2</version>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <showLogs>true</showLogs>
+                            <images>
+                                <image>
+                                    <alias>mysql-service</alias>
+<!--                                    <name>dsm-image:latest</name>-->
+
+                                    <external>
+                                        <type>compose</type>
+                                        <basedir>${project.basedir}</basedir>
+<!--                                        <composeFile>docker-compose.yml</composeFile>-->
+                                    </external>
+
+                                    <run>
+                                        <wait>
+<!--                                            <log>Application started!</log>-->
+<!--                                            <time>12000</time>-->
+                                            <tcp>
+<!--                                                <host>localhost</host>-->
+                                                <ports>
+                                                    <port>3306</port>
+                                                </ports>
+                                            </tcp>
+                                        </wait>
+                                    </run>
+                                </image>
+                                <image>
+                                    <alias>app-server</alias>
+                                    <!--                                    <name>dsm-image:latest</name>-->
+
+                                    <external>
+                                        <type>compose</type>
+                                        <basedir>${project.basedir}</basedir>
+                                        <!--                                        <composeFile>docker-compose.yml</composeFile>-->
+                                    </external>
+
+                                    <run>
+                                        <wait>
+<!--                                            <log>Application started!</log>-->
+                                            <time>1000000</time>
+                                            <tcp>
+                                                <host>localhost</host>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
+                                        </wait>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>docker:build</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <!--                                    <goal>remove</goal>-->
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>docker:start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>docker:stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
