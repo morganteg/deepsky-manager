@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   mysql-service:
     image: mysql:8.0
@@ -8,11 +8,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: deepskymanager
-#    healthcheck:
-#      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-#      interval: 1s
-#      timeout: 3s
-#      retries: 30
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
     networks:
       - dsm-network
   app-server:
@@ -31,9 +31,9 @@ services:
     networks:
       - dsm-network
     depends_on:
-      - mysql-service
-#      mysql-service:
-#        condition: service_healthy
+#      - mysql-service
+      mysql-service:
+        condition: service_healthy
 networks:
   dsm-network:
     driver: bridge

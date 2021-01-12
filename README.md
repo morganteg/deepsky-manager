@@ -43,9 +43,9 @@ mvn clean verify -Pe2e-tests
 ### Run docker container pom.xml configuration (doesn't leave the container running)
 mvn docker:start -Pdocker
 
-### Run docker container using docker-compose.yml configuration
-mvn clean package -Pdocker,e2e-tests
-docker-compose up && docker-compose rm -fsv
+### Run application through docker containers using docker-compose-full.yml configuration
+mvn clean package -Ddatabase.host=mysql-service -Ddatabase.port=3306
+docker-compose -f docker-compose-full.yml up && docker-compose -f docker-compose-full.yml rm -fsv
 
 ## Coverage
 [![Coverage Status](https://coveralls.io/repos/github/morganteg/deepsky-manager/badge.svg?branch=master)](https://coveralls.io/github/morganteg/deepsky-manager?branch=master)
