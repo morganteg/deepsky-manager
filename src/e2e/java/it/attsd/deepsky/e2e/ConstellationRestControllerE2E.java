@@ -5,37 +5,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ConstellationRestControllerE2E {
-//    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
-    @LocalServerPort
-    private int port;
-
+    private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
     private final String ORION = "orion";
-
-//    @ClassRule
-//    public static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0")
-//            .withExposedPorts(3316);
-//
-//    @DynamicPropertySource
-//    static void databaseProperties(DynamicPropertyRegistry registry) {
-//        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
-//        registry.add("spring.jpa.database-platform", () -> "org.hibernate.dialect.MySQL8Dialect");
-//        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
-//        registry.add("spring.datasource.username", mySQLContainer::getUsername);
-//        registry.add("spring.datasource.password", mySQLContainer::getPassword);
-//    }
 
     @Before
     public void setup() {

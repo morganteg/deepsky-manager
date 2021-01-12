@@ -16,11 +16,13 @@
     <description>Deep sky application</description>
 
     <properties>
-        <java.version>8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <database.host>localhost</database.host>
+        <database.port>3316</database.port>
         <database.username>root</database.username>
         <database.password>root</database.password>
-        <database.port>3316</database.port>
         <database.ddlauto>update</database.ddlauto>
         <database.platform>org.hibernate.dialect.MySQL8Dialect</database.platform>
         <sonar.projectKey>morganteg_deepsky-manager</sonar.projectKey>
@@ -191,7 +193,6 @@
                         <configuration>
                             <sources>
                                 <source>src/it/java</source>
-                                <source>src/e2e/java</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -338,8 +339,7 @@
             <properties>
                 <skip.unit-tests>true</skip.unit-tests>
                 <skip.integration-tests>true</skip.integration-tests>
-                <database.ddlauto>create</database.ddlauto>
-                <docker.restartPolicy.name>always</docker.restartPolicy.name>
+                <docker.cleanup>remove</docker.cleanup>
             </properties>
             <build>
                 <plugins>
@@ -347,6 +347,18 @@
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>build-helper-maven-plugin</artifactId>
                         <executions>
+                            <execution>
+                                <id>add-test-source</id>
+                                <phase>generate-test-sources</phase>
+                                <goals>
+                                    <goal>add-test-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>src/e2e/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
                             <execution>
                                 <id>reserve-tomcat-port</id>
                                 <goals>
@@ -366,20 +378,21 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.27.2</version>
                         <configuration>
+                            <verbose>true</verbose>
                             <showLogs>true</showLogs>
                             <images>
                                 <image>
+                                    <alias>mysql-service</alias>
                                     <name>dsm-database</name>
-                                    <build>
-                                        <dockerFileDir>${project.basedir}</dockerFileDir>
-                                    </build>
+                                    <external>
+                                        <type>compose</type>
+                                        <basedir>${project.basedir}</basedir>
+                                        <composeFile>docker-compose.yml</composeFile>
+                                    </external>
                                     <run>
-                                        <ports>
-                                            <port>3316:3306</port>
-                                        </ports>
                                         <wait>
                                             <log>/usr/sbin/mysqld: ready for connections.</log>
-                                            <time>80000</time>
+                                            <time>50000</time>
                                         </wait>
                                     </run>
                                 </image>
@@ -390,7 +403,6 @@
                                 <id>docker:build</id>
                                 <phase>package</phase>
                                 <goals>
-                                    <goal>remove</goal>
                                     <goal>build</goal>
                                 </goals>
                             </execution>
@@ -404,6 +416,31 @@
                             </execution>
                             <execution>
                                 <id>docker:stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>pre-integration-test</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>
+                                        <argument>--server.port=${tomcat.http.port}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>post-integration-test</id>
                                 <phase>post-integration-test</phase>
                                 <goals>
                                     <goal>stop</goal>

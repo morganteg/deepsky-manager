@@ -8,19 +8,3 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: deepskymanager
-    networks:
-      - dsm-network
-  app-server:
-    image: tomcat:latest
-    ports:
-      - 8080:8080
-    volumes:
-      - ./target/deepsky-manager-0.0.1-SNAPSHOT.jar:/app/app.jar
-    command: java -jar /app/app.jar
-    networks:
-      - dsm-network
-    depends_on:
-      - mysql-service
-networks:
-  dsm-network:
-    driver: bridge
