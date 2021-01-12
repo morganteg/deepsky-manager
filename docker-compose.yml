@@ -8,8 +8,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: deepskymanager
-    networks:
-      - dsm-network
-networks:
-  dsm-network:
-    driver: bridge
+#    networks:
+#      - dsm-network
+#networks:
+#  dsm-network:
+#    driver: bridge
