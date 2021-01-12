@@ -17,11 +17,7 @@ import org.springframework.http.MediaType;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DeepSkyObjectWebControllerE2E {
-//    @LocalServerPort
-//    private int port;
     private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
 
     private static String baseUrl;
