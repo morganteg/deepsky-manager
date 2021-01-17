@@ -384,12 +384,13 @@
                                 <image>
                                     <alias>mysql-service</alias>
                                     <name>dsm-database</name>
-                                    <external>
-                                        <type>compose</type>
-                                        <basedir>${project.basedir}</basedir>
-                                        <composeFile>docker-compose.yml</composeFile>
-                                    </external>
+                                    <build>
+                                        <dockerFileDir>${project.basedir}</dockerFileDir>
+                                    </build>
                                     <run>
+                                        <ports>
+                                            <port>3316:3306</port>
+                                        </ports>
                                         <wait>
                                             <log>/usr/sbin/mysqld: ready for connections.</log>
                                             <time>50000</time>
