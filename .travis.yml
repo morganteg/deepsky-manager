@@ -11,6 +11,9 @@ addons:
     organization: morganteg
   chrome: stable
 
+before_install:
+  - chmod +x mvnw
+
 cache:
   directories:
     - $HOME/.m2
