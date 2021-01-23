@@ -21,6 +21,6 @@ matrix:
     - jdk: openjdk8
 
 script:
-  - mvn clean verify -Pjacoco
-  - mvn verify -Pe2e-tests
-  - mvn coveralls:report sonar:sonar
+  - mvnw clean verify -Pjacoco
+  - mvnw verify -Pe2e-tests
+  - mvnw coveralls:report sonar:sonar
