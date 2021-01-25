@@ -323,9 +323,6 @@
                             <targetTests>
                                 <param>it.attsd.deepsky.unit.*</param>
                             </targetTests>
-                            <excludedTestClasses>
-                                <param>it.attsd.deepsky.unit.DeepskyAppApplicationTest</param>
-                            </excludedTestClasses>
                             <mutators>
                                 <mutator>DEFAULTS</mutator>
                             </mutators>
