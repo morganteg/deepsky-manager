@@ -1,18 +1,10 @@
 package it.attsd.deepsky.unit.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import it.attsd.deepsky.exceptions.ConstellationAlreadyExistsException;
 import it.attsd.deepsky.exceptions.ConstellationIsStillUsedException;
+import it.attsd.deepsky.model.Constellation;
 import it.attsd.deepsky.model.DeepSkyObject;
+import it.attsd.deepsky.repository.ConstellationRepository;
 import it.attsd.deepsky.repository.DeepSkyObjectRepository;
 import it.attsd.deepsky.service.ConstellationService;
 import org.junit.Test;
@@ -22,8 +14,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import it.attsd.deepsky.model.Constellation;
-import it.attsd.deepsky.repository.ConstellationRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConstellationServiceWithMockBeanTest {
@@ -111,18 +110,12 @@ public class ConstellationServiceWithMockBeanTest {
 	public void testSaveConstellationIfAlreadyExists() {
 		when(constellationRepository.findByName(ORION)).thenReturn(orionSaved);
 
-		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(new Constellation(ORION)));
+		Constellation constellation = new Constellation(ORION);
+		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(constellation));
 
 		verify(constellationRepository).findByName(ORION);
-		verify(constellationRepository, times(0)).save(new Constellation(ORION));
+		verify(constellationRepository, times(0)).save(constellation);
 	}
-
-//	@Test
-//	public void testSaveConstellationWhenAlreadyExists() throws ConstellationAlreadyExistsException {
-//		doThrow(new ConstellationAlreadyExistsException()).when(constellationRepository).save(libra);
-//
-//		assertThrows(ConstellationAlreadyExistsException.class, () -> constellationService.save(libra));
-//	}
 
 	@Test
 	public void testUpdateConstellation() {
