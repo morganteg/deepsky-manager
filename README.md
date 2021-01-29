@@ -1,51 +1,45 @@
 # Overview
 "DeepSky Manager" is an application developed for Advanced Techniques and Tools for Software Development exam, University of Florence, Cyber-Physical Systems of Systems course.
 
-### Run the application
+# Run the application
 ```
 docker build -t dsm-database .
 docker run --rm -p 3316:3306 dsm-database
+mvn spring-boot:run
 ```
-Run DeepskyAppApplication.java class
-
-## Package the app without executing unit tests or integration tests
-mvn clean package -DskipTests,skipITs
-
-## Unit tests
-
-### Run Unit tests
-mvn clean test
-
-### Run Unit tests with Jacoco
-mvn clean verify -Pjacoco
-
-### Run Unit tests with Sonar
-mvn clean test -Pjacoco sonar:sonar
-
-### Run Mutation tests
-mvn clean test -Pmutation-tests
-
-## Integration tests
-
-### Run Integration tests starting Docker container for MySql
-mvn clean verify -Pdocker
-
-### Run Integration tests on a specific test class
-mvn -Dit.test=DeepSkyObjectWebControllerIT verify -Pdocker
-
-## E2E tests
-
-## Run E2E tests
-mvn clean verify -Pe2e-tests
-
-## Docker
-
-### Run docker container pom.xml configuration (doesn't leave the container running)
-mvn docker:start -Pdocker
-
-### Run application through docker containers using docker-compose-full.yml configuration
+or
+```
 mvn clean package -Ddatabase.host=mysql-service -Ddatabase.port=3306
-docker-compose -f docker-compose-full.yml up && docker-compose -f docker-compose-full.yml rm -fsv
+docker-compose up
+```
+The Application will be available at the following URL:\
+http://localhost:8080
+
+# Unit tests
+
+Run Unit tests
+```
+mvn clean test
+```
+
+Run Unit tests with Jacoco for coverage and report generation
+```
+mvn clean verify -Pjacoco
+```
+Run Mutation tests
+```
+mvn clean test -Pmutation-tests
+```
+
+# Run Integration tests
+```
+mvn clean verify
+```
+
+# Run E2E tests
+```
+mvn clean verify -Pe2e-tests
+```
 
 ## Coverage
 [![Coverage Status](https://coveralls.io/repos/github/morganteg/deepsky-manager/badge.svg?branch=master)](https://coveralls.io/github/morganteg/deepsky-manager?branch=master)
