@@ -33,7 +33,7 @@ public class ConstellationRestControllerE2E {
     public void testCreateNewConstellationWhenAlreadyExists() throws JSONException {
         // Create Constellation through REST
         String name = generateRandomConstellationName();
-        int id = postConstellation(name);
+        postConstellation(name);
 
         // Add a Constellation with the same name
         JSONObject body = new JSONObject();
